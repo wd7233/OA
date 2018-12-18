@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.CardInfoMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.CardInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="cardno" property="cardno" jdbcType="VARCHAR" />
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="card_location" property="cardLocation" jdbcType="VARCHAR" />
+    <result column="card_phone" property="cardPhone" jdbcType="VARCHAR" />
+    <result column="card_pwd" property="cardPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from card_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.CardInfo" >
+    insert into card_info (id, name, cardno, 
+      user_no, card_location, card_phone, 
+      card_pwd)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, 
+      #{userNo,jdbcType=VARCHAR}, #{cardLocation,jdbcType=VARCHAR}, #{cardPhone,jdbcType=VARCHAR}, 
+      #{cardPwd,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.CardInfo" >
+    update card_info
+    set name = #{name,jdbcType=VARCHAR},
+      cardno = #{cardno,jdbcType=VARCHAR},
+      user_no = #{userNo,jdbcType=VARCHAR},
+      card_location = #{cardLocation,jdbcType=VARCHAR},
+      card_phone = #{cardPhone,jdbcType=VARCHAR},
+      card_pwd = #{cardPwd,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, cardno, user_no, card_location, card_phone, card_pwd
+    from card_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, cardno, user_no, card_location, card_phone, card_pwd
+    from card_info
+  </select>
+  
+    <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+  
+  
+   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select s.name as shopName, s.user_name as name, c.cardno as cardno,c.user_no,
+    c.card_location,c.card_phone,c.card_pwd 
+    from shop s
+    left join staff f on f.id = s.staff_id 
+    left join card_info c on c.name = s.user_name 
+    where 1=1 
+    and f.id = #{userId,jdbcType=INTEGER }
+     order by cardno desc
+  </select>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.Company" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_account" property="companyAccount" jdbcType="VARCHAR" />
+    <result column="company_pwd" property="companyPwd" jdbcType="VARCHAR" />
+    <result column="leady_name" property="leadyName" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="INTEGER" />
+    <result column="leady_qq" property="leadyQq" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Company" >
+    insert into company (id, company_name, company_account, 
+      company_pwd, leady_name, telephone, 
+      leady_qq, location, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{companyAccount,jdbcType=VARCHAR}, 
+      #{companyPwd,jdbcType=VARCHAR}, #{leadyName,jdbcType=VARCHAR}, #{telephone,jdbcType=INTEGER}, 
+      #{leadyQq,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Company" >
+    update company
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      company_account = #{companyAccount,jdbcType=VARCHAR},
+      company_pwd = #{companyPwd,jdbcType=VARCHAR},
+      leady_name = #{leadyName,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=INTEGER},
+      leady_qq = #{leadyQq,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, company_name, company_account, company_pwd, leady_name, telephone, leady_qq, 
+    location, create_time
+    from company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, company_name, company_account, company_pwd, leady_name, telephone, leady_qq, 
+    location, create_time
+    from company
+  </select>
+</mapper>

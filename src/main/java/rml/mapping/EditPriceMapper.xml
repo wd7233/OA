@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.EditPriceMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.EditPrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from edit_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.EditPrice" >
+    insert into edit_price (id, order_id, price, 
+      state, create_time)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{state,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.EditPrice" >
+    update edit_price
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      state = #{state,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_id, price, state, create_time
+    from edit_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, price, state, create_time
+    from edit_price
+  </select>
+     <!-- /**============================================================================
+  =====================
+  =====================
+  ==**/ -->
+    <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, order_id, price, state, create_time
+    from edit_price
+    where order_id = #{order_id}
+  </select>
+</mapper>

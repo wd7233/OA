@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.ShopMapper">
+  <resultMap id="BaseResultMap" type="rml.model.Shop">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_card" jdbcType="VARCHAR" property="userCard" />
+    <result column="in_code" jdbcType="VARCHAR" property="inCode" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="goodsnum" jdbcType="INTEGER" property="goodsnum" />
+    <result column="isOpen" jdbcType="INTEGER" property="isopen" />
+    <result column="isVtd" jdbcType="INTEGER" property="isvtd" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Shop">
+    insert into shop (id, number, name, 
+      category, account, password, 
+      user_name, user_card, in_code, 
+      staff_id, goodsnum, isOpen, 
+      isVtd)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userCard,jdbcType=VARCHAR}, #{inCode,jdbcType=VARCHAR}, 
+      #{staffId,jdbcType=VARCHAR}, #{goodsnum,jdbcType=INTEGER}, #{isopen,jdbcType=INTEGER}, 
+      #{isvtd,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Shop">
+    update shop
+    set number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_card = #{userCard,jdbcType=VARCHAR},
+      in_code = #{inCode,jdbcType=VARCHAR},
+      staff_id = #{staffId,jdbcType=VARCHAR},
+      goodsnum = #{goodsnum,jdbcType=INTEGER},
+      isOpen = #{isopen,jdbcType=INTEGER},
+      isVtd = #{isvtd,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, number, name, category, account, password, user_name, user_card, in_code, 
+    staff_id, goodsnum, isOpen, isVtd
+    from shop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, number, name, category, account, password, user_name, user_card, in_code, 
+    staff_id, goodsnum, isOpen, isVtd
+    from shop  order by goodsnum desc
+  </select>
+  <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+  
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select id, number, name, account, password, user_name, user_card, in_code, staff_id, 
+    goodsnum
+    from shop where account = #{account,jdbcType=VARCHAR} 
+  </select>
+  <select id="selectByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select id, number, name, account, password, user_name, user_card, in_code, staff_id, 
+    goodsnum
+    from shop where staff_id = #{userId,jdbcType=VARCHAR} order by goodsnum desc
+  </select>
+    <select id="selectByNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, number, name, category, account, password, user_name, user_card, in_code, 
+    staff_id, goodsnum
+    from shop
+    where number = #{number}
+  </select>
+   <select id="selectHasStaff" resultMap="BaseResultMap">
+   select id, number, name, account, password, user_name, user_card, in_code, staff_id, 
+    goodsnum
+    from shop where staff_id is not null order by goodsnum desc
+  </select>
+   <select id="selectNeedVtd" resultMap="BaseResultMap">
+   select id, number, name, account, password, user_name, user_card, in_code, staff_id, 
+    goodsnum
+    from shop where isVtd = 0 order by goodsnum desc
+  </select>
+   <select id="selectByKeyword" resultMap="BaseResultMap">
+    select s.id, number, s.name, category, s.account, password, user_name, user_card, in_code, 
+    f.name as staffName, goodsnum, isOpen, isVtd, staff_id 
+    from shop s
+    left join staff f on f.id = s.staff_id
+    left join company_user c on s.staff_id = c.user_id
+    where 1=1 
+    <if test = "staffId != -1">
+    and staff_id = #{staffId}
+    </if>
+    <if test = "keyWord!=null and keyWord != ''">
+    and (  number like CONCAT('%',#{keyWord},'%') 
+      or  s.name like CONCAT('%',#{keyWord},'%')   
+       or  s.account like CONCAT('%',#{keyWord},'%')   
+       or  user_name like CONCAT('%',#{keyWord},'%') 
+        or  category like CONCAT('%',#{keyWord},'%')  
+        )
+    </if>
+     order by goodsnum desc
+  </select>
+</mapper>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="rml.model.OrderDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="shop_number" jdbcType="VARCHAR" property="shopNumber" />
+    <result column="deal_time" jdbcType="DATE" property="dealTime" />
+    <result column="good_name" jdbcType="VARCHAR" property="goodName" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="good_detail" jdbcType="VARCHAR" property="goodDetail" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="sell_price" jdbcType="DOUBLE" property="sellPrice" />
+    <result column="buy_price" jdbcType="DOUBLE" property="buyPrice" />
+    <result column="commission" jdbcType="DOUBLE" property="commission" />
+    <result column="remake" jdbcType="VARCHAR" property="remake" />
+    <result column="tb_id" jdbcType="VARCHAR" property="tbId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from orderDetail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.OrderDetail" useGeneratedKeys="true" keyProperty="id">
+    insert into orderDetail (id, order_id, shop_number, 
+      deal_time, good_name, count, 
+      good_detail, message, sell_price, 
+      buy_price, commission, remake, 
+      tb_id, type, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{shopNumber,jdbcType=VARCHAR}, 
+      #{dealTime,jdbcType=DATE}, #{goodName,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+      #{goodDetail,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{sellPrice,jdbcType=DOUBLE}, 
+      #{buyPrice,jdbcType=DOUBLE}, #{commission,jdbcType=DOUBLE}, #{remake,jdbcType=VARCHAR}, 
+      #{tbId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.OrderDetail">
+    update orderDetail
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      shop_number = #{shopNumber,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=DATE},
+      good_name = #{goodName,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      good_detail = #{goodDetail,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      sell_price = #{sellPrice,jdbcType=DOUBLE},
+      buy_price = #{buyPrice,jdbcType=DOUBLE},
+      commission = #{commission,jdbcType=DOUBLE},
+      remake = #{remake,jdbcType=VARCHAR},
+      tb_id = #{tbId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, commission, remake, tb_id, type, create_time
+    from orderDetail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, commission, remake, tb_id, type, create_time
+    from orderDetail
+  </select>
+   <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+   <select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, commission, remake, type, tb_id,create_time
+    from orderDetail
+    where order_id = #{orderId}
+  </select>
+  <select id="selectOrderByTime" parameterType="map" resultMap="BaseResultMap">
+  select o.id, order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, commission, remake, type,tb_id, o.create_time,s.name as shopName,s.staff_name as staffName 
+    from orderDetail o left join shop s on o.shop_number = s.number where o.create_time 
+    between #{startTime} and  #{endTime} 
+     <if test="type==1">
+    and (type = 1 or type = 2 )
+    </if>
+    <if test="shopNumber != null and shopNumber != ''">
+    and shop_number = #{shopNumber}
+    </if>
+    </select>
+     <select id="selectOrderForLucre" parameterType="map" resultMap="BaseResultMap">
+  select o.id, o.order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, c.commission as commission, remake, type,tb_id, o.create_time
+    from orderDetail o
+    left join order_commission c on c.order_id = o.order_id 
+    where o.create_time 
+    between #{startTime} and  #{endTime} and (type = 1 or type = 2 )
+    <if test="shopNumber != null and shopNumber != ''">
+    and shop_number = #{shopNumber}
+    </if>
+    </select>
+     <select id="selectOrderList" parameterType="map" resultMap="BaseResultMap">
+ 	select o.id, o.order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, c.commission as commission, remake, type,e.price as editPrice ,  e.state as isEditPrice , tb_id,o.create_time,s.name as shopName,f.name as staffName 
+    from orderDetail  o 
+    left join shop s on o.shop_number = s.number 
+    left join staff f on f.id = s.staff_id 
+    left join order_commission c on c.order_id = o.order_id 
+    left join edit_price e on o.order_id = e.order_id 
+    where o.create_time
+    between #{startTime} and  #{endTime}
+    <if test="staffId != -1">
+    and s.staff_id = #{staffId}
+    </if>
+     <if test="orderType == -1">
+    and e.price = -1 
+    </if>
+       <if test="orderType == 1">
+    and e.price > 0
+    </if>
+        <if test="orderType == 3">
+    and o.type = 3
+    </if>
+        <if test="orderType == 4">
+    and o.type = 4
+    </if>
+  <if test="keyWord!=null and keyWord != ''">
+    and (  o.order_id like CONCAT('%',#{keyWord},'%') 
+      or  o.shop_number like CONCAT('%',#{keyWord},'%')   
+       or  good_name like CONCAT('%',#{keyWord},'%')   
+       or  good_detail like CONCAT('%',#{keyWord},'%') 
+        or  message like CONCAT('%',#{keyWord},'%')  
+          or  remake like CONCAT('%',#{keyWord},'%')
+           or  tb_id like CONCAT('%',#{keyWord},'%')
+        )
+    </if>
+    </select>
+        <select id="selectOrderByUser" parameterType="map" resultMap="BaseResultMap">
+  select o.id, o.order_id as order_id, shop_number, deal_time, good_name, count, good_detail, message, 
+    sell_price, buy_price, commission, remake, type, tb_id,o.create_time,e.price as editPrice ,  e.state as isEditPrice 
+    from orderDetail o left join edit_price e on o.order_id = e.order_id  where o.create_time
+    between #{startTime} and  #{endTime}
+      <if test="shopNumber != null and shopNumber != ''">
+     and shop_number = #{shopNumber}
+    </if>
+  <if test="keyWord!=null and keyWord != ''">
+    and (  o.order_id like CONCAT('%',#{keyWord},'%') 
+      or  shop_number like CONCAT('%',#{keyWord},'%')   
+       or  good_name like CONCAT('%',#{keyWord},'%')   
+       or  good_detail like CONCAT('%',#{keyWord},'%') 
+        or  message like CONCAT('%',#{keyWord},'%')  
+          or  remake like CONCAT('%',#{keyWord},'%')
+           or  tb_id like CONCAT('%',#{keyWord},'%')
+        )
+    </if>
+     order by e.price desc
+    </select>
+    <select id ="selectCountByUser" parameterType="map" resultType="java.lang.Integer" >
+    select  count(*) from orderDetail o 
+    left join shop s on s.number = o.shop_number 
+    left join staff f on s.staff_id = f.id 
+    left join company_user c on f.id = c.user_id 
+   where o.create_time  between #{startTime} and  #{endTime} 
+   and  s.staff_id = #{staffId}
+    <if test="type == 3">
+    and o.type = 3  
+    </if>  
+     <if test="type == 4">
+    and o.type = 4  
+    </if>
+      </select>
+    <select id = "selectEditCount"  parameterType="map" resultType="java.lang.Integer">
+     select  count(*) from orderDetail o 
+      left join shop s on s.number = o.shop_number 
+    left join staff f on s.staff_id = f.id 
+    left join company_user c on f.id = c.user_id 
+    left join edit_price e on e.order_id = o.order_id
+    where o.create_time
+    between #{startTime} and  #{endTime}
+    and s.staff_id = #{staffId}
+    and e.price is not null
+    and e.state = 0 
+    </select>
+       <select id="selectOrderListByUser" parameterType="map" resultMap="BaseResultMap">
+  select o.id, o.order_id as order_id, shop_number, deal_time, good_name, count, good_detail, message,s.name as shopName, 
+    sell_price, buy_price, commission, remake, type, tb_id,o.create_time,e.price as editPrice ,  e.state as isEditPrice 
+    from orderDetail o 
+    left join shop s on s.number = o.shop_number 
+    left join staff f on s.staff_id = f.id 
+    left join company_user c on f.id = c.user_id 
+    left join edit_price e on o.order_id = e.order_id  where o.create_time
+    between #{startTime} and  #{endTime}
+     and s.staff_id = #{staffId}
+    <if test="orderType == -1">
+    and e.price = -1 
+    </if>
+       <if test="orderType == 1">
+    and e.price > 0
+    </if>
+        <if test="orderType == 3">
+    and o.type = 3
+    </if>
+        <if test="orderType == 4">
+    and o.type = 4
+    </if>
+  <if test="keyWord!=null and keyWord != ''">
+    and (  o.order_id like CONCAT('%',#{keyWord},'%') 
+      or  shop_number like CONCAT('%',#{keyWord},'%')   
+       or  good_name like CONCAT('%',#{keyWord},'%')   
+       or  good_detail like CONCAT('%',#{keyWord},'%') 
+        or  message like CONCAT('%',#{keyWord},'%')  
+          or  remake like CONCAT('%',#{keyWord},'%')
+           or  tb_id like CONCAT('%',#{keyWord},'%')
+        )
+    </if>
+     order by e.price desc
+    </select>
+</mapper>

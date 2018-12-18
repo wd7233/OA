@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.StaffMapper">
+  <resultMap id="BaseResultMap" type="rml.model.Staff">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Staff">
+    insert into staff (id, account, pwd, 
+      sex, name, telephone, 
+       create_time)
+    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+       #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Staff">
+    update staff
+    set account = #{account,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, account, pwd, sex, name, telephone, create_time
+    from staff
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, account, pwd, sex, name, telephone, create_time
+    from staff
+  </select>
+   <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+  <select id="selectByAccountAndPwd" resultMap="BaseResultMap">
+     select s.id, s.account, s.pwd, sex, name, s.telephone, s.create_time,
+     u.company_id as companyId,u.role as role,u.super_id as superId 
+    from staff s
+    left join company_user u on s.id =u.user_id
+    left join company c on c.id = u.company_id
+    where s.account = #{account} and s.pwd = #{pwd}
+  </select>
+  
+   <select id="selectByRole" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     select s.id, s.account, s.pwd, sex, name, s.telephone, s.create_time,
+     u.company_id as companyId,u.role as role,u.super_id as superId 
+    from staff s
+    left join company_user u on s.id =u.user_id
+    left join company c on c.id = u.company_id
+      where 1 = 1  and  c.id =  #{companyId,jdbcType=INTEGER} 
+      and 
+     <if test = "role == 0 or  role == 2">
+     u.role = 1 or u.role = 3
+     </if>
+      <if test = " role == 1 or  role == 3" >
+   	u.super_id = #{userId,jdbcType=INTEGER} or u.user_id = #{userId,jdbcType=INTEGER}
+   	 </if>
+     order by u.role , s.create_time 
+  </select>
+</mapper>

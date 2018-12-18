@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="rml.model.Goods">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goodsId" jdbcType="VARCHAR" property="goodsid" />
+    <result column="creat_time" jdbcType="DATE" property="creatTime" />
+    <result column="cnt" jdbcType="INTEGER" property="cnt" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="good_type" jdbcType="INTEGER" property="goodType" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Goods">
+    insert into goods (id, goodsId, creat_time, 
+      cnt, staff_id, good_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodsid,jdbcType=VARCHAR}, #{creatTime,jdbcType=DATE}, 
+      #{cnt,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{goodType,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Goods">
+    update goods
+    set goodsId = #{goodsid,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=DATE},
+      cnt = #{cnt,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=INTEGER},
+      good_type = #{goodType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, goodsId, creat_time, cnt, staff_id, good_type
+    from goods
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, goodsId, creat_time, cnt, staff_id, good_type
+    from goods
+  </select>
+    <!-- /**============================================================================
+  =====================
+  =====================
+  ==**/ -->
+  <select id="selectRandGoods" resultMap="BaseResultMap">
+  SELECT DISTINCT * 
+
+FROM `goods` AS t1 JOIN (
+
+SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `goods`)-(SELECT MIN(id) FROM `goods`))+(SELECT MIN(id) FROM `goods`)) AS id 
+
+FROM `goods`  LIMIT 2100) AS t2 ON t1.id=t2.id   WHERE t1.good_type = 1 or t1.good_type = 2 
+
+ORDER BY t1.id LIMIT 2000
+  </select>
+   <select id="seletcByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from goods
+    where good_type = #{goodType}
+  </select>
+  
+    <select id="seletcByGoodId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*)
+    from goods
+    where goodsId = #{goodId}
+  </select>
+     <select id="seletcByStaffId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from goods
+    where staff_id = #{staffId}
+  </select>
+</mapper>

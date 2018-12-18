@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.OrderPddIdMapper">
+  <resultMap id="BaseResultMap" type="rml.model.OrderPddId">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="pdd_id" jdbcType="VARCHAR" property="pddId" />
+    <result column="pdd_price" jdbcType="DOUBLE" property="pddPrice" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_pdd_id
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.OrderPddId">
+    insert into order_pdd_id (id, order_id, pdd_id, 
+      pdd_price, create_time)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{pddId,jdbcType=VARCHAR}, 
+      #{pddPrice,jdbcType=DOUBLE}, #{createTime,jdbcType=DATE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.OrderPddId">
+    update order_pdd_id
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      pdd_id = #{pddId,jdbcType=VARCHAR},
+      pdd_price = #{pddPrice,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, order_id, pdd_id, pdd_price, create_time
+    from order_pdd_id
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_id, pdd_id, pdd_price, create_time
+    from order_pdd_id
+  </select>
+    <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+    <select id="selectByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, order_id, pdd_id,  pdd_price,create_time
+    from order_pdd_id
+    where order_id = #{orderId}
+  </select>
+  
+</mapper>
