@@ -12,6 +12,17 @@ public class EditPrice {
     private Integer state;
 
     private Date createTime;
+    private Integer type;
+    
+    public Integer getType()
+    {
+        return type;
+    }
+
+    public void setType(Integer type)
+    {
+        this.type = type;
+    }
 
     public Integer getId() {
         return id;

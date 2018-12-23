@@ -103,7 +103,7 @@ td {
 #editPriceDiv {
 	z-index: 9999;
 	width: 300px;
-	height: 210px;
+	height: 260px;
 	background: #CFCFCF;
 	position: absolute;
 	left: 50%;
@@ -155,7 +155,23 @@ td {
              jQuery('#endDate').datepicker({
                 dateFormat: "yy-mm-dd"
             });
+            $("#startDate").datepicker('setDate',new Date(new Date().getTime() - 24*60*60*1000)); 
+            $("#endDate").datepicker('setDate',new Date());
+            $("#typeEditPrice").change(function()
+            		{
+            				if( $("#typeEditPrice").val() == 1)
+            				{
+            					$("#priceEditPrice").val('-1');
+            					$("#priceEditPrice").attr("disabled","disabled");
+            				}
+            				else
+            				{
+            					$("#priceEditPrice").val('');
+            					$("#priceEditPrice").removeAttr("disabled");
 
+            				}
+            		});
+	
         });
   function uploadTbId()
   {
@@ -195,6 +211,9 @@ td {
 	function displayDiv(cnt)
 	{
 		$("#editDiv").css("top",(275+(cnt-1)*52)+"px");
+		
+	    // 	$("#buyPriceDiv").val('');
+	     	
 			var orderId = $("#orderId"+cnt).html();
 			var sellPrice = $("#sellPrice"+cnt).html();
 			var buyPrice =$("#buyPrice"+cnt).html();
@@ -204,7 +223,7 @@ td {
 			var remake = $("#remake"+cnt).html();
 			$("#orderIdDiv").attr("value",orderId);
 			$("#sellPriceDiv").attr("value",sellPrice);
-			$("#buyPriceDiv").attr("value",buyPrice);
+			$("#buyPriceDiv").val(buyPrice);
 			$("#commissionDiv").attr("value",commission);
 			$("#tbIdDiv").attr("value",tbId);
 			$("#remakeDiv").attr("value",remake);
@@ -349,6 +368,7 @@ td {
 			data : {
 				orderId:$("#orderIdEditPrice").val(),
 				price : $("#priceEditPrice").val(),
+				type : $("#typeEditPrice").val()  
 			},
 			dataType : 'text',
 			async : false,
@@ -491,7 +511,17 @@ td {
 			<br />
 			<laber style="text-align:center;">商&nbsp;&nbsp;品&nbsp;&nbsp;涨&nbsp;&nbsp;价</laber>
 			<br /> <br /> 订单编号：<input style="width: 130px"
-				id="orderIdEditPrice" type="text" value="" /> <br /> <br /> 商品价格：<input
+				id="orderIdEditPrice" type="text" value="" /> <br /> 
+				 <br /> 类 &nbsp;&nbsp; 型&nbsp;&nbsp;：
+				<select
+				style="width: 130px; height: 25px;" class="select" id="typeEditPrice"
+				name="typeEditPrice">
+					<option value="0">商品涨价</option>
+					<option value="1">商品下架</option>
+					<option value="2">先退款，后涨价</option>
+			</select>
+				 <br />
+				<br /> 商品价格：<input
 				id="priceEditPrice" style="width: 130px" type="text" value="" /> <br />
 			<br /> <input type="button" style="width: 100px; height: 30px;"
 				value="保 存" onclick="editPrice()" /> &nbsp; &nbsp; &nbsp; &nbsp; <input
@@ -625,7 +655,15 @@ td {
 				<td id ="editPrice${status.index+1}">${order.editPrice}</td>
 				</c:if>
 				<c:if test="${order.isEditPrice ==0}" >
-				<td id ="editPrice${status.index+1}"  bgcolor="#FF34B3" >${order.editPrice}</td>
+					<c:if test="${order.editPriceType ==0}" >
+					 <td id ="editPrice${status.index+1}"  bgcolor="#FF34B3" >${order.editPrice}</td>
+					</c:if>
+					<c:if test="${order.editPriceType ==1}" >
+					 <td id ="editPrice${status.index+1}"  bgcolor="#8A2BE2" >下 架</td>
+					</c:if>
+					<c:if test="${order.editPriceType ==2}" >
+					 <td id ="editPrice${status.index+1}"  bgcolor="#8A2BE2" >${order.editPrice}</td>
+					</c:if>
 				</c:if>
 				<td id="remake${status.index+1}">${order.remake}</td>
 				<input type="hidden" value="${order.type}"

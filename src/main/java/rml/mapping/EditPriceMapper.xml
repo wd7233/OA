@@ -7,32 +7,34 @@
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from edit_price
+    delete from edit_price 
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="rml.model.EditPrice" >
     insert into edit_price (id, order_id, price, 
-      state, create_time)
+      state, create_time,type)
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{state,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
+      #{state,jdbcType=INTEGER},#{createTime,jdbcType=DATE}, #{type,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="rml.model.EditPrice" >
     update edit_price
     set order_id = #{orderId,jdbcType=VARCHAR},
       price = #{price,jdbcType=DOUBLE},
       state = #{state,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=DATE}
+      create_time = #{createTime,jdbcType=DATE},
+      type =  #{type,jdbcType=INTEGER} 
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, order_id, price, state, create_time
-    from edit_price
+    select id, order_id, price, state, create_time,type 
+    from edit_price 
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, order_id, price, state, create_time
+    select id, order_id, price, state, create_time,type 
     from edit_price
   </select>
      <!-- /**============================================================================
@@ -40,7 +42,7 @@
   =====================
   ==**/ -->
     <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, order_id, price, state, create_time
+    select id, order_id, price, state, create_time,type 
     from edit_price
     where order_id = #{order_id}
   </select>

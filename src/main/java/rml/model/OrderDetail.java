@@ -39,9 +39,19 @@ public class OrderDetail
     private Double editPrice;
     
     private Integer isEditPrice;
-    
+    private Integer editPriceType;
     private String staffName;
     
+    public Integer getEditPriceType()
+    {
+        return editPriceType;
+    }
+
+    public void setEditPriceType(Integer editPriceType)
+    {
+        this.editPriceType = editPriceType;
+    }
+
     public String getStaffName()
     {
         return staffName;

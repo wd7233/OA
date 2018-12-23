@@ -70,7 +70,8 @@ table tr:nth-child(odd) {
              jQuery('#endDate').datepicker({
                 dateFormat: "yy-mm-dd"
             });
-
+             $("#startDate").datepicker('setDate',new Date()); 
+             $("#endDate").datepicker('setDate',new Date());
         });
  function getLucre() {
 		$.ajax({

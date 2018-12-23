@@ -100,7 +100,7 @@
     </select>
      <select id="selectOrderList" parameterType="map" resultMap="BaseResultMap">
  	select o.id, o.order_id, shop_number, deal_time, good_name, count, good_detail, message, 
-    sell_price, buy_price, c.commission as commission, remake, type,e.price as editPrice ,  e.state as isEditPrice , tb_id,o.create_time,s.name as shopName,f.name as staffName 
+    sell_price, buy_price, c.commission as commission, remake, o.type,e.price as editPrice ,  e.state as isEditPrice ,  e.type as editPriceType , tb_id,o.create_time,s.name as shopName,f.name as staffName 
     from orderDetail  o 
     left join shop s on o.shop_number = s.number 
     left join staff f on f.id = s.staff_id 
@@ -182,7 +182,7 @@
     </select>
        <select id="selectOrderListByUser" parameterType="map" resultMap="BaseResultMap">
   select o.id, o.order_id as order_id, shop_number, deal_time, good_name, count, good_detail, message,s.name as shopName, 
-    sell_price, buy_price, commission, remake, type, tb_id,o.create_time,e.price as editPrice ,  e.state as isEditPrice 
+    sell_price, buy_price, commission, remake, o.type, tb_id,o.create_time,e.price as editPrice ,  e.type as editPriceType,  e.state as isEditPrice 
     from orderDetail o 
     left join shop s on s.number = o.shop_number 
     left join staff f on s.staff_id = f.id 

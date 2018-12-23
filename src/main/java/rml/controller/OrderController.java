@@ -88,6 +88,7 @@ public class OrderController
                     ep.setPrice(order.getBuyPrice()+5);
                     ep.setOrderId(order.getOrderId());
                     ep.setState(0);
+                    ep.setType(0);
                     editPriceService.insert(ep);
                 }
             }
@@ -105,6 +106,21 @@ public class OrderController
                     order.setTbId(opi.getPddId());
                     order.setType(2);
                     orderService.updateByPrimaryKey(order);
+                    if (order.getSellPrice() - order.getBuyPrice() < 5)
+                    {
+                        EditPrice ep = editPriceService.selectByOrderId(order.getOrderId());
+                        if (ep == null)
+                        {
+                            ep = new EditPrice();
+                            ep.setCreateTime(new Date());
+                            ep.setPrice(order.getBuyPrice()+5);
+                            ep.setOrderId(order.getOrderId());
+                            ep.setState(0);
+                            ep.setType(0);
+                            editPriceService.insert(ep);
+                        }
+                    }
+                    
                 }
                 
             }
@@ -268,7 +284,7 @@ public class OrderController
     // 商品涨价
     @RequestMapping(value = "/editPrice")
     @ResponseBody
-    public String editPrice(String orderId, Double price)
+    public String editPrice(String orderId, Double price,Integer type)
     {
         EditPrice ep = editPriceService.selectByOrderId(orderId.trim());
         if (ep == null)
@@ -278,11 +294,13 @@ public class OrderController
             ep.setOrderId(orderId.trim());
             ep.setPrice(price);
             ep.setState(0);
+            ep.setType(type);
             editPriceService.insert(ep);
         }
         else
         {
             ep.setPrice(price);
+            ep.setType(type);
             editPriceService.updateByPrimaryKey(ep);
         }
         
@@ -318,6 +336,7 @@ public class OrderController
     public String addPddOrder(String orderId, String buyId, Double price)
     {
         OrderPddId op = orderPddService.selectByOrderId(orderId);
+        
         if (op == null)
         {
             op = new OrderPddId();
@@ -400,11 +419,11 @@ public class OrderController
         Integer orderType = request.getParameter("orderType") == null ? 0 : Integer.parseInt(request.getParameter("orderType"));
         Integer staffId = request.getParameter("staffId") == null ? staff.getId() : Integer.parseInt(request.getParameter("staffId"));
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord");
-//        if (!StringUtils.isEmpty(keyWord))
-//        {
-//            startDate = "2018-01-01";
-//            endDate = "2021-12-31";
-//        }
+        if (!StringUtils.isEmpty(keyWord))
+        {
+            startDate = "2018-01-01";
+            endDate = "2021-12-31";
+        }
         Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
         Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
         List<OrderDetail> orderList = orderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderType);

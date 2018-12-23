@@ -50,8 +50,8 @@ public class LucreController
     {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
-        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
+        Date start = StringUtils.isEmpty(startDate) ? DateUtil.getStartTime() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
+        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getEndTime() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
         List<LucreModel> lucreList = new ArrayList<LucreModel>();
         Staff s = (Staff)request.getSession().getAttribute("user");
         List<Staff> staffList = staffService.selectByRole(s.getId(), s.getRole(),s.getCompanyId());

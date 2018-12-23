@@ -80,6 +80,8 @@ font
              jQuery('#endDate').datepicker({
                 dateFormat: "yy-mm-dd"
             });
+             $("#startDate").datepicker('setDate',new Date(new Date().getTime() - 24*60*60*1000)); 
+             $("#endDate").datepicker('setDate',new Date());
 
         });
   function editPrice(cnt)
@@ -194,7 +196,15 @@ font
 				<td id ="editPrice${status.index+1}">${order.editPrice}</td>
 				</c:if>
 				<c:if test="${order.isEditPrice ==0}" >
-				<td id ="editPrice${status.index+1}"  bgcolor="#FF34B3" onclick="editPrice(${status.index+1})">${order.editPrice}</td>
+					<c:if test="${order.editPriceType ==0}" >
+					 <td id ="editPrice${status.index+1}" onClick = "editPrice(${status.index+1})" bgcolor="#FF34B3" >${order.editPrice}</td>
+					</c:if>
+					<c:if test="${order.editPriceType ==1}" >
+					 <td id ="editPrice${status.index+1}"   onClick = "editPrice(${status.index+1})" bgcolor="#8A2BE2" >下 架</td>
+					</c:if>
+					<c:if test="${order.editPriceType ==2}" >
+					 <td id ="editPrice${status.index+1}"  onClick = "editPrice(${status.index+1})" bgcolor="#8A2BE2" >${order.editPrice}</td>
+					</c:if>
 				</c:if>
 				<td>${order.remake}</td>
 				</tr>
