@@ -59,6 +59,14 @@ public class FileController implements ServletContextAware
     public int importShop(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer goodType)
         throws IOException
     {
+
+
+        //测试提交
+
+
+
+
+
         writeFile(file.getInputStream(), "./" + new Date().getTime() + ".csv");
         List<Shop> shopList = new ArrayList<Shop>();
         BufferedReader reader = null;
