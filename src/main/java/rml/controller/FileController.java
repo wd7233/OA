@@ -51,7 +51,7 @@ public class FileController implements ServletContextAware
     @Override
     public void setServletContext(ServletContext servletContext)
     {
-        this.servletContext = servletContext;
+          this.servletContext = servletContext;
     }
     
     @RequestMapping(value = "/importShop")
