@@ -90,7 +90,19 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table> -->
-			<table schema="qicheng" tableName="card_info" domainObjectName="CardInfo"
+			<!--<table schema="qicheng" tableName="card_info" domainObjectName="CardInfo"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
+			<!--	<table schema="qicheng" tableName="special_order" domainObjectName="SpecialOrder"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
+				<!--	<table schema="qicheng" tableName="express" domainObjectName="Express"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
+			<table schema="qicheng" tableName="good_weight" domainObjectName="GoodWeight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>

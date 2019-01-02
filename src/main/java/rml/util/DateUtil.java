@@ -34,7 +34,10 @@ public class DateUtil
         Date strtodate = formatter.parse(strDate, pos);
         return strtodate;
     }
-    
+    public static void main(String[] args)
+    {
+       System.out.println( strToDateLong("2018/12/26 16:57","yyyy/MM/dd HH:mm"));
+    }
     /**
      * 获取当天的起始时间
      */

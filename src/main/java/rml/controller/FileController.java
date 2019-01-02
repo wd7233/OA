@@ -30,8 +30,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
+import rml.model.Express;
 import rml.model.Goods;
 import rml.model.Shop;
+import rml.service.ExpressServiceI;
 import rml.service.GoodServiceI;
 import rml.service.ShopServiceI;
 
@@ -48,10 +50,13 @@ public class FileController implements ServletContextAware
     @Autowired
     private ShopServiceI shopService;
     
+    @Autowired
+    private ExpressServiceI expressService;
+    
     @Override
     public void setServletContext(ServletContext servletContext)
     {
-          this.servletContext = servletContext;
+        this.servletContext = servletContext;
     }
     
     @RequestMapping(value = "/importShop")
@@ -59,14 +64,6 @@ public class FileController implements ServletContextAware
     public int importShop(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer goodType)
         throws IOException
     {
-
-
-        //测试提交
-
-
-
-
-
         writeFile(file.getInputStream(), "./" + new Date().getTime() + ".csv");
         List<Shop> shopList = new ArrayList<Shop>();
         BufferedReader reader = null;
@@ -174,6 +171,81 @@ public class FileController implements ServletContextAware
             }
         }
         return cnt;
+    }
+    
+    @RequestMapping(value = "/importExpress")
+    @ResponseBody
+    public int importExpress(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer expressType)
+        throws IOException
+    {
+        List<Express> epList = new ArrayList<Express>();
+        BufferedReader reader = null;
+        try
+        {
+            System.out.println(expressType);
+            System.out.println("以行为单位读取文件内容，一次读一整行：");
+            reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
+            String tempString = null;
+            String[] weight = null;
+            int line = 0;
+            // 一次读入一行，直到读入null为文件结束
+            while ((tempString = reader.readLine()) != null)
+            {
+                line++;
+                if (line == 1)
+                {
+                    weight = tempString.split(",");
+                    continue;
+                }
+                // 显示行号
+                // System.out.println("line " + line + ": " + tempString);
+                System.out.println(tempString);
+                String[] arr = tempString.split(",");
+                for (int i = 1; i < arr.length; i++)
+                {
+                    Express ep = new Express();
+                    ep.setProvince(arr[0]+"省");
+                    ep.setWeight(weight[i].substring(0, weight[i].length() - 2));
+                    ep.setPrice(arr[i]);
+                    ep.setState(0);
+                    ep.setType(expressType);
+                    epList.add(ep);
+                }
+                
+            }
+            reader.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException e1)
+                {
+                }
+            }
+        }
+        for (Express ep : epList)
+        {
+            Express expressDB = expressService.selectPrice(ep.getWeight(), ep.getProvince(),ep.getType());
+            if (expressDB == null &&  !StringUtils.isEmpty(ep.getProvince()))
+            {
+                expressService.insert(ep);
+            }
+            else if(!StringUtils.isEmpty(ep.getProvince()))
+            {
+                ep.setId(expressDB.getId());
+                expressService.updateByPrimaryKey(ep);
+            }
+        }
+        return epList.size();
     }
     
     private List<String> importTb(InputStream is)

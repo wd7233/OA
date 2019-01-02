@@ -114,6 +114,23 @@ td{
 			}
 		})
 	}
+	function uploadExpress() {
+		var form = document.getElementById('upload'),
+			formData = new FormData(form);
+		$.ajax({
+			url : "<%=path%>/fileController/importExpress.do",
+			type : "post",
+			data : formData,
+			processData : false,
+			contentType : false,
+			success : function(res) {
+				alert('导入成功' + res + '条数据');
+			},
+			error : function(err) {
+				alert("格式错误，请重新编辑~", err);
+			}
+		})
+	}
 </script>
 <body>
 <form  id="upload" enctype="multipart/form-data" method="post" action="<%=path%>/loginController/getShop.do">
@@ -132,6 +149,17 @@ td{
 				 <input type="button"
 				 value="店铺导入"
 				onclick="uploadShop()" />
+					&nbsp;&nbsp;&nbsp;&nbsp;
+				 快递公司：	<select class = "select" id="expressType"  name="expressType">
+							<option value = "0">百世</option>
+							<option value = "1">邮政</option>
+							<option value = "2">申通</option>
+							<option value = "3">圆通</option>
+					</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+				 <input type="button"
+				 value="快递计费导入"
+				onclick="uploadExpress()" />
 				&nbsp;&nbsp;&nbsp;&nbsp;
 					商品类型 ：<select style="width: 150px; height: 30px;" class = "select" id="goodType"  name="goodType">
 						<c:forEach items="${goodTypeList}" var="goodType">

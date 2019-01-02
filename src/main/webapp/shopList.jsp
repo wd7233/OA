@@ -1,3 +1,4 @@
+<!-- 客服 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -86,12 +87,15 @@ td{
 <body>
 	<center>
 	<form method="post" action="<%=path%>/loginController/getShop.do">
+	<br/>
 	 商品类型 ：<select style="width: 150px; height: 30px;" class = "select" id="goodType"  name="goodType">
 						<c:forEach items="${goodTypeList}" var="goodType">
 						<option value="${goodType.id}">${goodType.type}</option>
 						</c:forEach>
 					</select>
 		<button style="width: 200px; height: 30px;" onclick="exportGoods()">获取商品</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button  onclick="window.open('<%=path%>/specialorderController/getSpecialorder.do')" style="width: 200px; height: 50px;">单品订单</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="window.open('<%=path%>/loginController/loadShops.do')" style="width: 200px; height: 50px;">淘单单接入</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -100,7 +104,6 @@ td{
 		<button  onclick="window.open('<%=path%>/orderController/getOrderListByUser.do')" style="width: 200px; height: 50px;">订单查询</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button  onclick="window.open('<%=path%>/shopController/getCardInfo.do')" style="width: 200px; height: 50px;">卡号详情</button>
-		
 		<br/><br/>
 			 关 键 字： <input id="keyWord" type="text" name="keyWord" /> &nbsp;&nbsp;&nbsp;&nbsp;
 			 &nbsp;&nbsp;&nbsp;&nbsp; 
