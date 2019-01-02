@@ -204,8 +204,48 @@ public class FileController implements ServletContextAware
                 for (int i = 1; i < arr.length; i++)
                 {
                     Express ep = new Express();
-                    ep.setProvince(arr[0]+"省");
-                    ep.setWeight(weight[i].substring(0, weight[i].length() - 2));
+                    if("内蒙".equals(arr[0]) || "内蒙古".equals(arr[0]) ) 
+                    {
+                        ep.setProvince("内蒙古自治区");
+                    }
+                    else if("广西".equals(arr[0]) )
+                    {
+                        ep.setProvince("广西壮族自治区");
+                    }
+                    else if("新疆".equals(arr[0]) )
+                    {
+                        ep.setProvince("新疆维吾尔自治区");
+                    }
+                    else if("西藏".equals(arr[0]) )
+                    {
+                        ep.setProvince("西藏自治区");
+                    }
+                    else if("宁夏".equals(arr[0]) )
+                    {
+                        ep.setProvince("宁夏回族自治区");
+                    }
+                    else if("北京".equals(arr[0]) )
+                    {
+                        ep.setProvince("北京市");
+                    }
+                    else if("上海".equals(arr[0]) )
+                    {
+                        ep.setProvince("上海市");
+                    }
+                    else if("天津".equals(arr[0]) )
+                    {
+                        ep.setProvince("天津市");
+                    }
+                    else if("重庆".equals(arr[0]) )
+                    {
+                        ep.setProvince("重庆市");
+                    }
+                    
+                    else 
+                    {
+                        ep.setProvince(arr[0]+"省");
+                    }
+                    ep.setWeight(weight[i].replaceAll("KG", "").replaceAll("Kg", "").replaceAll("kg", ""));
                     ep.setPrice(arr[i]);
                     ep.setState(0);
                     ep.setType(expressType);

@@ -154,7 +154,7 @@ td{
 							<option value = "0">百世</option>
 							<option value = "1">邮政</option>
 							<option value = "2">申通</option>
-							<option value = "3">圆通</option>
+							<option value = "3">安能</option>
 					</select>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 				 <input type="button"

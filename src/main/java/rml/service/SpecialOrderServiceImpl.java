@@ -50,7 +50,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
     }
 
     @Override
-    public List<SpecialOrder> selectOrderListByUser(Date startTime, Date endTime, Integer staffId, String keyWord, String orderState)
+    public List<SpecialOrder> selectOrderListByUser(Date startTime, Date endTime, Integer staffId, String keyWord, String orderState,String afterState)
     {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("startTime", startTime);
@@ -58,6 +58,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
         map.put("staffId", staffId);
         map.put("orderState", orderState);
         map.put("keyWord", keyWord);
+        map.put("afterState", afterState);
         return specialOrderMapper.selectOrderListByUser(map);
     }
 

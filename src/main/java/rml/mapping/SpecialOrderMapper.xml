@@ -104,17 +104,22 @@
 		o.telephone, province,
 		city, area, street, o.remakes, o.message, o.create_time, promise_send_time,
 		o.state, o.courier_number,
-		o.courier_company, o.after_state, deliver_time, invoice , s.name as shopName , g.good_name as goodName 
+		o.courier_company, o.after_state, deliver_time, invoice , s.name as shopName , g.good_name as goodName,  
+		w.weight as weight , w.good_sku as size 
 		from special_order o
 		left join good_number g on o.good_number = g.good_number
 		left join shop s on s.number = g.shop_number
 		left join staff f on s.staff_id = f.id
 		left join company_user c on f.id = c.user_id
+		left join good_weight w on  w.good_sku = getNum(o.sku)  
 		where o.create_time
 		between #{startTime} and #{endTime}
 		and s.staff_id = #{staffId} 
 		<if test="orderState !=null and orderState != ''">
 			and o.state = #{orderState}
+		</if>
+		<if test="afterState !=null and afterState != ''">
+			and o.after_state = #{afterState}
 		</if>
 		<if test="keyWord!=null and keyWord != ''">
 			and ( o.order_id like CONCAT('%',#{keyWord},'%')

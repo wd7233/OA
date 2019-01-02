@@ -265,6 +265,40 @@ font {
 		});
 	  
   }
+  var falg = true;
+  function sendDetail(cnt)
+  {
+	  
+	  if(falg)
+	  {
+	    $('table tr').find('td:eq(6)').hide();
+	    $('table tr').find('td:eq(9)').hide();
+	    $('table tr').find('td:eq(10)').hide();
+	    $('table tr').find('td:eq(11)').hide();
+	    $('table tr').find('td:eq(12)').hide();
+	    $('table tr').find('td:eq(13)').hide();
+	    $('table tr').find('td:eq(14)').hide();
+	    $('table tr').find('td:eq(17)').hide();
+	    $('table tr:even').show();
+        falg=false;
+	   }
+	  else
+	  {
+		  $('table tr').find('td:eq(6)').show();
+		    $('table tr').find('td:eq(9)').show();
+		    $('table tr').find('td:eq(10)').show();
+		    $('table tr').find('td:eq(11)').show();
+		    $('table tr').find('td:eq(12)').show();
+		    $('table tr').find('td:eq(13)').show();
+		    $('table tr').find('td:eq(14)').show();
+		    $('table tr').find('td:eq(17)').show();
+		    $('table tr:even').hide();
+		    $('table tr:eq(0)').show();
+	        falg=true;
+
+	  }
+	  //  $("#orderMesg").show();
+  }
   function cancel()
   {
 	  $("#detailDiv").hide();
@@ -355,19 +389,21 @@ font {
 	<center>
 		<form id="upload" enctype="multipart/form-data" method="post"
 			action="<%=path%>/specialorderController/getSendSpecialorder.do">
-			<input type = "hidden" id = "changeEdit" value = ""/>
-			关 键 字 ： <input id="keyWord" type="text" name="keyWord" />&nbsp;&nbsp;
-			&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <input
+			<input type="hidden" id="changeEdit" value="" /> 关 键 字 ： <input
+				id="keyWord" type="text" name="keyWord" />&nbsp;&nbsp; &nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <input
 				type="submit" style="width: 100px; height: 30px;" value="查询" />
 		</form>
 		<br />
-		<table border="1" width="100% ">
+		<button onclick="sendDetail()" style="width:160px; height: 40px;"><font  style="letter-spacing:10pt;font-size: 20px;">发货一览</font></button>
+		<br /> <br />
+		<table border="1" width="100% " id="tabDe">
 			<tr height="60px" bgcolor="#D2691E">
 				<td style="text-align: center; width: 8px;">序号</td>
-				<td style="text-align: center; width: 50px;">订单编号</td>
+				<td id="orderIdF" style="text-align: center; width: 50px;">订单编号</td>
 				<td style="text-align: center; width: 20px;">商品名稱</td>
-				<td style="text-align: center; width: 50px;">商品颜色</td>
 				<td style="text-align: center; width: 50px;">商品規格</td>
+				<td style="text-align: center; width: 50px;">商品颜色</td>
 				<td style="text-align: center; width: 30px;">备 注</td>
 				<td style="text-align: center; width: 30px;">售 后</td>
 				<td style="text-align: center; width: 10px;">买家留言</td>
@@ -384,7 +420,7 @@ font {
 			</tr>
 			<c:forEach items="${orderList}" var="order" varStatus="status">
 				<c:if test="${ order.courierNumber == ''}">
-					<tr id="tabColor${status.index+1 }" height="50px" bgcolor="YELLOW"
+					<tr id="tabColor${status.index+1 }" height="50px" bgcolor="#FFFACD"
 						onclick="detail(${status.index+1})">
 				</c:if>
 				<c:if test="${order.courierNumber != '' }">
@@ -394,12 +430,12 @@ font {
 				<td style="text-align: center;">${status.index+1 }</td>
 				<td style="width: 100px;" id="orderId${status.index+1}">${order.orderId}</td>
 				<td>${order.goodName}</td>
-				<td>${order.color}</td>
-				<td>${order.sku}</td>
-				<td>${order.remakes}</td>
+				<td><font style="font-size: 20px;color: black"><b>${order.sku}</b></font></td>
+				<td><font style="font-size: 20px;color: black"><b>${order.color}</b></font></td>
+				<td  style="width: 100px;" ><font style="font-size: 20px;color: black"><b>${order.remakes}</b></font></td>
 				<td>${order.afterState}</td>
-				<td style="text-align: center;">${order.message}</td>
-				<td>${order.count}</td>
+				<td style="text-align: center;"><b>${order.message}</b></td>
+				<td><font style="font-size: 20px;color: black">${order.count}</font></td>
 				<td>${order.consignee}</td>
 				<td>${order.telephone}</td>
 				<td>${order.province}</td>
@@ -414,6 +450,25 @@ font {
 						style="width: 60px; height: 30px;"
 						onclick="showEditDiv(${status.index+1})">发 货</button>
 				</td>
+				</tr>
+				<tr id="orderMesg" height="60px" bgcolor="#FFE1FF" id="orderMesg"
+					style="display: none;">
+					<td style="text-align: center; " colspan="5">
+						<font style="font-size: 20px;color: black"><b>
+						${order.consignee}&nbsp;&nbsp; ${order.telephone} &nbsp;&nbsp;   
+						${order.province}${order.city}${order.area}${order.street}&nbsp;&nbsp;</b>
+						</font>
+					</td>
+					<td style="text-align: center; " colspan="4">
+					净重：<font style="color: red">${order.weight}</font>KG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					百世：<font style="color: red">${order.baishiPrice}</font>&nbsp;&nbsp; 
+					邮政：<font style="color: red">${order.youzhengPrice}</font> &nbsp;&nbsp;
+					申通：<font style="color: red">${order.shengtongPrice}</font>&nbsp;&nbsp;
+					安能： <font style="color: red">${order.annengPrice}</font>
+					</td>
+				    <td style="text-align: center; " colspan="">
+					<font style="font-size: 30px;color: black"><b>${order.expressPrice}</b></font></td>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
