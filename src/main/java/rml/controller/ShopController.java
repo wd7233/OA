@@ -20,15 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 
-import rml.model.CardInfo;
-import rml.model.GoodType;
-import rml.model.OrderDetail;
-import rml.model.Shop;
-import rml.model.Staff;
-import rml.service.CardInfoServiceI;
-import rml.service.OrderServiceI;
-import rml.service.ShopServiceI;
-import rml.service.StaffServiceI;
+import rml.model.*;
+import rml.service.*;
 import rml.util.DateUtil;
 import rml.util.FileUtil;
 
@@ -48,6 +41,9 @@ public class ShopController
     
     @Autowired
     private CardInfoServiceI cardInfoService;
+
+    @Autowired
+    private WithdrawService withdrawService;
     
     @RequestMapping(value = "/getShopList")
     public String getShopList(HttpServletRequest request)
@@ -113,5 +109,20 @@ public class ShopController
         list = cardInfoService.selectByUserId(staffId);
         request.setAttribute("cardlist", list);
         return "shopCardInfoList";
+    }
+
+    @RequestMapping(value = "/saveAmount")
+    @ResponseBody
+    public String saveAmount(HttpServletRequest request,Double amount,String shopNumber) {
+        Staff s = (Staff)request.getSession().getAttribute("user");
+        Withdraw withdraw = new Withdraw();
+        withdraw.setStaffId(s.getId());
+        withdraw.setAmount(amount);
+        withdraw.setShopNumber(shopNumber);
+        Integer result = withdrawService.save(withdraw);
+        if (result.intValue() > 0){
+            return "SUCCESS";
+        }
+        return "ERROR";
     }
 }

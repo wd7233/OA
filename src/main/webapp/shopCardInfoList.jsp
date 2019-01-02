@@ -51,6 +51,22 @@ td{
 	white-space:nowrap;
 	width:100%;
 }
+#addDiv {
+	z-index: 9999;
+	width:200px;
+	height: 100px;
+	background: #ADD8E6;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -100px;
+	margin-top: -100px;
+	border: 1px solid;
+	display: none;
+}
+
+
+
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -58,20 +74,66 @@ td{
 <link rel="icon" href="./image/log.png" type="image/x-icon" />
 </head>
 <script>
+
+	function addAmount(shopNumber){
+		$("#addDiv").show();
+		$("#shopNumber").val(shopNumber);
+	}
+
+	function save() {
+		var amount = $("#amount").val();
+		var reg = /^[1-9]\d*00$/;
+		if (!amount.match(reg)){
+			alert("必须填写100的整数倍");
+			return;
+		}
+		var shopNumber = $("#shopNumber").val();
+		$.ajax({
+			type: "POST",
+			url: "<%=path%>/shopController/saveAmount.do",
+			data : {
+				amount:amount,
+				shopNumber:shopNumber
+			},
+			dataType : 'text',
+			async : false,
+			success : function(data) {
+				alert('保存成功');
+				$("#addDiv").hide();
+				$("#amount").val("");
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("error ：" + textStatus);
+			}
+		});
+	}
+	
+	function closeDiv() {
+		$("#amount").val("");
+		$("#addDiv").hide();
+	}
 </script>
 <body>
 	<center>
-	<form method="post" action="<%=path%>/shopController/getShop.do">
+		<div id="addDiv">
+				<br /> 提现金额 ： <input id="amount" type="text" value="" name="amount"  style="width: 80px"/>
+			<input type="hidden" value="" id="shopNumber">
+			<br /><br /><button onclick="save()"  style="width: 50px;height: 25px">保 存</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button onclick="closeDiv()"  style="width: 50px;height: 25px">取 消</button>
+		</div>
+
 
 		<table style="text-align: center" border="1" width="70%">
 			<tr height="60px">
 				<td  style=" width:20px ">Id</td>
-				<td>店铺名稱</td>
+				<td>店铺名称</td>
 				<td>开户人</td>
 				<td>卡号</td>
 				<td>身份证</td>
 				<td>开户地址</td>
 				<td>联系方式</td>
+				<td>操作</td>sh
 			</tr>
 			<c:forEach items="${cardlist}" var="card" varStatus="status">
 				<tr height="50px">
@@ -82,6 +144,7 @@ td{
 					<td>${card.userNo }</td>
 					<td>${card.cardLocation }</td>
 					<td>${card.cardPhone }</td>
+					<td><button onclick="addAmount('${card.shopNumber }')">提 现</button></td>
 				</tr>
 			</c:forEach>
 		</table>
