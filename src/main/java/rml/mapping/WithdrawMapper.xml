@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.WithdrawMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.Withdraw" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_number" property="shopNumber" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="is_withdraw" property="isWithdraw" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from withdraw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Withdraw" >
+    insert into withdraw (id, shop_number, staff_id, 
+      amount, is_withdraw, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{shopNumber,jdbcType=VARCHAR}, #{staffId,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DOUBLE}, #{isWithdraw,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Withdraw" >
+    update withdraw
+    set shop_number = #{shopNumber,jdbcType=VARCHAR},
+      staff_id = #{staffId,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE},
+      is_withdraw = #{isWithdraw,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, shop_number, staff_id, amount, is_withdraw, create_time, update_time
+    from withdraw
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, shop_number, staff_id, amount, is_withdraw, create_time, update_time
+    from withdraw
+  </select>
+</mapper>
