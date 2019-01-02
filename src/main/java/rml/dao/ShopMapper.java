@@ -26,5 +26,5 @@ public interface ShopMapper {
    List<Shop> selectByKeyword(Map<String,Object> paramMap);
    Shop selectByAccount(String account);
 
-    
+    List<String> selectShopNumByStaff(String name);
 }

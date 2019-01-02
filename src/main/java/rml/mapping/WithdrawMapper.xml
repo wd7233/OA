@@ -41,4 +41,35 @@
     select id, shop_number, staff_id, amount, is_withdraw, create_time, update_time
     from withdraw
   </select>
+
+  <!-- /**============
+  =====================
+  =====================
+  ==**/ -->
+
+  <update id="updateByShopNumber"  parameterType="java.lang.String">
+      update withdraw
+      set
+       is_withdraw = 1,update_time = sysdate()
+      where shop_number =#{shopNumber}
+  </update>
+
+  <select id="selectAmountSum" parameterType="java.lang.String" resultType="java.lang.Double">
+    SELECT SUM(w.amount)
+      FROM withdraw w
+      LEFT JOIN shop s ON s.number = w.shop_number
+      WHERE s.user_name = #{userName}
+      AND w.is_withdraw = 0
+      GROUP BY(s.user_name)
+  </select>
+
+  <select id="listWithdrawName" parameterType="java.lang.String" resultType="rml.model.WithdrawName">
+    SELECT w.shop_number AS shopNumber,w.amount,w.is_withdraw AS isWithdraw,w.create_time AS createTime,
+      w.update_time AS updateTime,s.name AS shopName,st.name AS staffName
+      FROM
+      withdraw w
+      LEFT JOIN shop s ON w.shop_number = s.number
+      LEFT JOIN staff st ON w.staff_id = st.id
+      WHERE s.user_name = #{userName}
+  </select>
 </mapper>

@@ -143,6 +143,8 @@ td{
 		<button  onclick="window.open('<%=path%>/orderController/getOrderList.do')" >订单查询</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="window.open('<%=path%>/lucreController/getOrderStaff.do')" >利润统计</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onclick="window.open('<%=path%>/amountController/getAmountList.do')" >提现汇总</button>
 		<br/>
 		<br/>
  				<input type="file" name="file"id="pic" />

@@ -58,4 +58,14 @@
     and f.id = #{userId,jdbcType=INTEGER }
      order by cardno desc
   </select>
+
+  <select id="selectAllSum" resultType="rml.model.CardAmountInfo">
+    SELECT c.name,c.cardno,c.user_no AS userNo,c.card_location AS cardLocation,
+      c.card_phone AS cardPhone,w.is_withdraw AS isWithdraw
+    FROM withdraw w
+    LEFT JOIN shop s ON s.number = w.shop_number
+    LEFT JOIN card_info c ON c.name = s.user_name
+    GROUP BY(c.cardno)
+  </select>
+
 </mapper>

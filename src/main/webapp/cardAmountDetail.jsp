@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
     String path = request.getContextPath();
 			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -28,21 +29,18 @@
 	left: 50%;
 }
 
-table tr:nth-child(odd) {
-	background: #ccc;
-}
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all; 
-	word-wrap: break-word; 
+	word-break: break-all;
+	word-wrap: break-word;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -75,43 +73,6 @@ td{
 </head>
 <script>
 
-	function addAmount(shopNumber){
-		$("#addDiv").show();
-		$("#shopNumber").val(shopNumber);
-	}
-
-	function save() {
-		var amount = $("#amount").val();
-		var reg = /^[1-9]\d*00$/;
-		if (!amount.match(reg)){
-			alert("必须填写100的整数倍");
-			return;
-		}
-		var shopNumber = $("#shopNumber").val();
-		$.ajax({
-			type: "POST",
-			url: "<%=path%>/shopController/saveAmount.do",
-			data : {
-				amount:amount,
-				shopNumber:shopNumber
-			},
-			dataType : 'text',
-			async : false,
-			success : function(data) {
-				alert('保存成功');
-				$("#addDiv").hide();
-				$("#amount").val("");
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert("error ：" + textStatus);
-			}
-		});
-	}
-	
-	function closeDiv() {
-		$("#amount").val("");
-		$("#addDiv").hide();
-	}
 </script>
 <body>
 	<center>
@@ -125,26 +86,30 @@ td{
 
 
 		<table style="text-align: center" border="1" width="70%">
-			<tr height="60px">
+			<tr bgcolor="#B22222" height="60px">
 				<td  style=" width:20px ">Id</td>
+				<td>店铺编号</td>
 				<td>店铺名称</td>
-				<td>开户人</td>
-				<td>卡号</td>
-				<td>身份证</td>
-				<td>开户地址</td>
-				<td>联系方式</td>
-				<td>操作</td>
+				<td>负责人</td>
+				<td>金额</td>
+				<td>录入时间</td>
+				<td>是否提取</td>
+				<td>提取时间</td>
 			</tr>
-			<c:forEach items="${cardlist}" var="card" varStatus="status">
-				<tr height="50px">
+			<c:forEach items="${withdrawNameList}" var="withdrawName" varStatus="status">
+				<c:if test="${ withdrawName.isWithdraw ==0 }">
+				<tr bgcolor = "#FFEC8B" height="50px"></c:if>
+				<c:if test="${ withdrawName.isWithdraw ==1 }">
+					<tr bgcolor = "#C1FFC1" height="50px"></c:if>
 					<td>${status.index+1 }</td>
-					<td><label>${card.shopName}</label></td>
-					<td>${card.name }</td>
-					<td>${card.cardno }</td>
-					<td>${card.userNo }</td>
-					<td>${card.cardLocation }</td>
-					<td>${card.cardPhone }</td>
-					<td><button onclick="addAmount('${card.shopNumber }')">提 现</button></td>
+					<td>${withdrawName.shopNumber}</td>
+					<td>${withdrawName.shopName}</td>
+					<td>${withdrawName.staffName}</td>
+					<td>${withdrawName.amount}</td>
+					<td><fmt:formatDate value="${withdrawName.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+					<td><c:if test="${ withdrawName.isWithdraw ==0 }">未提取</c:if>
+						<c:if test="${ withdrawName.isWithdraw ==1 }">已提取</c:if></td>
+					<td><c:if test="${ withdrawName.isWithdraw ==1 }"><fmt:formatDate value="${withdrawName.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></c:if></td>
 				</tr>
 			</c:forEach>
 		</table>
