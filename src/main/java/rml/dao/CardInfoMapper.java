@@ -1,6 +1,8 @@
 package rml.dao;
 
 import java.util.List;
+
+import rml.model.CardAmountInfo;
 import rml.model.CardInfo;
 
 public interface CardInfoMapper {
@@ -15,4 +17,6 @@ public interface CardInfoMapper {
     int updateByPrimaryKey(CardInfo record);
     
     List<CardInfo> selectByUserId(Integer userId);
+
+    List<CardAmountInfo> selectAllSum();
 }

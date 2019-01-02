@@ -37,12 +37,12 @@ table {
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all; 
-	word-wrap: break-word; 
+	word-break: break-all;
+	word-wrap: break-word;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -75,43 +75,36 @@ td{
 </head>
 <script>
 
-	function addAmount(shopNumber){
-		$("#addDiv").show();
-		$("#shopNumber").val(shopNumber);
+	function getAmount(name,id){
+		if(confirm('确定要设置为已提取吗？')){
+			$.ajax({
+				type: "POST",
+				url: "<%=path%>/amountController/setWithdraw.do",
+				data : {
+					name:name
+				},
+				dataType : 'text',
+				async : false,
+				success : function(data) {
+					alert('设置成功');
+					$("#amount"+id).html("");
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("error ：" + textStatus);
+				}
+			});
+
+			return true;
+		}else{
+			return false;
+		}
 	}
 
-	function save() {
-		var amount = $("#amount").val();
-		var reg = /^[1-9]\d*00$/;
-		if (!amount.match(reg)){
-			alert("必须填写100的整数倍");
-			return;
-		}
-		var shopNumber = $("#shopNumber").val();
-		$.ajax({
-			type: "POST",
-			url: "<%=path%>/shopController/saveAmount.do",
-			data : {
-				amount:amount,
-				shopNumber:shopNumber
-			},
-			dataType : 'text',
-			async : false,
-			success : function(data) {
-				alert('保存成功');
-				$("#addDiv").hide();
-				$("#amount").val("");
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert("error ：" + textStatus);
-			}
-		});
+	function userNoList(name){
+		name=encodeURI(encodeURI(name))
+		window.open('<%=path%>/amountController/userNoList.do?userName='+name);
 	}
-	
-	function closeDiv() {
-		$("#amount").val("");
-		$("#addDiv").hide();
-	}
+
 </script>
 <body>
 	<center>
@@ -127,24 +120,25 @@ td{
 		<table style="text-align: center" border="1" width="70%">
 			<tr height="60px">
 				<td  style=" width:20px ">Id</td>
-				<td>店铺名称</td>
-				<td>开户人</td>
+				<td>姓名</td>
+				<td>开户行</td>
 				<td>卡号</td>
-				<td>身份证</td>
-				<td>开户地址</td>
-				<td>联系方式</td>
+				<td>预留手机号</td>
+				<td>密码</td>
+				<td>未提现金额</td>
 				<td>操作</td>
 			</tr>
-			<c:forEach items="${cardlist}" var="card" varStatus="status">
+			<c:forEach items="${cardAmountList}" var="cardAmount" varStatus="status">
 				<tr height="50px">
 					<td>${status.index+1 }</td>
-					<td><label>${card.shopName}</label></td>
-					<td>${card.name }</td>
-					<td>${card.cardno }</td>
-					<td>${card.userNo }</td>
-					<td>${card.cardLocation }</td>
-					<td>${card.cardPhone }</td>
-					<td><button onclick="addAmount('${card.shopNumber }')">提 现</button></td>
+					<td>${cardAmount.name}</td>
+					<td>${cardAmount.cardLocation}</td>
+					<td>${cardAmount.cardno}</td>
+					<td>${cardAmount.cardPhone}</td>
+					<td>${cardAmount.cardPwd}</td>
+					<td id="amount${status.index+1 }">${cardAmount.amount}</td>
+					<td><button onclick="getAmount('${cardAmount.name}','${status.index+1}')">提取标记</button>
+						<button onclick="userNoList('${cardAmount.name}')">详 情</button></td>
 				</tr>
 			</c:forEach>
 		</table>

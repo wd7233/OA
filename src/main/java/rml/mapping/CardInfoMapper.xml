@@ -50,7 +50,7 @@
   
    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select s.name as shopName, s.user_name as name, c.cardno as cardno,c.user_no,
-    c.card_location,c.card_phone,c.card_pwd 
+    c.card_location,c.card_phone,c.card_pwd,s.number as shopNumber
     from shop s
     left join staff f on f.id = s.staff_id 
     left join card_info c on c.name = s.user_name 
@@ -58,4 +58,14 @@
     and f.id = #{userId,jdbcType=INTEGER }
      order by cardno desc
   </select>
+
+  <select id="selectAllSum" resultType="rml.model.CardAmountInfo">
+    SELECT c.name,c.cardno,c.user_no AS userNo,c.card_location AS cardLocation,
+      c.card_phone AS cardPhone,w.is_withdraw AS isWithdraw
+    FROM withdraw w
+    LEFT JOIN shop s ON s.number = w.shop_number
+    LEFT JOIN card_info c ON c.name = s.user_name
+    GROUP BY(c.cardno)
+  </select>
+
 </mapper>

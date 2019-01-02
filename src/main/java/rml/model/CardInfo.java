@@ -17,7 +17,17 @@ public class CardInfo
     private String cardPwd;
     
     private String shopName;
-    
+
+    private String shopNumber;
+
+    public String getShopNumber() {
+        return shopNumber;
+    }
+
+    public void setShopNumber(String shopNumber) {
+        this.shopNumber = shopNumber;
+    }
+
     public String getShopName()
     {
         return shopName;

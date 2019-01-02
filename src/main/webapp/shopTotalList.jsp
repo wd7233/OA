@@ -143,6 +143,8 @@ td{
 		<button  onclick="window.open('<%=path%>/orderController/getOrderList.do')" >订单查询</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="window.open('<%=path%>/lucreController/getOrderStaff.do')" >利润统计</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onclick="window.open('<%=path%>/amountController/getAmountList.do')" >提现汇总</button>
 		<br/>
 		<br/>
  				<input type="file" name="file"id="pic" />
@@ -154,7 +156,7 @@ td{
 							<option value = "0">百世</option>
 							<option value = "1">邮政</option>
 							<option value = "2">申通</option>
-							<option value = "3">安能</option>
+							<option value = "3">圆通</option>
 					</select>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 				 <input type="button"

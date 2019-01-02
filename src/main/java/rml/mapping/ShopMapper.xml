@@ -110,4 +110,10 @@
     </if>
      order by goodsnum desc
   </select>
+
+    <select id="selectShopNumByStaff" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT s.number FROM
+        shop s LEFT JOIN card_info c ON s.user_name = c.name
+        WHERE c.name = #{name}
+    </select>
 </mapper>
