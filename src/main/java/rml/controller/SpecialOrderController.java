@@ -104,6 +104,7 @@ public class SpecialOrderController
             {
                 order.setId(orderDB.getId());
                 order.setTelephone(orderDB.getTelephone());
+                specialOsrderService.updateByPrimaryKey(order);
             }
         }
         return orderList.size();
