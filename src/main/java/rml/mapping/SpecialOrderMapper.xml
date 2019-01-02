@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.SpecialOrderMapper">
+  <resultMap id="BaseResultMap" type="rml.model.SpecialOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="good_number" jdbcType="VARCHAR" property="goodNumber" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="remakes" jdbcType="VARCHAR" property="remakes" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="promise_send_time" jdbcType="TIMESTAMP" property="promiseSendTime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="courier_number" jdbcType="VARCHAR" property="courierNumber" />
+    <result column="courier_company" jdbcType="VARCHAR" property="courierCompany" />
+    <result column="after_state" jdbcType="VARCHAR" property="afterState" />
+    <result column="deliver_time" jdbcType="TIMESTAMP" property="deliverTime" />
+    <result column="invoice" jdbcType="VARCHAR" property="invoice" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from special_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.SpecialOrder">
+    insert into special_order (id, order_id, good_number, 
+      color, sku, count, 
+      price, consignee, telephone, 
+      province, city, area, 
+      street, remakes, message, 
+      create_time, promise_send_time, state, 
+      courier_number, courier_company, after_state, 
+      deliver_time, invoice)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{goodNumber,jdbcType=VARCHAR}, 
+      #{color,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+      #{price,jdbcType=DOUBLE}, #{consignee,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{street,jdbcType=VARCHAR}, #{remakes,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{promiseSendTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, 
+      #{courierNumber,jdbcType=VARCHAR}, #{courierCompany,jdbcType=VARCHAR}, #{afterState,jdbcType=VARCHAR}, 
+      #{deliverTime,jdbcType=TIMESTAMP}, #{invoice,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.SpecialOrder">
+    update special_order
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      good_number = #{goodNumber,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
+      sku = #{sku,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      street = #{street,jdbcType=VARCHAR},
+      remakes = #{remakes,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      promise_send_time = #{promiseSendTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      courier_number = #{courierNumber,jdbcType=VARCHAR},
+      courier_company = #{courierCompany,jdbcType=VARCHAR},
+      after_state = #{afterState,jdbcType=VARCHAR},
+      deliver_time = #{deliverTime,jdbcType=TIMESTAMP},
+      invoice = #{invoice,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, order_id, good_number, color, sku, count, price, consignee, telephone, 
+    province, city, area, street, remakes, message, create_time, promise_send_time, state, 
+    courier_number, courier_company, after_state, deliver_time, invoice
+    from special_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_id, good_number, color, sku, count, price, consignee, telephone, 
+    province, city, area, street, remakes, message, create_time, promise_send_time, state, 
+    courier_number, courier_company, after_state, deliver_time, invoice
+    from special_order
+  </select>
+	<!-- /**============ ===================== ===================== ==**/ -->
+
+<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select o.id, o.color,order_id, o.good_number, sku, count, price, consignee, telephone,
+		province,
+		city, area, street, remakes, message, create_time, promise_send_time,
+		state, courier_number,
+		courier_company, after_state, deliver_time, invoice , g.good_name as goodName 
+		from special_order o
+		left join good_number g on o.good_number = g.good_number
+		where order_id = #{orderId}
+	</select>
+	<select id="selectOrderListByUser" parameterType="map" resultMap="BaseResultMap">
+		select o.id,o.color, o.order_id, o.good_number, sku, o.count, o.price, consignee,
+		o.telephone, province,
+		city, area, street, o.remakes, o.message, o.create_time, promise_send_time,
+		o.state, o.courier_number,
+		o.courier_company, o.after_state, deliver_time, invoice , s.name as shopName , g.good_name as goodName 
+		from special_order o
+		left join good_number g on o.good_number = g.good_number
+		left join shop s on s.number = g.shop_number
+		left join staff f on s.staff_id = f.id
+		left join company_user c on f.id = c.user_id
+		where o.create_time
+		between #{startTime} and #{endTime}
+		and s.staff_id = #{staffId} 
+		<if test="orderState !=null and orderState != ''">
+			and o.state = #{orderState}
+		</if>
+		<if test="keyWord!=null and keyWord != ''">
+			and ( o.order_id like CONCAT('%',#{keyWord},'%')
+			or g.shop_number like CONCAT('%',#{keyWord},'%')
+			or g.good_name like CONCAT('%',#{keyWord},'%')
+			or s.name like CONCAT('%',#{keyWord},'%')
+			or o.sku like CONCAT('%',#{keyWord},'%')
+			or o.province like CONCAT('%',#{keyWord},'%')
+			or o.telephone like CONCAT('%',#{keyWord},'%')
+			or o.consignee like CONCAT('%',#{keyWord},'%')
+			or o.area like CONCAT('%',#{keyWord},'%')
+			or o.city like CONCAT('%',#{keyWord},'%')
+			or o.courier_company like CONCAT('%',#{keyWord},'%')
+			or o.after_state like CONCAT('%',#{keyWord},'%')
+			)
+		</if>
+		order by o.create_time
+	</select>
+</mapper>

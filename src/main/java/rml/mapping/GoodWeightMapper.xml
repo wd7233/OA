@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.GoodWeightMapper">
+  <resultMap id="BaseResultMap" type="rml.model.GoodWeight">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_type" jdbcType="INTEGER" property="goodType" />
+    <result column="good_sku" jdbcType="VARCHAR" property="goodSku" />
+    <result column="weight" jdbcType="VARCHAR" property="weight" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from good_weight
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.GoodWeight">
+    insert into good_weight (id, good_type, good_sku, 
+      weight, state)
+    values (#{id,jdbcType=INTEGER}, #{goodType,jdbcType=INTEGER}, #{goodSku,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.GoodWeight">
+    update good_weight
+    set good_type = #{goodType,jdbcType=INTEGER},
+      good_sku = #{goodSku,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, good_type, good_sku, weight, state
+    from good_weight
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, good_type, good_sku, weight, state
+    from good_weight
+  </select>
+</mapper>
