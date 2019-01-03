@@ -102,14 +102,14 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>-->
-			<!--<table schema="qicheng" tableName="good_weight" domainObjectName="GoodWeight"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>-->
-			<table schema="qicheng" tableName="withdraw" domainObjectName="Withdraw"
+			<table schema="qicheng" tableName="good_weight" domainObjectName="GoodWeight"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>
+			<!--<table schema="qicheng" tableName="withdraw" domainObjectName="Withdraw"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
 			<!--	<table schema="qicheng" tableName="good_type" domainObjectName="GoodType"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"

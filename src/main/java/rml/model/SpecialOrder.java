@@ -50,7 +50,89 @@ public class SpecialOrder {
     private String invoice;
     private String goodName;
     private String shopName;
+    private String size;
+    private String weight;
+    // 0
+    private String baishiPrice;
+    // 1
+    private String youzhengPrice;
+    // 2
+    private String shengtongPrice;
+    // 3
+    private String annengPrice;
+    // 最低
+    private String expressPrice;
     
+    public String getSize()
+    {
+        return size;
+    }
+
+    public void setSize(String size)
+    {
+        this.size = size;
+    }
+
+    public String getWeight()
+    {
+        return weight;
+    }
+
+    public void setWeight(String weight)
+    {
+        this.weight = weight;
+    }
+
+    public String getBaishiPrice()
+    {
+        return baishiPrice;
+    }
+
+    public void setBaishiPrice(String baishiPrice)
+    {
+        this.baishiPrice = baishiPrice;
+    }
+
+    public String getYouzhengPrice()
+    {
+        return youzhengPrice;
+    }
+
+    public void setYouzhengPrice(String youzhengPrice)
+    {
+        this.youzhengPrice = youzhengPrice;
+    }
+
+    public String getShengtongPrice()
+    {
+        return shengtongPrice;
+    }
+
+    public void setShengtongPrice(String shengtongPrice)
+    {
+        this.shengtongPrice = shengtongPrice;
+    }
+
+    public String getAnnengPrice()
+    {
+        return annengPrice;
+    }
+
+    public void setAnnengPrice(String annengPrice)
+    {
+        this.annengPrice = annengPrice;
+    }
+
+    public String getExpressPrice()
+    {
+        return expressPrice;
+    }
+
+    public void setExpressPrice(String expressPrice)
+    {
+        this.expressPrice = expressPrice;
+    }
+
     public String getShopName()
     {
         return shopName;
