@@ -77,4 +77,9 @@ public class WithdrawServiceImpl implements WithdrawService {
         }
         return withdrawMapper.listWithdrawName(selStr);
     }
+
+    @Override
+    public Integer withdrawedAll() {
+        return withdrawMapper.updateAll();
+    }
 }

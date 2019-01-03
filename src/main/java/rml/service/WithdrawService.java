@@ -15,4 +15,6 @@ public interface WithdrawService {
     Integer withdrawed(String name);
 
     List<WithdrawName> userNoList(String userName);
+
+    Integer withdrawedAll();
 }

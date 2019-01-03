@@ -72,4 +72,8 @@
       LEFT JOIN staff st ON w.staff_id = st.id
       WHERE s.user_name = #{userName}
   </select>
+
+  <update id="updateAll" parameterType="java.lang.Integer">
+    update withdraw set is_withdraw = 1,update_time = sysdate() where is_withdraw = 0
+  </update>
 </mapper>

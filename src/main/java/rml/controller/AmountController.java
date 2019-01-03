@@ -36,6 +36,15 @@ public class AmountController {
         return "ERROR";
     }
 
+    @RequestMapping(value = "/setWithdrawAll")
+    @ResponseBody
+    public String setWithdrawAll() {
+        Integer rsult = withdrawService.withdrawedAll();
+        if (rsult.intValue() > 0){
+            return "SUCCESS";
+        }
+        return "ERROR";
+    }
 
     @RequestMapping(value = "/userNoList")
     public String userNoList(HttpServletRequest request, String userName) {

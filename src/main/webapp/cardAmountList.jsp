@@ -100,6 +100,31 @@ td{
 		}
 	}
 
+    function getAmountAll(){
+        if(confirm('确定要全部设置为已提取吗？')){
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/amountController/setWithdrawAll.do",
+                dataType : 'text',
+                async : false,
+                success : function(data) {
+                    alert('设置成功');
+                    var tableId = document.getElementById("tab");
+                    for (var i = 1; i < tableId.rows.length; i++) {
+                        $("#amount"+i).html("");
+                    }
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("error ：" + textStatus);
+                }
+            });
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 	function userNoList(name){
 		name=encodeURI(encodeURI(name))
 		window.open('<%=path%>/amountController/userNoList.do?userName='+name);
@@ -116,8 +141,10 @@ td{
 			<button onclick="closeDiv()"  style="width: 50px;height: 25px">取 消</button>
 		</div>
 
-
-		<table style="text-align: center" border="1" width="70%">
+        <font style="font-size: 20px">可提金额 ： </font><font style="font-size: 40px" color="red"><label id="amountSum"></label></font>元
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onclick="getAmountAll()" style="font-size: 20px">一键提现</button><br/><br/>
+		<table style="text-align: center" border="1" width="70%" id="tab">
 			<tr height="60px">
 				<td  style=" width:20px ">Id</td>
 				<td>姓名</td>
@@ -136,7 +163,7 @@ td{
 					<td>${cardAmount.cardno}</td>
 					<td>${cardAmount.cardPhone}</td>
 					<td>${cardAmount.cardPwd}</td>
-					<td id="amount${status.index+1 }">${cardAmount.amount}</td>
+					<td id="amount${status.index+1 }" name="amount">${cardAmount.amount}</td>
 					<td><button onclick="getAmount('${cardAmount.name}','${status.index+1}')">提取标记</button>
 						<button onclick="userNoList('${cardAmount.name}')">详 情</button></td>
 				</tr>
@@ -145,4 +172,19 @@ td{
 	</center>
 	<!--  <a href="<%=path%>/addUser.jsp" style="left:300px;position:relative;height:30px">新增用户</a><br/> -->
 </body>
+<script>
+
+$(function() {
+    var tableId = document.getElementById("tab");
+    var amount = "0";
+    for (var i = 1; i < tableId.rows.length; i++) {
+        if (tableId.rows[i].cells[6].innerHTML != null & tableId.rows[i].cells[6].innerHTML != ""){
+            amount = parseFloat(amount) + parseFloat(tableId.rows[i].cells[6].innerHTML);
+        }
+    }
+    $("#amountSum").html(amount);
+});
+
+</script>
+
 </html>

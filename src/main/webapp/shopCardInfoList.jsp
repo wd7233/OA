@@ -75,8 +75,9 @@ td{
 </head>
 <script>
 
-	function addAmount(shopNumber){
+	function addAmount(shopNumber,cnt){
 		$("#addDiv").show();
+		$("#addDiv").css("top",(300+(cnt-1)*30)+"px");
 		$("#shopNumber").val(shopNumber);
 	}
 
@@ -144,7 +145,7 @@ td{
 					<td>${card.userNo }</td>
 					<td>${card.cardLocation }</td>
 					<td>${card.cardPhone }</td>
-					<td><button onclick="addAmount('${card.shopNumber }')">提 现</button></td>
+					<td><button onclick="addAmount('${card.shopNumber }','${status.index+1 }')">提 现</button></td>
 				</tr>
 			</c:forEach>
 		</table>

@@ -20,4 +20,6 @@ public interface WithdrawMapper {
     Double selectAmountSum(String userName);
 
     List<WithdrawName> listWithdrawName(String userName);
+
+    Integer updateAll();
 }
