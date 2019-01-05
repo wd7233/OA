@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.MenuMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.Menu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="menu" property="menu" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="sup_menu_id" property="supMenuId" jdbcType="INTEGER" />
+    <result column="menu_role" property="menuRole" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, menu, level, sup_menu_id, menu_role, create_time, update_time, is_deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.Menu" useGeneratedKeys="true" keyProperty="id" >
+    insert into menu (menu, level, sup_menu_id, 
+      menu_role, create_time, update_time, 
+      is_deleted)
+    values (#{menu,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{supMenuId,jdbcType=INTEGER}, 
+      #{menuRole,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="rml.model.Menu" useGeneratedKeys="true" keyProperty="id" >
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menu != null" >
+        menu,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="supMenuId != null" >
+        sup_menu_id,
+      </if>
+      <if test="menuRole != null" >
+        menu_role,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menu != null" >
+        #{menu,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="supMenuId != null" >
+        #{supMenuId,jdbcType=INTEGER},
+      </if>
+      <if test="menuRole != null" >
+        #{menuRole,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="rml.model.Menu" >
+    update menu
+    <set >
+      <if test="menu != null" >
+        menu = #{menu,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="supMenuId != null" >
+        sup_menu_id = #{supMenuId,jdbcType=INTEGER},
+      </if>
+      <if test="menuRole != null" >
+        menu_role = #{menuRole,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="rml.model.Menu" >
+    update menu
+    set menu = #{menu,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      sup_menu_id = #{supMenuId,jdbcType=INTEGER},
+      menu_role = #{menuRole,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
