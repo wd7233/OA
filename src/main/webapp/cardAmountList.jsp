@@ -27,9 +27,11 @@
 	top: 50%;
 	left: 50%;
 }
-
 table tr:nth-child(odd) {
-	background: #ccc;
+	background: #f8cacd;
+}
+table tr:nth-child(even) {
+	background: #9cdbe0;
 }
 table {
 	border-collapse: collapse;
@@ -37,12 +39,16 @@ table {
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all;
-	word-wrap: break-word;
+	word-break: break-all; 
+	word-wrap: break-word; 
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -145,14 +151,14 @@ td{
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="getAmountAll()" style="font-size: 20px">一键提现</button><br/><br/>
 		<table style="text-align: center" border="1" width="70%" id="tab">
-			<tr height="60px">
+			<tr height="60px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td  style=" width:20px ">Id</td>
-				<td>姓名</td>
+				<td style="text-align: center; width:60px;">姓名</td>
 				<td>开户行</td>
 				<td>卡号</td>
 				<td>预留手机号</td>
-				<td>密码</td>
-				<td>未提现金额</td>
+				<td style="text-align: center; width: 80px;">密码</td>
+				<td style="text-align: center; width: 80px;">未提现金额</td>
 				<td>操作</td>
 			</tr>
 			<c:forEach items="${cardAmountList}" var="cardAmount" varStatus="status">
@@ -164,8 +170,9 @@ td{
 					<td>${cardAmount.cardPhone}</td>
 					<td>${cardAmount.cardPwd}</td>
 					<td id="amount${status.index+1 }" name="amount">${cardAmount.amount}</td>
-					<td><button onclick="getAmount('${cardAmount.name}','${status.index+1}')">提取标记</button>
-						<button onclick="userNoList('${cardAmount.name}')">详 情</button></td>
+					<td><button  style="width: 80px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="getAmount('${cardAmount.name}','${status.index+1}')"><font style = "font-size: 17px;color: #054C84;" ><b>提取标记</b></font></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button  style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="userNoList('${cardAmount.name}')"><font style = "font-size: 17px;color: #054C84;" ><b>详 情</b></font></button></td>
 				</tr>
 			</c:forEach>
 		</table>

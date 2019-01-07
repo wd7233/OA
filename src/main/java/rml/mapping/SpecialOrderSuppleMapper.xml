@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.SpecialOrderSuppleMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.SpecialOrderSupple" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="supple_price" property="supplePrice" jdbcType="DOUBLE" />
+    <result column="supple_courier_number" property="suppleCourierNumber" jdbcType="VARCHAR" />
+    <result column="supple_courier_company" property="suppleCourierCompany" jdbcType="VARCHAR" />
+    <result column="supple_courier_time" property="suppleCourierTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from special_order_supple
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.SpecialOrderSupple" >
+    insert into special_order_supple (id, order_id, message, 
+      supple_price, supple_courier_number, supple_courier_company, 
+      supple_courier_time, state, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{supplePrice,jdbcType=DOUBLE}, #{suppleCourierNumber,jdbcType=VARCHAR}, #{suppleCourierCompany,jdbcType=VARCHAR}, 
+      #{suppleCourierTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.SpecialOrderSupple" >
+    update special_order_supple
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      supple_price = #{supplePrice,jdbcType=DOUBLE},
+      supple_courier_number = #{suppleCourierNumber,jdbcType=VARCHAR},
+      supple_courier_company = #{suppleCourierCompany,jdbcType=VARCHAR},
+      supple_courier_time = #{suppleCourierTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_id, message, supple_price, supple_courier_number, supple_courier_company, 
+    supple_courier_time, state, create_time
+    from special_order_supple
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, message, supple_price, supple_courier_number, supple_courier_company, 
+    supple_courier_time, state, create_time
+    from special_order_supple
+  </select>
+  
+  <!-- =============================================================================== -->
+  <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, order_id, message, supple_price, supple_courier_number, supple_courier_company, 
+    supple_courier_time, state, create_time
+    from special_order_supple
+    where order_id = #{orderId}
+  </select>
+  
+</mapper>

@@ -29,7 +29,10 @@
 }
 
 table tr:nth-child(odd) {
-	background: #ccc;
+	background: #f8cacd;
+}
+table tr:nth-child(even) {
+	background: #9cdbe0;
 }
 table {
 	border-collapse: collapse;
@@ -43,6 +46,10 @@ table {
 	table-layout: fixed;
 	word-break: break-all; 
 	word-wrap: break-word; 
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -82,8 +89,8 @@ td{
 			 		<br/>
 		</form>	 		
 		<table style="text-align: center" border="1" width="70%">
-			<tr height="60px">
-				<td  style=" width:20px ">Id</td>
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
+				<td  style=" width:20px ">序号</td>
 				<td>店铺编号</td>
 				<td>店铺名称</td>
 				<td>账号</td>

@@ -64,7 +64,7 @@ public class ShopController
     {
         Staff s = (Staff)request.getSession().getAttribute("user");
         List<Shop> list = null;
-        String keyWord = request.getParameter("keyWord");
+        String keyWord = request.getParameter("keyWord")==null?"": request.getParameter("keyWord").trim();
         Integer staffId = request.getParameter("staffName") == null ? s.getId() : Integer.parseInt(request.getParameter("staffName"));;
         list = shopService.selectByKeyword(staffId,keyWord);
         request.setAttribute("shoplist", list);

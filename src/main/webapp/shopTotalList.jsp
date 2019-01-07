@@ -27,13 +27,15 @@
 width:80px;
 height:20px;
 }
-.button
-{
-width:100px;
-height:30px;
+.button {
+	width: 80px;
+	height: 20px;
 }
 table tr:nth-child(odd) {
-	background: #ccc;
+	background: #f8cacd;
+}
+table tr:nth-child(even) {
+	background: #9cdbe0;
 }
 table {
 	border-collapse: collapse;
@@ -41,12 +43,16 @@ table {
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all; 
-	word-wrap: break-word; 
+	word-break: break-all;
+	word-wrap: break-word;
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -193,7 +199,7 @@ td{
 					<br/><br/>
 					</form>
 		<table style="text-align: center" border="1" width="80%">
-			<tr height="60px" stytle = "font-weight:bold;">
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td  style=" width:20px ">Id</td>
 				<td>店铺编号</td>
 				<td>店铺名称</td>
@@ -226,8 +232,8 @@ td{
 						</c:forEach>
 					</select></td>
 					<td>
-				<button  class = "button"  onclick="update(${status.index+1})">保
-						存</button></td>
+				<button  class = "button"  style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="update(${status.index+1})">
+				<font style = "font-size: 17px;color: #054C84;" ><b>保 存</b></font></button></td>
 				</tr>
 			</c:forEach>
 		</table>

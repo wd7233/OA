@@ -1,6 +1,7 @@
 package rml.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -23,9 +24,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import rml.model.Express;
 import rml.model.SpecialOrder;
+import rml.model.SpecialOrderSupple;
 import rml.model.Staff;
 import rml.service.ExpressServiceI;
 import rml.service.SpecialOrderServiceI;
+import rml.service.SpecialOrderSuppleServiceI;
 import rml.service.StaffServiceI;
 import rml.util.DateUtil;
 import rml.util.FileUtil;
@@ -40,6 +43,8 @@ public class SpecialOrderController
     
     @Autowired
     private SpecialOrderServiceI specialOsrderService;
+    @Autowired
+    private SpecialOrderSuppleServiceI specialOrderSuppleService;
     
     @Autowired
     private ExpressServiceI expressService;
@@ -101,23 +106,27 @@ public class SpecialOrderController
             else
             {
                 // 塞入快递价格查询结果
+                //X数量
                 Double doubleWeight = Double.parseDouble(so.getWeight()) * so.getCount();
+                //SKU 一副的时候
                 if (!StringUtils.isEmpty(so.getColor())&&(so.getColor().indexOf("2") != -1 || so.getColor().indexOf("两") != -1))
                 {
                     doubleWeight = doubleWeight * 2;
                 }
-                if("0.5".equals(doubleWeight+"") || (doubleWeight+"").indexOf(".") == -1 ) 
-                {
-                    so.setWeight(doubleWeight+"");
-                }
-                else 
-                {
-                    so.setWeight((doubleWeight+"").substring(0, (doubleWeight+"").length()-2));
-                }
+                //
+//                if("0.5".equals(doubleWeight+"") || (doubleWeight+"").indexOf(".") == -1 ) 
+//                {
+//                    so.setWeight(Math.ceil(doubleWeight)+"");
+//                }
+//                else 
+//                {
+//                    so.setWeight((doubleWeight+"").substring(0, (doubleWeight+"").length()-2));
+//                }
+                so.setWeight((int)Math.ceil(doubleWeight)+"");
                 Express baishi = expressService.selectPrice(so.getWeight(), so.getProvince(), 0);
                 so.setBaishiPrice(baishi == null ? "-" : baishi.getPrice());
                 Express youzheng = expressService.selectPrice(so.getWeight(), so.getProvince(), 1);
-                so.setYouzhengPrice(youzheng == null ? "-" : youzheng.getPrice());
+                so.setYouzhengPrice(youzheng == null ? "-" :(int)Math.ceil(Double.parseDouble(youzheng.getPrice()) * 0.8 )+"");
                 Express shengtong = expressService.selectPrice(so.getWeight(), so.getProvince(), 2);
                 so.setShengtongPrice(shengtong == null ? "-" : shengtong.getPrice());
                 Express anneng = expressService.selectPrice(so.getWeight(), so.getProvince(), 3);
@@ -266,7 +275,20 @@ public class SpecialOrderController
             return "SUCCESS";
         }
     }
-    
+    //补发录入
+    @RequestMapping(value = "/suppleOrder")
+    @ResponseBody
+    public String suppleOrder(String orderId, String priceAdd, String messageAdd)
+    {
+        SpecialOrderSupple sos = new SpecialOrderSupple();
+            sos.setOrderId(orderId);
+            sos.setSupplePrice(Double.parseDouble(priceAdd));
+            sos.setMessage(messageAdd);
+            sos.setCreateTime(new Date());
+            sos.setState(0);
+            specialOrderSuppleService.insert(sos);
+            return "SUCCESS";
+    }
     // 发货，只更新发货信息
     @RequestMapping(value = "/sendOrder")
     @ResponseBody
@@ -286,6 +308,23 @@ public class SpecialOrderController
             specialOsrderService.updateByPrimaryKey(order);
             return "SUCCESS";
         }
+        
+    }
+    // 快递价格查询
+    @RequestMapping(value = "/selectExpress")
+    @ResponseBody
+    public JSONObject selectExpress(String weight, String province)
+    {
+        JSONObject json = new JSONObject();
+        Express baishiExpress = expressService.selectPrice(weight, province, 0);
+        Express youzhengExpress = expressService.selectPrice(weight, province, 1);
+        Express shengtongExpress = expressService.selectPrice(weight, province, 2);
+        Express annengExpress = expressService.selectPrice(weight, province, 3);
+        json.put("baishi", baishiExpress==null?"-":baishiExpress.getPrice());
+        json.put("youzheng", youzhengExpress==null?"-":(int)Math.ceil(Double.parseDouble(youzhengExpress.getPrice()) * 0.8 )+"");
+        json.put("shengtong", shengtongExpress==null?"-":shengtongExpress.getPrice());
+        json.put("anneng", annengExpress==null?"-":annengExpress.getPrice());
+        return json;
         
     }
 }

@@ -143,8 +143,8 @@ public class OrderController
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord");
-        Integer staffId = Integer.parseInt(request.getParameter("staffIdSelect"));
-        Integer orderType = Integer.parseInt(request.getParameter("orderType"));
+        Integer staffId = Integer.parseInt(request.getParameter("staffIdSelect")==null?"-1":request.getParameter("staffIdSelect"));
+        Integer orderType = Integer.parseInt(request.getParameter("orderType")==null?"0":request.getParameter("orderType"));
         if (!StringUtils.isEmpty(keyWord))
         {
             startDate = "2018-01-01";

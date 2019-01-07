@@ -55,6 +55,10 @@ table {
 	table-layout: fixed;
 	word-break: break-all;
 	word-wrap: break-word;
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 
 td {
@@ -64,7 +68,6 @@ td {
 	white-space: nowrap;
 	width: 100%;
 }
-
 .main {
 	background-color: #ff0000;
 	transform: translate(-50%, -50%);
@@ -77,7 +80,7 @@ td {
 	z-index: 9999;
 	width: 300px;
 	height: 430px;
-	background: #CFCFCF;
+	background: #FFEC8B;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -85,13 +88,14 @@ td {
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 
 #addDiv {
 	z-index: 9999;
 	width: 600px;
 	height: 380px;
-	background: #CFCFCF;
+	background: #FFEC8B;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -99,13 +103,14 @@ td {
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 
 #editPriceDiv {
 	z-index: 9999;
 	width: 300px;
 	height: 260px;
-	background: #CFCFCF;
+	background:#FFEC8B;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -113,13 +118,14 @@ td {
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 
 #addCommissionDiv {
 	z-index: 9999;
 	width: 300px;
 	height: 210px;
-	background: #CFCFCF;
+	background: #FFEC8B;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -127,13 +133,14 @@ td {
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 
 #addPddIdDiv {
 	z-index: 9999;
 	width: 300px;
 	height: 250px;
-	background: #CFCFCF;
+	background: #FFEC8B;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -141,6 +148,7 @@ td {
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 </style>
 <head>
@@ -606,9 +614,9 @@ td {
 				onclick="displayAddDiv()" />
 		</form>
 		<br />
-		<table border="1" width="100% ">
-			<tr height="60px" bgcolor="#D2691E">
-				<td style="text-align: center; width: 15px;">Id</td>
+		<table border="1" width="100% "  >
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
+				<td style="text-align: center; width: 15px;">序号</td>
 				<td style="text-align: center; width: 90px;">卖出订单编号</td>
 				<td style="text-align: center; width: 80px;">买入订单编号</td>
 				<td style="text-align: center; width: 50px;">店铺名称</td>
@@ -627,16 +635,16 @@ td {
 			</tr>
 			<c:forEach items="${orderList}" var="order" varStatus="status">
 				<c:if test="${ order.type ==1 }">
-					<tr id="tr${status.index+1}" height="50px" bgcolor="#98FB98">
+					<tr id="tr${status.index+1}" height="50px" bgcolor="#9CDBE0">
 				</c:if>
 				<c:if test="${order.type==2  }">
-					<tr id="tr${status.index+1}" height="50px" bgcolor="RED">
+					<tr id="tr${status.index+1}" height="50px" bgcolor="#F8CACD">
 				</c:if>
 				<c:if test="${order.type==3 }">
-					<tr id="tr${status.index+1}" height="50px" bgcolor="YELLOW">
+					<tr id="tr${status.index+1}" height="50px" bgcolor="#F8E040">
 				</c:if>
 				<c:if test="${order.type==4 }">
-					<tr id="tr${status.index+1}" height="50px" bgcolor="#CCCCCC">
+					<tr id="tr${status.index+1}" height="50px" bgcolor="#B6B6B8">
 				</c:if>
 				<td style="text-align: center;">${status.index+1 }</td>
 				<td style="width: 100px;" id="orderId${status.index+1}">${order.orderId}</td>
@@ -671,8 +679,8 @@ td {
 					id="orderType${status.index+1}" />
 				<td style="text-align: center;">
 					<button class="button" id="update"
-						style="width: 60px; height: 30px;"
-						onclick="displayDiv(${status.index+1})">编 辑</button>
+						style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;"
+						onclick="displayDiv(${status.index+1})"><font style = "font-size: 17px;color: #054C84;" ><b>编 辑</b></font></button>
 				</td>
 				</tr>
 			</c:forEach>

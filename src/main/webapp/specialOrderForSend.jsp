@@ -31,7 +31,12 @@
 	width: 80px;
 	height: 20px;
 }
-
+table tr:nth-child(odd) {
+	background: #9cdbe0;
+}
+table tr:nth-child(even) {
+	background: #f8cacd;
+}
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -42,18 +47,11 @@ table {
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all;
-	word-wrap: break-word;
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
-
-td {
-	-o-text-overflow: ellipsis;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	width: 100%;
-}
-
 .main {
 	background-color: #ff0000;
 	transform: translate(-50%, -50%);
@@ -85,7 +83,20 @@ td {
 	display: none;
 	text-align: center; /*让文字水平居中*/
 }
-
+#expressDiv {
+	z-index: 9999;
+	width: 500px;
+	height:40px;
+	background: #FFFFFF;
+	position: absolute;
+	right: 0%;
+	top: 17%;
+	margin-left: -100px;
+	margin-top: -100px;
+	border: 1px solid #FFFFFF;
+	display: none;
+	text-align: center; /*让文字水平居中*/
+}
 font {
 	font-size: 30px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
@@ -139,6 +150,27 @@ font {
 			contentType : false,
 			success : function(res) {
 				alert('导入成功' + res + '条数据');
+			},
+			error : function(err) {
+				alert("格式错误，请重新编辑~", err);
+			}
+		})
+	}
+  
+  function selectExpress() {
+		$.ajax({
+			url : "<%=path%>/specialorderController/selectExpress.do",
+			type : "post",
+			data : {
+				province:$("#provinceSelect").val(),
+				weight:$("#weightSelect").val()},
+			dataType : 'json',
+			success : function(data) {
+				$("#bsExpress").html(data.baishi);
+				$("#yzExpress").html(data.youzheng);
+				$("#stExpress").html(data.shengtong);
+				$("#anExpress").html(data.anneng);
+				$("#expressDiv").show();
 			},
 			error : function(err) {
 				alert("格式错误，请重新编辑~", err);
@@ -378,10 +410,10 @@ font {
 		<br />&nbsp;&nbsp;&nbsp;备&nbsp;&nbsp; 注&nbsp;： <input
 			disabled="disabled" id="remakeDetail" type="text" value="" />
 		&nbsp;&nbsp;&nbsp; 延期时间： <input id="proTimeDetail" disabled="disabled"
-			type="text" value="0.0" /> &nbsp;&nbsp;&nbsp; 售后状态：<input
+			type="text" value="" /> &nbsp;&nbsp;&nbsp; 售后状态：<input
 			disabled="disabled" id="afterStateDetail" type="text" value="" /> <br />
 		<br />快递公司：<input id="courierCompanyDetail" disabled="disabled"
-			type="text" value="1" /> &nbsp;&nbsp;&nbsp; 快递单号：<input
+			type="text" value="" /> &nbsp;&nbsp;&nbsp; 快递单号：<input
 			id="courierNmuberDetail" disabled="disabled" type="text" value="" />
 		&nbsp;&nbsp;&nbsp; 发货时间：<input id="deliverTimeDetail"
 			disabled="disabled" type="text" value="" />
@@ -395,25 +427,32 @@ font {
 				type="submit" style="width: 100px; height: 30px;" value="查询" />
 		</form>
 		<br />
-		<button onclick="sendDetail()" style="width:160px; height: 40px;"><font  style="letter-spacing:10pt;font-size: 20px;">发货一览</font></button>
+		重量 ：<input style=" width:60px;" id="weightSelect" type="text" value="" />&nbsp;KG&nbsp;&nbsp;&nbsp;
+		省份 ：<input style=" width:60px;" id="provinceSelect" type="text"value=""   />&nbsp;&nbsp;&nbsp;
+		<button onclick="selectExpress()" style="width:140px; height: 30px;"><font  style="letter-spacing:5pt;font-size: 20px;">快递查询</font></button>
+		<div id= "expressDiv">
+		百世：<font  style="color: red;font-size: 30px;"><laber id = "bsExpress"></laber></font>
+		 &nbsp;&nbsp;&nbsp;邮政：<font  style="color: red;font-size: 30px;"><laber id = "yzExpress"></laber></font>
+		&nbsp;&nbsp;&nbsp; 申通：<font  style="color: red;font-size: 30px;"><laber id = "stExpress"></laber></font>
+		&nbsp;&nbsp;&nbsp; 安能：<font  style="color: red;font-size: 30px;"><laber id = "anExpress"></laber></font>
+		</div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button onclick="sendDetail()" style="width:140px; height:30px;"><font  style="letter-spacing:5pt;font-size: 20px;">发货一览</font></button>
 		<br /> <br />
 		<table border="1" width="100% " id="tabDe">
-			<tr height="60px" bgcolor="#D2691E">
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td style="text-align: center; width: 8px;">序号</td>
 				<td id="orderIdF" style="text-align: center; width: 50px;">订单编号</td>
 				<td style="text-align: center; width: 20px;">商品名稱</td>
 				<td style="text-align: center; width: 50px;">商品規格</td>
 				<td style="text-align: center; width: 50px;">商品颜色</td>
 				<td style="text-align: center; width: 30px;">备 注</td>
-				<td style="text-align: center; width: 30px;">售 后</td>
-				<td style="text-align: center; width: 10px;">买家留言</td>
 				<td style="text-align: center; width: 5px;">数量</td>
 				<td style="text-align: center; width: 15px;">收货人</td>
 				<td style="text-align: center; width: 30px;">手机号码</td>
 				<td style="text-align: center; width: 15px;">省份</td>
-				<td style="text-align: center; width: 15px;">城市</td>
-				<td style="text-align: center; width: 15px;">地区</td>
-				<td style="text-align: center; width: 80px;">街道</td>
+				<td style="text-align: center; width: 80px;">地址</td>
 				<td style="text-align: center; width: 10px;">实收款</td>
 				<td style="text-align: center; width: 30px;">创建时间</td>
 				<td style="text-align: center; width: 20px;">操 作</td>
@@ -427,21 +466,17 @@ font {
 					<tr id="tabColor${status.index+1 }" height="50px" bgcolor="GREEN"
 						onclick="detail(${status.index+1})">
 				</c:if>
-				<td style="text-align: center;">${status.index+1 }</td>
+				<td style="text-align:center;">${status.index+1 }</td>
 				<td style="width: 100px;" id="orderId${status.index+1}">${order.orderId}</td>
 				<td>${order.goodName}</td>
-				<td><font style="font-size: 20px;color: black"><b>${order.sku}</b></font></td>
-				<td><font style="font-size: 20px;color: black"><b>${order.color}</b></font></td>
-				<td  style="width: 100px;" ><font style="font-size: 20px;color: black"><b>${order.remakes}</b></font></td>
-				<td>${order.afterState}</td>
-				<td style="text-align: center;"><b>${order.message}</b></td>
-				<td><font style="font-size: 20px;color: black">${order.count}</font></td>
+				<td><b>${order.sku}</b></td>
+				<td><b>${order.color}</b></td>
+				<td style="width: 100px;white-space:normal;word-break:break-all;"><b>${order.remakes}</b></td>
+				<td>${order.count}</td>
 				<td>${order.consignee}</td>
 				<td>${order.telephone}</td>
-				<td>${order.province}</td>
-				<td>${order.city}</td>
-				<td>${order.area}</td>
-				<td>${order.street}</td>
+				<td style="white-space:normal;word-break:break-all;">${order.province}</td>
+				<td style="white-space:normal;word-break:break-all;" >${order.city}${order.area}${order.street}</td>
 				<td>${order.price}</td>
 				<td><fmt:formatDate value="${order.createTime}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
@@ -453,13 +488,13 @@ font {
 				</tr>
 				<tr id="orderMesg" height="60px" bgcolor="#FFE1FF" id="orderMesg"
 					style="display: none;">
-					<td style="text-align: center; " colspan="5">
+					<td style="text-align: center; white-space:normal;word-break:break-all;" colspan="4" >
 						<font style="font-size: 20px;color: black"><b>
 						${order.consignee}&nbsp;&nbsp; ${order.telephone} &nbsp;&nbsp;   
 						${order.province}${order.city}${order.area}${order.street}&nbsp;&nbsp;</b>
 						</font>
 					</td>
-					<td style="text-align: center; " colspan="4">
+					<td style="text-align: center; " colspan="3">
 					净重：<font style="color: red">${order.weight}</font>KG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					百世：<font style="color: red">${order.baishiPrice}</font>&nbsp;&nbsp; 
 					邮政：<font style="color: red">${order.youzhengPrice}</font> &nbsp;&nbsp;

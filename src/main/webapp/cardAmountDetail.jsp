@@ -35,12 +35,16 @@ table {
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all;
-	word-wrap: break-word;
+	word-break: break-all; 
+	word-wrap: break-word; 
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -86,7 +90,7 @@ td{
 
 
 		<table style="text-align: center" border="1" width="70%">
-			<tr bgcolor="#B22222" height="60px">
+			<tr height="60px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td  style=" width:20px ">Id</td>
 				<td>店铺编号</td>
 				<td>店铺名称</td>
@@ -98,9 +102,9 @@ td{
 			</tr>
 			<c:forEach items="${withdrawNameList}" var="withdrawName" varStatus="status">
 				<c:if test="${ withdrawName.isWithdraw ==0 }">
-				<tr bgcolor = "#FFEC8B" height="50px"></c:if>
+				<tr bgcolor = "#f8cacd" height="50px"></c:if>
 				<c:if test="${ withdrawName.isWithdraw ==1 }">
-					<tr bgcolor = "#C1FFC1" height="50px"></c:if>
+					<tr bgcolor = "#9cdbe0" height="50px"></c:if>
 					<td>${status.index+1 }</td>
 					<td>${withdrawName.shopNumber}</td>
 					<td>${withdrawName.shopName}</td>

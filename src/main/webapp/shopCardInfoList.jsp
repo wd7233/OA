@@ -29,7 +29,10 @@
 }
 
 table tr:nth-child(odd) {
-	background: #ccc;
+	background: #f8cacd;
+}
+table tr:nth-child(even) {
+	background: #9cdbe0;
 }
 table {
 	border-collapse: collapse;
@@ -37,25 +40,30 @@ table {
 	white-space: nowrap;
 	font-size: 14px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
+	/**	text-shadow: 0 1px 2px rgba(0, 0, 0, .3);**/
 	text-align: center;
 	vertical-align: center;
 	table-layout: fixed;
-	word-break: break-all; 
-	word-wrap: break-word; 
+	word-break: break-all;
+	word-wrap: break-word;
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
-td{
-	-o-text-overflow:ellipsis;
-	text-overflow:ellipsis;
-	overflow:hidden;
-	white-space:nowrap;
-	width:100%;
+
+td {
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
 }
 #addDiv {
 	z-index: 9999;
-	width:200px;
-	height: 100px;
-	background: #ADD8E6;
+	width:220px;
+	height: 180px;
+	background: #FFEC8B	;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -63,6 +71,7 @@ td{
 	margin-top: -100px;
 	border: 1px solid;
 	display: none;
+	opacity: 0.9;
 }
 
 
@@ -75,10 +84,11 @@ td{
 </head>
 <script>
 
-	function addAmount(shopNumber,cnt){
+	function addAmount(shopNumber,cnt,shopName){
 		$("#addDiv").show();
 		$("#addDiv").css("top",(300+(cnt-1)*30)+"px");
 		$("#shopNumber").val(shopNumber);
+		$("#shopNameAdd").html(shopName);
 	}
 
 	function save() {
@@ -117,7 +127,9 @@ td{
 <body>
 	<center>
 		<div id="addDiv">
-				<br /> 提现金额 ： <input id="amount" type="text" value="" name="amount"  style="width: 80px"/>
+			<br /><br />店铺名称 ：
+			<font style = "font-size: 17px;color: black;" ><b><label id = "shopNameAdd"></label></b></font>
+			<br /><br />提现金额 ： <input id="amount" type="text" value="" name="amount"  style="width: 90px"/>
 			<input type="hidden" value="" id="shopNumber">
 			<br /><br /><button onclick="save()"  style="width: 50px;height: 25px">保 存</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -126,7 +138,7 @@ td{
 
 
 		<table style="text-align: center" border="1" width="70%">
-			<tr height="60px">
+			<tr  height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td  style=" width:20px ">Id</td>
 				<td>店铺名称</td>
 				<td>开户人</td>
@@ -145,7 +157,8 @@ td{
 					<td>${card.userNo }</td>
 					<td>${card.cardLocation }</td>
 					<td>${card.cardPhone }</td>
-					<td><button onclick="addAmount('${card.shopNumber }','${status.index+1 }')">提 现</button></td>
+					<td><button style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;" 
+						onclick="addAmount('${card.shopNumber }','${status.index+1 }','${card.shopName }')"><font style = "font-size: 17px;color: #054C84;" ><b>提 现</b></font></button></td>
 				</tr>
 			</c:forEach>
 		</table>

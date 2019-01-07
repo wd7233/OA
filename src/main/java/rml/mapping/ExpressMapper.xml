@@ -41,6 +41,6 @@
     <select id="selectPrice" resultMap="BaseResultMap" parameterType="map" >
     select id, province, weight, price, type, state
     from express 
-    where province = #{province} and weight =  #{weight} and  type =  #{type} 
+    where province like  CONCAT(#{province},'%')  and weight =  #{weight} and  type =  #{type} 
   </select>
 </mapper>

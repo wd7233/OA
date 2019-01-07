@@ -28,9 +28,11 @@
 	top: 50%;
 	left: 50%;
 }
-
 table tr:nth-child(odd) {
-	background: #ccc;
+	background: #f8cacd;
+}
+table tr:nth-child(even) {
+	background: #9cdbe0;
 }
 table {
 	border-collapse: collapse;
@@ -44,6 +46,10 @@ table {
 	table-layout: fixed;
 	word-break: break-all; 
 	word-wrap: break-word; 
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 td{
 	-o-text-overflow:ellipsis;
@@ -124,19 +130,18 @@ td{
 			 	<br/>
 			 		<br/>
 		</form>	 		
-		<table style="text-align: center" border="1" width="70%">
-			<tr height="60px">
-				<td style=" width:20px ">Id</td>
+		<table style="text-align: center;" border="1" width="70%">
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
+				<td style=" width:30px ">序号</td>
 				<td>店铺编号</td>
 				<td>店铺名称</td>
 				<td>账号</td>
 				<td>商品数量</td>
 				<td>负责人</td>
-				<td>卡号</td>
 				<td>操 作</td>
 			</tr>
 			<c:forEach items="${shoplist}" var="shop" varStatus="status">
-				<tr height="50px">
+				<tr height="50px" style="text-align: center;">
 					<td>${status.index+1 }</td>
 					<td><label id="shopNumber${status.index+1}">${shop.number}</label></td>
 					<td>${shop.name }</td>
@@ -152,9 +157,8 @@ td{
 						</c:if>
 						</c:forEach>
 					</select></td>
-					<td>${shop.cardno }</td>
 					<td><button class="button" id="update"
-						onclick="update(${status.index+1})">保 存</button></td>
+						onclick="update(${status.index+1})" style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;"><font style = "font-size: 17px;color: #054C84;" ><b>保 存</b></font></button></td>
 				</tr>
 			</c:forEach>
 		</table>

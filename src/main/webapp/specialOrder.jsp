@@ -44,6 +44,10 @@ table {
 	table-layout: fixed;
 	word-break: break-all;
 	word-wrap: break-word;
+	border-bottom: 2px solid #FFFFFF;
+	border-top: 2px solid #FFFFFF;
+	border-left: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
 }
 
 td {
@@ -75,7 +79,7 @@ td {
 	z-index: 9999;
 	width: 900px;
 	height: 390px;
-	background: #ADD8E6;
+	background: #FFEC8B;
 	position: absolute;
 	left: 30%;
 	top: 40%;
@@ -85,7 +89,20 @@ td {
 	display: none;
 	text-align: center; /*让文字水平居中*/
 }
-
+#suppleDiv {
+	z-index: 9999;
+	width: 900px;
+	height: 390px;
+	background: #FFEC8B;
+	position: absolute;
+	left: 30%;
+	top: 40%;
+	margin-left: -100px;
+	margin-top: -100px;
+	border: 1px solid;
+	display: none;
+	text-align: center; /*让文字水平居中*/
+}
 font {
 	font-size: 30px;
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
@@ -95,7 +112,7 @@ font {
 	z-index: 9099;
 	width: 900px;
 	height: 390px;
-	background: #ADD8E6;
+	background: #FFEC8B;
 	position: absolute;
 	left: 30%;
 	top: 40%;
@@ -145,6 +162,38 @@ font {
 			}
 		})
 	}
+  function showSuppleDiv(cnt)
+  {
+	  $("#detailDiv").hide();
+	  $.ajax({
+          type: "POST",
+          url: "<%=path%>/specialorderController/getOrderDetailByOrderId.do",
+			data : {
+				orderId:$("#orderId"+cnt).html()
+			},
+			dataType : 'json',
+			async : false,
+			success : function(data) {
+					$("#orderIdSupple").attr("value", data.orderId);
+					$("#goodNameSupple").val(data.goodName);
+					$("#stateSupple").val(data.state);
+					
+					$("#priceSupple").val(data.price);
+					$("#skuSupple").val(data.sku);
+					
+					$("#consigneeSupple").val(data.consignee);
+					
+					$("#remakeSupple").val(data.rmakes);
+					$("#afterStateSupple").val(data.afterState);
+					
+					$("#detailDiv").hide();
+					$("#suppleDiv").show();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("error ：" + textStatus);
+			}
+		});
+  }
   function showEditDiv(cnt)
   {
 	  $("#detailDiv").hide();
@@ -182,6 +231,29 @@ font {
 					$("#deliverTimeEdit").val(data.deliverTime);
 					$("#detailDiv").hide();
 					$("#editDiv").show();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("error ：" + textStatus);
+			}
+		});
+  }
+  function supple()
+  {
+	  $.ajax({
+          type: "POST",
+          url: "<%=path%>/specialorderController/suppleOrder.do",
+			data : {
+				orderId:$("#orderIdSupple").val(),
+				priceAdd:$("#priceAddSupple").val(),
+				messageAdd:$("#messageSupple").val(),
+			},
+			dataType : 'text',
+			async : false,
+			success : function(data) {
+					alert('保存成功');
+					$("#detailDiv").hide();
+					$("#editDiv").hide();
+					$("#suppleDiv").hide();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				alert("error ：" + textStatus);
@@ -269,9 +341,43 @@ font {
   {
 	  $("#detailDiv").hide();
 	  $("#editDiv").hide();
+	  $("#suppleDiv").hide();
   }
 </script>
 <body>
+<div id="suppleDiv">
+		<br />
+		<laber style="text-align:center;">订 单 补发</laber>
+		<br /> <br /> 订单编号：<input disabled="disabled" style="width: 160px"
+			id="orderIdSupple" type="text" value="" /> &nbsp;&nbsp;&nbsp; 商品名称：<input
+			style="width: 160px" disabled="disabled" id="goodNameSupple"
+			type="text" value="" /> &nbsp;&nbsp;&nbsp; 订单状态：<select disabled="disabled"
+			style="width: 160px; height: 20px;" class="select" id="stateSupple"
+			name="stateSupple">
+			<option value="未发货">未发货</option>
+			<option value="待签收">待签收</option>
+			<option value="已签收">已签收</option>
+		</select> <br /> <br />实收付款：<input disabled="disabled" id="priceSupple"
+			type="text" value="" /> &nbsp;&nbsp;&nbsp;颜色/规格：<input
+			disabled="disabled" id="skuSupple" type="text" value="" />
+		&nbsp;&nbsp;&nbsp; 售后状态：<input disabled="disabled" id="afterStateSupple"
+			type="text" value="" /> <br /> <br /> 收&nbsp;货&nbsp;人&nbsp;：<input
+			id="consigneeSupple"  disabled="disabled" type="text" value="" /> &nbsp;&nbsp;&nbsp;备注：<input
+			id="remakeSupple" disabled="disabled" type="text" value="" /> &nbsp;&nbsp;&nbsp; 补差价：<input
+			id="priceAddSupple" type="text" value="" /> 
+		<br /> <br /><br />补发内容： 
+			<textarea id="messageSupple" rows="3" cols="20"  style ="width:700px ;height : 80px">
+			</textarea>
+		&nbsp;&nbsp;&nbsp;  <br /> <br />
+		<button class="button" id="editBut"
+			style="width: 100px; height: 30px;" onclick="supple()">保
+			存</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button class="button" id="editBut"
+			style="width: 100px; height: 30px;" onclick="displayDiv()">取
+			消</button>
+	</div>
 	<div id="editDiv">
 		<br />
 		<laber style="text-align:center;">订 单 编 辑</laber>
@@ -377,7 +483,7 @@ font {
 		<br />
 		<br />
 		<table border="1" width="100% ">
-			<tr height="60px" bgcolor="#D2691E">
+			<tr height="60px" style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td style="text-align: center; width: 8px;">序号</td>
 				<td style="text-align: center; width: 30px;">店铺名称</td>
 				<td style="text-align: center; width: 50px;">订单编号</td>
@@ -385,25 +491,24 @@ font {
 				<td style="text-align: center; width: 50px;">商品颜色</td>
 				<td style="text-align: center; width: 50px;">商品規格</td>
 				<td style="text-align: center; width: 30px;">创建时间</td>
-				<td style="text-align: center; width: 30px;">买家留言</td>
 				<td style="text-align: center; width: 50px;">备 注</td>
 				<td style="text-align: center; width: 5px;">数量</td>
 				<td style="text-align: center; width: 15px;">收货人</td>
 				<td style="text-align: center; width: 20px;">手机号码</td>
 				<td style="text-align: center; width: 15px;">省份</td>
-				<td style="text-align: center; width: 20px;">操 作</td>
+				<td style="text-align: center; width: 40px;">操 作</td>
 			</tr>
 			<c:forEach items="${orderList}" var="order" varStatus="status">
 				<c:if test="${ order.state =='待签收' }">
-					<tr height="50px" bgcolor="#FF69B4"
+					<tr height="50px" bgcolor="#F8CACD"
 						onclick="detail(${status.index+1})">
 				</c:if>
 				<c:if test="${order.state=='已签收' }">
-					<tr height="50px" bgcolor="#B3EE3A"
+					<tr height="50px" bgcolor="#9CDBE0"
 						onclick="detail(${status.index+1})">
 				</c:if>
 				<c:if test="${order.state=='未发货' }">
-					<tr height="50px" bgcolor="YELLOW"
+					<tr height="50px" bgcolor="#F8E040"
 						onclick="detail(${status.index+1})">
 				</c:if>
 				<td style="text-align: center;">${status.index+1 }</td>
@@ -415,7 +520,6 @@ font {
 				<td>${order.sku}</td>
 				<td><fmt:formatDate value="${order.createTime}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
-				<td style="text-align: center;">${order.message}</td>
 				<td>${order.remakes}</td>
 				<td>${order.count}</td>
 				<td>${order.consignee}</td>
@@ -423,8 +527,13 @@ font {
 				<td>${order.province}</td>
 				<td>
 					<button class="button" id="editBut"
-						style="width: 60px; height: 30px;"
-						onclick="showEditDiv(${status.index+1})">编 辑</button>
+						style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;"
+						onclick="showEditDiv(${status.index+1})"><font style = "font-size: 17px;color: #054C84;" ><b>编 辑</b></font></button>
+						&nbsp;&nbsp;
+					<!-- 	<button class="button" id="editBut"
+						style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;"
+						onclick="showSuppleDiv(${status.index+1})"><font style = "font-size: 17px;color: #054C84;" ><b>补 发</b></font></button>
+					 -->
 				</td>
 				</tr>
 			</c:forEach>
