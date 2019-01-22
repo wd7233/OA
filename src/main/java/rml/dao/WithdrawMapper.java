@@ -18,7 +18,7 @@ public interface WithdrawMapper {
     Integer updateByShopNumber(String shopNumber);
 
     Double selectAmountSum(String userName);
-
+    Integer updateById(Integer id);
     List<WithdrawName> listWithdrawName(String userName);
 
     Integer updateAll();

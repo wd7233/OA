@@ -19,67 +19,87 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class WithdrawServiceImpl implements WithdrawService {
-
+public class WithdrawServiceImpl implements WithdrawService
+{
+    
     @Autowired
     private WithdrawMapper withdrawMapper;
-
+    
     @Autowired
     private CardInfoMapper cardInfoMapper;
-
+    
     @Autowired
     private ShopMapper shopMapper;
-
+    
     @Override
-    public Integer save(Withdraw withdraw) {
+    public Integer save(Withdraw withdraw)
+    {
         Date date = new Date();
-        withdraw.setIsWithdraw((byte) 0);
+        withdraw.setIsWithdraw((byte)0);
         withdraw.setCreateTime(date);
         withdraw.setUpdateTime(date);
         return withdrawMapper.insert(withdraw);
     }
-
+    
     @Override
-    public List<CardAmountInfo> getCardAmountSum() {
+    public List<CardAmountInfo> getCardAmountSum()
+    {
         List<CardAmountInfo> listResult = new ArrayList<CardAmountInfo>();
         List<CardInfo> list = cardInfoMapper.selectAll();
-        for (CardInfo cardInfo : list){
+        for (CardInfo cardInfo : list)
+        {
             Double amount = withdrawMapper.selectAmountSum(cardInfo.getName());
             CardAmountInfo cardAmountInfo = new CardAmountInfo();
-            BeanUtils.copyProperties(cardInfo,cardAmountInfo);
+            BeanUtils.copyProperties(cardInfo, cardAmountInfo);
             cardAmountInfo.setAmount(amount);
             listResult.add(cardAmountInfo);
         }
         return listResult;
     }
-
+    
     @Override
     @Transactional
-    public Integer withdrawed(String name) {
-        //查询店铺名称
+    public Integer withdrawed(String name)
+    {
+        // 查询店铺名称
         List<String> list = shopMapper.selectShopNumByStaff(name);
-        if (CollectionUtils.isEmpty(list)){
+        if (CollectionUtils.isEmpty(list))
+        {
             return 1;
         }
-        for (String shopNumber : list){
+        for (String shopNumber : list)
+        {
             withdrawMapper.updateByShopNumber(shopNumber);
         }
         return 1;
     }
-
+    
     @Override
-    public List<WithdrawName> userNoList(String userName) {
-        String selStr= null;
-        try {
-            selStr = java.net.URLDecoder.decode(userName,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
+    public Integer withdrawedById(Integer id)
+    {
+        // 查询店铺名称
+        withdrawMapper.updateById(id);
+        return 1;
+    }
+    
+    @Override
+    public List<WithdrawName> userNoList(String userName)
+    {
+        String selStr = null;
+        try
+        {
+            selStr = java.net.URLDecoder.decode(userName, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
             e.printStackTrace();
         }
         return withdrawMapper.listWithdrawName(selStr);
     }
-
+    
     @Override
-    public Integer withdrawedAll() {
+    public Integer withdrawedAll()
+    {
         return withdrawMapper.updateAll();
     }
 }

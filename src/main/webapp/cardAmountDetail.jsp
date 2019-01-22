@@ -76,6 +76,30 @@ td{
 <link rel="icon" href="./image/log.png" type="image/x-icon" />
 </head>
 <script>
+function getAmount(id,cnt){
+	if(confirm('确定要设置为已提取吗？')){
+		$.ajax({
+			type: "POST",
+			url: "<%=path%>/amountController/setWithdrawOne.do",
+			data : {
+				id:id
+			},
+			dataType : 'text',
+			async : false,
+			success : function(data) {
+				alert('设置成功');
+				$("#id"+cnt).css("background-color","#9cdbe0");
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("error ：" + textStatus);
+			}
+		});
+
+		return true;
+	}else{
+		return false;
+	}
+}
 
 </script>
 <body>
@@ -99,12 +123,15 @@ td{
 				<td>录入时间</td>
 				<td>是否提取</td>
 				<td>提取时间</td>
+				<td>操 作</td>
 			</tr>
 			<c:forEach items="${withdrawNameList}" var="withdrawName" varStatus="status">
 				<c:if test="${ withdrawName.isWithdraw ==0 }">
-				<tr bgcolor = "#f8cacd" height="50px"></c:if>
+				<tr  id = "id${status.index+1 }" bgcolor = "#f8cacd" height="50px">
+				</c:if>
 				<c:if test="${ withdrawName.isWithdraw ==1 }">
-					<tr bgcolor = "#9cdbe0" height="50px"></c:if>
+				<tr id = "id${status.index+1 }" bgcolor = "#9cdbe0" height="50px">
+				</c:if>
 					<td>${status.index+1 }</td>
 					<td>${withdrawName.shopNumber}</td>
 					<td>${withdrawName.shopName}</td>
@@ -114,6 +141,7 @@ td{
 					<td><c:if test="${ withdrawName.isWithdraw ==0 }">未提取</c:if>
 						<c:if test="${ withdrawName.isWithdraw ==1 }">已提取</c:if></td>
 					<td><c:if test="${ withdrawName.isWithdraw ==1 }"><fmt:formatDate value="${withdrawName.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></c:if></td>
+					<td><button  style="width: 80px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="getAmount('${withdrawName.id}','${status.index+1}')"><font style = "font-size: 17px;color: #054C84;" ><b>提取标记</b></font></button></td>
 				</tr>
 			</c:forEach>
 		</table>

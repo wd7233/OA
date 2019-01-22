@@ -1,0 +1,469 @@
+/* CSS Document */
+
+@font-face {
+	font-family: 'myFontNew';
+	src: url('myfont.ttf?5') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'myFont';
+	src: url('myfontold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+img {
+	width: 100%;
+	display: block;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-width: 320px;
+	background: #000000;
+}
+
+html {
+	margin: 0;
+	padding: 0;
+}
+
+.back {
+	position: relative;
+	min-height: 42rem;
+	background: url("../images/background.jpg") repeat-y;
+	background-size: cover;
+}
+
+.backthree {
+	position: relative;
+	min-height: 42rem;
+	background: url("../images/interactbackground.jpg") repeat-y;
+	background-size: cover;
+}
+.bgfront{ position: absolute; bottom: 0rem; }
+.backfive {
+	position: relative;
+	min-height: 42rem;
+	background: url("../images/endbackground.jpg") repeat-y;
+	background-size:cover;
+}
+
+.page1 {}
+
+.page1 .people {
+	width: 18.41667rem;
+	position: absolute;
+	top: 4rem;
+	left: 5rem;
+}
+
+.page1 .people img {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.page1 .people img:nth-child(2) {
+	-webkit-animation: page1People 1s linear infinite;
+}
+
+.page1 p {
+	font-size: 1.8rem;
+	margin-top: 1rem;
+	margin-right: 7.5rem;
+	text-align: right;
+	color: #F0E68C;
+	font-weight: 700;
+}
+
+@-webkit-keyframes page1People {
+	0% {
+		-webkit-transform: translateY(-0.3rem);
+	}
+	50% {
+		-webkit-transform: translateY(0rem);
+	}
+	100% {
+		-webkit-transform: translateY(-0.3rem);
+	}
+}
+
+.page2 {
+	color: #595757;
+}
+
+.page2 .paper {
+
+
+}
+
+.page2 .paper>img {
+	position: absolute;
+	width: 11.75rem;
+	top: 0;
+	left: 8rem;
+	height: 100%;
+}
+
+.page2 .paper .main {
+
+}
+
+.page2 .keys {
+	position: absolute;
+	width: 18.5rem;
+	left: 4.08rem;
+	height: 2.916rem;
+	top: 32.3rem;
+	font-family: 'myFont';
+	z-index: 99;
+}
+
+.page2 .keys div {
+	position: relative;
+	width: 17.625rem;
+}
+
+.page2 .desc {
+	position: absolute;
+	left: 11.08rem;
+	height: 20.916rem;
+	top: 10.3rem;
+	font-family: 'myFont';
+	text-align: left;
+	line-height: 2.3rem;
+}
+.page2 .desc .temple{
+	display: none;
+	font-family: 'myFont';
+
+}
+
+.page2 p {
+	font-size: 1.8rem;
+	margin-top: -3rem;
+	margin-right: 10.5rem;
+	color: #F0E68C;
+	-webkit-writing-mode: vertical-rl;
+	writing-mode: vertical-rl;
+	display: inline-block;
+	width:  6rem;
+	height: 23.916rem;
+}
+.page2 .ani_big{
+	-webkit-animation: bigandsmalpage2 2s ease-in-out infinite ;
+}
+
+
+.page2 .ani_big2{
+	-webkit-animation: bigandsmalpage2 2.2s ease-in-out infinite ;
+}
+
+.page2 .ani_big3{
+	-webkit-animation: bigandsmalpage3 2s ease-in-out infinite ;
+}
+@-webkit-keyframes bigandsmalpage2 {
+0%{ -webkit-transform: scale(1); }
+	50%{-webkit-transform: scale(1.2);}
+	100%{-webkit-transform: scale(1);}
+}
+@-webkit-keyframes bigandsmalpage3 {
+	0%{ -webkit-transform: scale(1); }
+	50%{-webkit-transform: scale(1.05);}
+	100%{-webkit-transform: scale(1);}
+}
+
+.page2 .ani_shark1{
+	-webkit-transform-origin: top center;
+	-webkit-animation: shark 2.2s ease-in-out infinite ;
+}
+.page2 .ani_shark2{
+	-webkit-transform-origin: top center;
+	-webkit-animation: shark2 2s ease-in-out infinite ;
+}
+@-webkit-keyframes shark {
+	0%{ -webkit-transform: rotate(-4deg); }
+	50%{-webkit-transform: rotate(4deg);}
+	100%{-webkit-transform: rotate(-4deg);}
+}
+@-webkit-keyframes shark2 {
+	0%{ -webkit-transform: rotate(-6deg); }
+	50%{-webkit-transform: rotate(6deg);}
+	100%{-webkit-transform: rotate(-6deg);}
+}
+.page2 .cloud {
+	position: absolute;	
+	left: 0rem;
+
+	bottom: 0rem;
+	font-family: 'myFont';
+}
+
+.page2 .cloud div {
+	position: relative;
+	width: 100%;
+}
+
+.page2 .Firework {
+	position: absolute;
+	width: 18.5rem;
+	left: 2.6rem;
+	height: 2.916rem;
+	top: 9.5rem;
+}
+
+.page2 .Firework .small_fire {
+	position: relative;
+	width: 3.625rem;
+	left: -1rem;
+}
+
+.page2 .Firework .big_fire {
+	position: relative;
+	width: 4.625rem;
+}
+
+.page2 .Firework .rightsmall_fire {
+	position: relative;
+	width: 3.625rem;
+	left: 19rem;
+}
+
+.page2 .Firework .right {
+	left: 18rem;
+}
+
+.page2 .lantern {
+	position: absolute;
+	width: 18.5rem;
+	left: 2.6rem;
+	height: 2.916rem;
+	top: 19.5rem;
+}
+
+.page2 .lantern .small_fire {
+	position: relative;
+	width: 2.625rem;
+	left: 2.5rem;
+	top: 8rem;
+}
+
+.page2 .lantern .big_fire {
+	position: relative;
+	width: 3.625rem;
+	left: -0.5rem
+}
+
+.page2 .bing {
+	position: absolute;
+	width: 18.5rem;
+	left: 2.6rem;
+	height: 2.916rem;
+	top: 19.5rem;
+	font-family: 'myFont';
+}
+
+.page2 .bing .small_fire {
+	position: relative;
+	width: 2.625rem;
+	left: 16.2rem;
+	top: 8rem;
+}
+
+.page2 .bing .big_fire {
+	position: relative;
+	width: 3.625rem;
+	left: 18.5rem
+}
+
+@-webkit-keyframes page2Paper {
+	0% {
+		height: 0rem;
+		-webkit-animation-timing-function: ease-out;
+	}
+	30% {
+		height: 12rem;
+		-webkit-animation-timing-function: ease-in;
+	}
+	50% {
+		height: 6.8rem;
+		-webkit-animation-timing-function: ease-out;
+	}
+	70% {
+		height: 10rem;
+		-webkit-animation-timing-function: ease-out;
+	}
+	88% {
+		height: 7.8rem;
+		-webkit-animation-timing-function: ease-out;
+	}
+	100% {
+		height: 8.7rem;
+	}
+}
+.page3 .main {
+
+}
+.page3 .main .interact {
+	position: absolute;
+	width: 18.5rem;
+	left: 5.08rem;
+	top: 12.3rem;
+}
+
+.page3 .main .fire {
+	position: absolute;
+	width: 18.5rem;
+	left: 12.2rem;
+	height: 2.916rem;
+	top: 8.8rem;
+}
+
+.page3 .main .fire .samll_fire {
+	position: relative;
+	width: 2.525rem;
+	left: -3rem;
+	top: 2rem;
+}
+
+.page3 .main .fire .big_fire {
+	position: relative;
+	width: 3.425rem;
+}
+
+.page3 .main .icon_prize {
+	position: absolute;
+	width: 5.5rem;
+	left: 6.08rem;
+	height: 2.916rem;
+	top: 7.3rem;
+}
+
+.page3 .main .icon_desc {
+	position: absolute;
+	width: 9.5rem;
+	left: 3.8rem;
+	height: 2.916rem;
+	top: 3.3rem;
+}
+
+.page3 .main .lantern {
+	position: absolute;
+	width: 18.5rem;
+	left: 22.2rem;
+	height: 2.916rem;
+	top: 16.8rem;
+}
+
+.page3 .main .lantern .samll_lantern {
+	position: relative;
+	width: 2.525rem;
+	left: -1rem;
+	top: 10.6rem;
+}
+
+.page3 .main .lantern .big_lantern {
+	position: relative;
+	width: 3.425rem;
+}
+
+.page5 .main {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+
+.page5 .main .frame {
+	position: absolute;
+	width: 23.5rem;
+	left: 1.8rem;
+	/*height: 2.916rem; */
+	top: 2.3rem;
+}
+
+.page5 .main .result {
+	width: 37rem;
+}
+
+.page5 .main .end_button {
+	position: absolute;
+	width: 18.5rem;
+	left: 4.3rem;
+	top: 32.3rem;
+}
+
+.page5 .main .end_enjoybutton {
+	position: absolute;
+	width: 18.5rem;
+	left: 4.3rem;
+	top: 35.8rem;
+}
+.page5 .main .result_desc {
+	position: absolute;
+	width: 27rem;
+	left: 5rem;
+	top: 12rem;
+	/*font-family: 'myFontNew';*/
+	line-height: 3.4rem;
+	display: none;
+}
+.page5 .main .result_desc p{
+	font-size: 1.8rem;
+	/*margin-top: -3rem;*/
+	/*margin-right: 10.5rem;*/
+	color: #990000;
+
+	text-align: center;
+	font-weight: 800;
+}
+.page5 .main .result_desc p i{
+	font-size: 1.8rem;
+}
+
+.page5 .main .result_desc p span{
+	font-size: 3.2rem;
+}
+
+.page5 .shartip{ position: absolute; top: 0; left:0;width: 100%;height: 100%;
+	z-index: 120; display: none; }
+.page5 .shartip .mark{width: 100%;height: 100%;background-color: black; opacity: 0.7;}
+.page5 .shartip img{ position: absolute; top: 0; right:0; z-index: 200;width: 12rem;}
+.finalresult{
+	position: absolute;
+	width: 20rem;
+	height: 26rem;
+	left: 3.7rem;
+	top: 5.3rem;
+ display: none;
+	z-index: 10;
+}
+.finalresult2{
+	position: absolute;
+	width: 20rem;
+	height: 26rem;
+	left: 3.7rem;
+	top: 5.3rem;
+	/*display: none;*/
+	z-index: 100;
+	opacity: 0;
+
+}
+.showresult{
+	width: 37rem;
+	height: 49rem;
+}
+
+.hidepan{
+	position: absolute;
+	 overflow: hidden;
+	width: 100%;
+	 height: 0;
+	left: 4.3rem;
+	top: 6.3rem;
+}
+.desc .templein { font-family: "å®‹ä½“"}
+

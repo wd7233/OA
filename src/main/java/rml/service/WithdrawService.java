@@ -12,6 +12,8 @@ public interface WithdrawService {
 
     List<CardAmountInfo> getCardAmountSum();
 
+    Integer withdrawedById(Integer id);
+    
     Integer withdrawed(String name);
 
     List<WithdrawName> userNoList(String userName);

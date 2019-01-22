@@ -64,16 +64,25 @@
   </select>
 
   <select id="listWithdrawName" parameterType="java.lang.String" resultType="rml.model.WithdrawName">
-    SELECT w.shop_number AS shopNumber,w.amount,w.is_withdraw AS isWithdraw,w.create_time AS createTime,
+    SELECT w.id,w.shop_number AS shopNumber,w.amount,w.is_withdraw AS isWithdraw,w.create_time AS createTime,
       w.update_time AS updateTime,s.name AS shopName,st.name AS staffName
       FROM
       withdraw w
       LEFT JOIN shop s ON w.shop_number = s.number
-      LEFT JOIN staff st ON w.staff_id = st.id
-      WHERE s.user_name = #{userName}
+      LEFT JOIN staff st ON w.staff_id = st.id 
+      WHERE s.user_name = #{userName} 
+      order by createTime desc  
   </select>
 
   <update id="updateAll" parameterType="java.lang.Integer">
     update withdraw set is_withdraw = 1,update_time = sysdate() where is_withdraw = 0
   </update>
+   <update id="updateById"  parameterType="java.lang.Integer">
+      update withdraw
+      set
+       is_withdraw = 1,update_time = sysdate()
+      where id =#{id}
+  </update>
+  
+  
 </mapper>

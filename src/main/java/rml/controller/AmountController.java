@@ -36,6 +36,15 @@ public class AmountController {
         return "ERROR";
     }
 
+    @RequestMapping(value = "/setWithdrawOne")
+    @ResponseBody
+    public String setWithdrawByShop(String id) {
+        Integer rsult = withdrawService.withdrawedById(Integer.parseInt(id));
+        if (rsult.intValue() > 0){
+            return "SUCCESS";
+        }
+        return "ERROR";
+    }
     @RequestMapping(value = "/setWithdrawAll")
     @ResponseBody
     public String setWithdrawAll() {

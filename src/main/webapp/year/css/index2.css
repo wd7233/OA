@@ -1,0 +1,128 @@
+body {
+  overflow: hidden; }
+
+.btn {
+  height: 3rem; }
+
+.page3 {
+  -webkit-touch-callout: none; }
+
+.eve {
+  position: absolute;
+  z-index: 111; }
+
+.gamebor {
+  position: absolute;
+  z-index: 110;
+  width: 100%;
+  height: 100%; }
+
+.videobg {
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: 80; }
+
+#videoBox {
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  -webkit-transform: translate(-50%, -50%);
+  -webkit-transform-origin: 50% 50%; }
+
+.threecont {
+  position: absolute;
+  z-index: 99; }
+
+.mark {
+  position: absolute;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%); }
+  .mark .markout {
+    -webkit-animation: rata 5s linear infinite; }
+  .mark .markinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    display: none; }
+    .mark .markinner img {
+      -webkit-animation: rataba 1s linear infinite; }
+    .mark .markinner .speedAni {
+      -webkit-animation: rataba 1s linear infinite; }
+
+.marktips {
+  position: absolute;
+  z-index: 100;
+  top: 68%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  color: #FFDF89;
+  font-family: "myFontNew";
+  text-align: center;
+  font-size: 1.5rem; }
+
+.musicimg {
+  width: 2.75rem;
+  height: 2.75rem;
+  position: absolute;
+  top: 2.3rem;
+  right: 1rem;
+  z-index: 130; }
+
+.musicimg .roai {
+  -webkit-transform-origin: center;
+  -webkit-animation: rata 2s  linear infinite; }
+
+.musicimg img {
+  width: 100%;
+  height: 100%; }
+
+@-webkit-keyframes rata {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+@-webkit-keyframes rataba {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(-360deg); } }
+.qrcode {
+  width: 8rem;
+  height: 7rem;
+  position: absolute;
+  left: 14.5rem;
+  top: 32.5rem; }
+
+.savetip {
+  position: absolute;
+  left: 14.5rem;
+  top: 40rem;
+  text-align: center;
+  color: #AF352F;
+  font-size: 2rem;
+  font-family: 'myFontNew';
+  font-weight: bold; }
+
+.savetip2 {
+  position: absolute;
+  left: 7rem;
+  top: 40.2rem;
+  text-align: center;
+  color: #AF352F;
+  font-size: 1.6rem;
+  font-family: 'myFontNew';
+  font-weight: bold;
+  white-space: nowrap;
+  display: none; }
+
+.sonti {
+  font-family: 'sans-serif'; }
+
+/*# sourceMappingURL=index2.css.map */
