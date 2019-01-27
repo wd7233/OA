@@ -132,6 +132,7 @@
 			or o.consignee like CONCAT('%',#{keyWord},'%')
 			or o.area like CONCAT('%',#{keyWord},'%')
 			or o.city like CONCAT('%',#{keyWord},'%')
+			or o.courier_number like CONCAT('%',#{keyWord},'%')
 			or o.courier_company like CONCAT('%',#{keyWord},'%')
 			or o.after_state like CONCAT('%',#{keyWord},'%')
 			)

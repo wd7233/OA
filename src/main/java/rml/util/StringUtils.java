@@ -6,7 +6,7 @@ public interface StringUtils
     final public static String AppID = "wx20eb00996b8eed48";
     final public static String AppSecret = "b1577254cbe912d2539427beb43ba38b";
     final public static String AppIdFwh = "wx199a341daf297b85";
-    final public static String AppSecretFwh = "7004300760fe5032011228aa7104697b";
+    final public static String AppSecretFwh = "9776c156bd7a096e87de1baafe9b0168";
     interface URL 
     {
         String UserInfoUrl = "https://api.weixin.qq.com/cgi-bin/user/info";
