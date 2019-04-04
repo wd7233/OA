@@ -35,4 +35,8 @@
     select id, good_type, good_sku, weight, state
     from good_weight
   </select>
+    <select id="selectWeightBySku" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select id, good_type, good_sku, weight, state
+    from good_weight where good_sku = #{sku} 
+  </select>
 </mapper>

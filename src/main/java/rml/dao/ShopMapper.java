@@ -25,6 +25,6 @@ public interface ShopMapper {
    List<Shop> selectNeedVtd();
    List<Shop> selectByKeyword(Map<String,Object> paramMap);
    Shop selectByAccount(String account);
-
+   Shop selectByName(String shopName);
     List<String> selectShopNumByStaff(String name);
 }

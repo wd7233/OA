@@ -68,6 +68,12 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
         return specialOrderMapper.selectByOrderId(orderId);
     }
 
+    @Override
+    public int deleteByOrderId(String orderId)
+    {
+        return specialOrderMapper.deleteByOrderId(orderId);
+    }
+
 
 
 }

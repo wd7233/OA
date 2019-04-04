@@ -13,4 +13,5 @@ public interface GoodWeightMapper {
     List<GoodWeight> selectAll();
 
     int updateByPrimaryKey(GoodWeight record);
+    GoodWeight  selectWeightBySku(String sku);
 }

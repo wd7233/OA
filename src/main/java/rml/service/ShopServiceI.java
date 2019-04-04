@@ -17,4 +17,5 @@ public interface ShopServiceI {
     List<Shop> selectNeedVtd();
     List<Shop> selectByKeyword(Integer staffId , String keyWord);
     Shop selectByAccount(String account);
+    Shop selectByName(String shopName);
 }

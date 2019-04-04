@@ -182,6 +182,7 @@ td {
             		});
 	
         });
+  
   function uploadTbId()
   {
 	  var form = document.getElementById('upload'),
@@ -645,6 +646,9 @@ td {
 				</c:if>
 				<c:if test="${order.type==4 }">
 					<tr id="tr${status.index+1}" height="50px" bgcolor="#B6B6B8">
+				</c:if>
+				<c:if test="${order.type==5 }">
+					<tr id="tr${status.index+1}" height="50px" bgcolor="RED">
 				</c:if>
 				<td style="text-align: center;">${status.index+1 }</td>
 				<td style="width: 100px;" id="orderId${status.index+1}">${order.orderId}</td>

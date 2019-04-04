@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.ScalpingPlanMapper">
+  <resultMap id="BaseResultMap" type="rml.model.ScalpingPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_number" jdbcType="VARCHAR" property="goodNumber" />
+    <result column="good_sku" jdbcType="VARCHAR" property="goodSku" />
+    <result column="sku_price" jdbcType="DOUBLE" property="skuPrice" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="total_count" jdbcType="DOUBLE" property="totalCount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from scalping_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.ScalpingPlan">
+    insert into scalping_plan (id, good_number, good_sku, 
+      sku_price, price, count, 
+      total_count, create_time)
+    values (#{id,jdbcType=INTEGER}, #{goodNumber,jdbcType=VARCHAR}, #{goodSku,jdbcType=VARCHAR}, 
+      #{skuPrice,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{count,jdbcType=INTEGER}, 
+      #{totalCount,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.ScalpingPlan">
+    update scalping_plan
+    set good_number = #{goodNumber,jdbcType=VARCHAR},
+      good_sku = #{goodSku,jdbcType=VARCHAR},
+      sku_price = #{skuPrice,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      count = #{count,jdbcType=INTEGER},
+      total_count = #{totalCount,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, good_number, good_sku, sku_price, price, count, total_count, create_time
+    from scalping_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, good_number, good_sku, sku_price, price, count, total_count, create_time
+    from scalping_plan
+  </select>
+  
+</mapper>

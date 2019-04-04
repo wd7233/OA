@@ -84,6 +84,12 @@ public class ShopServiceImpl implements ShopServiceI{
     {
         return shopMapper.selectByAccount(account);
     }
+
+    @Override
+    public Shop selectByName(String shopName)
+    {
+        return shopMapper.selectByName(shopName);
+    }
 		
 
 }

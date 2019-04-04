@@ -39,46 +39,40 @@ import rml.service.ShopServiceI;
 
 @Controller
 @RequestMapping("/fileController")
-public class FileController implements ServletContextAware
-{
-    
+public class FileController implements ServletContextAware {
+
     @Autowired
     private GoodServiceI goodService;
-    
+
     private ServletContext servletContext;
-    
+
     @Autowired
     private ShopServiceI shopService;
-    
+
     @Autowired
     private ExpressServiceI expressService;
-    
+
     @Override
-    public void setServletContext(ServletContext servletContext)
-    {
+    public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
-    
+
     @RequestMapping(value = "/importShop")
     @ResponseBody
     public int importShop(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer goodType)
-        throws IOException
-    {
+            throws IOException {
         writeFile(file.getInputStream(), "./" + new Date().getTime() + ".csv");
         List<Shop> shopList = new ArrayList<Shop>();
         BufferedReader reader = null;
-        try
-        {
+        try {
             System.out.println("以行为单位读取文件内容，一次读一整行：");
             reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
             String tempString = null;
             int line = 0;
             // 一次读入一行，直到读入null为文件结束
-            while ((tempString = reader.readLine()) != null)
-            {
+            while ((tempString = reader.readLine()) != null) {
                 line++;
-                if (line == 1)
-                {
+                if (line == 1) {
                     continue;
                 }
                 // 显示行号
@@ -93,95 +87,72 @@ public class FileController implements ServletContextAware
                 shop.setUserName(arr[5]);
                 shop.setCategory(arr[6]);
                 shop.setInCode(arr[7]);
-                if ("1".equals(arr[8]))
-                {
+                if ("1".equals(arr[8])) {
                     shop.setIsopen(0);
-                }
-                else
-                {
+                } else {
                     shop.setIsopen(1);
                 }
                 shopList.add(shop);
-                
+
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                try
-                {
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close();
-                }
-                catch (IOException e1)
-                {
+                } catch (IOException e1) {
                 }
             }
         }
-        for (Shop shop : shopList)
-        {
+        for (Shop shop : shopList) {
             Shop shopDb = shopService.selectByAccount(shop.getAccount());
-            if (shopDb == null)
-            {
+            if (shopDb == null) {
                 shopService.addShop(shop);
-            }
-            else
-            {
+            } else {
                 shopDb.setIsopen(shop.getIsopen());
                 shopService.updateShop(shopDb);
             }
         }
         return shopList.size();
     }
-    
+
     @RequestMapping(value = "/importTaobao")
     @ResponseBody
     public int importTaobao(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer goodType)
-        throws IOException
-    {
-        
+            throws IOException {
+
         System.out.println("=============" + goodType);
         List<String> idList = null;
-        if (goodType == 1 || goodType == 2)
-        {
+        if (goodType == 1 || goodType == 2) {
             idList = importPdd(file.getInputStream());
-        }
-        else
-        {
+        } else {
             idList = importTb(file.getInputStream());
         }
-        
+
         int cnt = 0;
-        for (String str : idList)
-        {
+        for (String str : idList) {
             System.out.println(str);
             Goods good = new Goods();
             good.setGoodsid(str);
             good.setCreatTime(new Date());
             good.setGoodType(goodType);
-            if (goodService.seletcByGoodId(str) == 0)
-            {
+            if (goodService.seletcByGoodId(str) == 0) {
                 cnt++;
                 goodService.insert(good);
             }
         }
         return cnt;
     }
-    
+
     @RequestMapping(value = "/importExpress")
     @ResponseBody
     public int importExpress(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, Integer expressType)
-        throws IOException
-    {
+            throws IOException {
         List<Express> epList = new ArrayList<Express>();
         BufferedReader reader = null;
-        try
-        {
+        try {
             System.out.println(expressType);
             System.out.println("以行为单位读取文件内容，一次读一整行：");
             reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
@@ -189,11 +160,9 @@ public class FileController implements ServletContextAware
             String[] weight = null;
             int line = 0;
             // 一次读入一行，直到读入null为文件结束
-            while ((tempString = reader.readLine()) != null)
-            {
+            while ((tempString = reader.readLine()) != null) {
                 line++;
-                if (line == 1)
-                {
+                if (line == 1) {
                     weight = tempString.split(",");
                     continue;
                 }
@@ -201,49 +170,28 @@ public class FileController implements ServletContextAware
                 // System.out.println("line " + line + ": " + tempString);
                 System.out.println(tempString);
                 String[] arr = tempString.split(",");
-                for (int i = 1; i < arr.length; i++)
-                {
+                for (int i = 1; i < arr.length; i++) {
                     Express ep = new Express();
-                    if("内蒙".equals(arr[0]) || "内蒙古".equals(arr[0]) ) 
-                    {
+                    if ("内蒙".equals(arr[0]) || "内蒙古".equals(arr[0])) {
                         ep.setProvince("内蒙古自治区");
-                    }
-                    else if("广西".equals(arr[0]) )
-                    {
+                    } else if ("广西".equals(arr[0])) {
                         ep.setProvince("广西壮族自治区");
-                    }
-                    else if("新疆".equals(arr[0]) )
-                    {
+                    } else if ("新疆".equals(arr[0])) {
                         ep.setProvince("新疆维吾尔自治区");
-                    }
-                    else if("西藏".equals(arr[0]) )
-                    {
+                    } else if ("西藏".equals(arr[0])) {
                         ep.setProvince("西藏自治区");
-                    }
-                    else if("宁夏".equals(arr[0]) )
-                    {
+                    } else if ("宁夏".equals(arr[0])) {
                         ep.setProvince("宁夏回族自治区");
-                    }
-                    else if("北京".equals(arr[0]) )
-                    {
+                    } else if ("北京".equals(arr[0])) {
                         ep.setProvince("北京市");
-                    }
-                    else if("上海".equals(arr[0]) )
-                    {
+                    } else if ("上海".equals(arr[0])) {
                         ep.setProvince("上海市");
-                    }
-                    else if("天津".equals(arr[0]) )
-                    {
+                    } else if ("天津".equals(arr[0])) {
                         ep.setProvince("天津市");
-                    }
-                    else if("重庆".equals(arr[0]) )
-                    {
+                    } else if ("重庆".equals(arr[0])) {
                         ep.setProvince("重庆市");
-                    }
-                    
-                    else 
-                    {
-                        ep.setProvince(arr[0]+"省");
+                    } else {
+                        ep.setProvince(arr[0] + "省");
                     }
                     ep.setWeight(weight[i].replaceAll("KG", "").replaceAll("Kg", "").replaceAll("kg", ""));
                     ep.setPrice(arr[i]);
@@ -251,68 +199,51 @@ public class FileController implements ServletContextAware
                     ep.setType(expressType);
                     epList.add(ep);
                 }
-                
+
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                try
-                {
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close();
-                }
-                catch (IOException e1)
-                {
+                } catch (IOException e1) {
                 }
             }
         }
-        for (Express ep : epList)
-        {
-            Express expressDB = expressService.selectPrice(ep.getWeight(), ep.getProvince(),ep.getType());
-            if (expressDB == null &&  !StringUtils.isEmpty(ep.getProvince()))
-            {
+        for (Express ep : epList) {
+            Express expressDB = expressService.selectPrice(ep.getWeight(), ep.getProvince(), ep.getType());
+            if (expressDB == null && !StringUtils.isEmpty(ep.getProvince())) {
                 expressService.insert(ep);
-            }
-            else if(!StringUtils.isEmpty(ep.getProvince()))
-            {
+            } else if (!StringUtils.isEmpty(ep.getProvince())) {
                 ep.setId(expressDB.getId());
                 expressService.updateByPrimaryKey(ep);
             }
         }
         return epList.size();
     }
-    
-    private List<String> importTb(InputStream is)
-    {
+
+    private List<String> importTb(InputStream is) {
         List<String> idList = new ArrayList<String>();
         BufferedReader reader = null;
-        try
-        {
+        try {
             System.out.println("以行为单位读取文件内容，一次读一整行：");
-            
+
             reader = new BufferedReader(new InputStreamReader(is, "GBK"));
             String tempString = null;
             int line = 0;
             // 一次读入一行，直到读入null为文件结束
-            while ((tempString = reader.readLine()) != null)
-            {
+            while ((tempString = reader.readLine()) != null) {
                 // 显示行号
                 // System.out.println("line " + line + ": " + tempString);
                 System.out.println(tempString);
                 String[] strArr = tempString.split(",");
                 line++;
-                if (line == 1)
-                {
+                if (line == 1) {
                     continue;
                 }
-                if (StringUtils.isEmpty(strArr[0]))
-                {
+                if (StringUtils.isEmpty(strArr[0])) {
                     break;
                 }
                 System.out.println(strArr[0]);
@@ -322,162 +253,122 @@ public class FileController implements ServletContextAware
                 idList.add(id.trim());
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                try
-                {
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close();
-                }
-                catch (IOException e1)
-                {
+                } catch (IOException e1) {
                 }
             }
         }
         return idList;
     }
-    
-    public List<String> importPdd(InputStream is)
-    {
+
+    public List<String> importPdd(InputStream is) {
         List<String> idList = new ArrayList<String>();
         BufferedReader reader = null;
-        try
-        {
+        try {
             System.out.println("以行为单位读取文件内容，一次读一整行：");
             reader = new BufferedReader(new InputStreamReader(is, "GBK"));
             String tempString = null;
             int line = 1;
             // 一次读入一行，直到读入null为文件结束
-            while ((tempString = reader.readLine()) != null)
-            {
+            while ((tempString = reader.readLine()) != null) {
                 // 显示行号
                 // System.out.println("line " + line + ": " + tempString);
                 String[] arr = tempString.split("=");
-                if (arr.length > 1)
-                {
+                if (arr.length > 1) {
                     idList.add(arr[1]);
                 }
                 line++;
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                try
-                {
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close();
-                }
-                catch (IOException e1)
-                {
+                } catch (IOException e1) {
                 }
             }
         }
         return idList;
     }
-    
+
     @RequestMapping("file/download")
-    public void fileDownload(HttpServletResponse response)
-    {
-        
+    public void fileDownload(HttpServletResponse response) {
+
         // 获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
         String path = servletContext.getRealPath("/");
-        
+
         // 1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
         response.setContentType("multipart/form-data");
-        
+
         // 2.设置文件头：最后一个参数是设置下载文件名(假如我们叫zms.jpg,这里是设置名称)
         response.setHeader("Content-Disposition", "attachment;fileName=" + "goods.txt");
-        
+
         ServletOutputStream out = null;
         FileInputStream inputStream = null;
-        
+
         // 通过文件路径获得File对象(假如此路径中有一个 zms.jpg 文件)
         File file = new File(path + "download/" + "goods.txt");
-        
-        try
-        {
+
+        try {
             inputStream = new FileInputStream(file);
-            
+
             // 3.通过response获取ServletOutputStream对象(out)
             out = response.getOutputStream();
-            
+
             int b = 0;
             byte[] buffer = new byte[512];
-            while (b != -1)
-            {
+            while (b != -1) {
                 b = inputStream.read(buffer);
-                if (b != -1)
-                {
+                if (b != -1) {
                     out.write(buffer, 0, b);// 4.写到输出流(out)中
                 }
-                
+
             }
-            
-        }
-        catch (IOException e)
-        {
+
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                if (inputStream != null)
-                {
+        } finally {
+            try {
+                if (inputStream != null) {
                     inputStream.close();
                 }
-                if (out != null)
-                {
+                if (out != null) {
                     out.close();
                     out.flush();
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
         }
     }
-    
-    private void writeFile(InputStream is, String fileName)
-    {
+
+    private void writeFile(InputStream is, String fileName) {
         BufferedInputStream in = null;
         BufferedOutputStream out = null;
         in = new BufferedInputStream(is);
-        try
-        {
+        try {
             out = new BufferedOutputStream(new FileOutputStream(fileName));
             int len = -1;
             byte[] b = new byte[1024];
-            while ((len = in.read(b)) != -1)
-            {
+            while ((len = in.read(b)) != -1) {
                 out.write(b, 0, len);
             }
             in.close();
             out.close();
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
 }

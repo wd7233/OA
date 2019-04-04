@@ -4,6 +4,7 @@ import java.util.List;
 
 import rml.model.CardInfo;
 import rml.model.Express;
+import rml.model.GoodWeight;
 
 public interface ExpressServiceI
 {
@@ -18,5 +19,6 @@ public interface ExpressServiceI
 
     int updateByPrimaryKey(Express record);
     Express selectPrice (String weight,String province,Integer type);
-
+    Express selectPriceBySku(String sku,String province,Integer type);
+    GoodWeight  selectWeightBySku(String sku);
 }

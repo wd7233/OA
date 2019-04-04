@@ -80,6 +80,12 @@
     from shop
     where number = #{number}
   </select>
+      <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, number, name, category, account, password, user_name, user_card, in_code, 
+    staff_id, goodsnum
+    from shop
+    where name = #{shopName}
+  </select>
    <select id="selectHasStaff" resultMap="BaseResultMap">
    select id, number, name, account, password, user_name, user_card, in_code, staff_id, 
     goodsnum

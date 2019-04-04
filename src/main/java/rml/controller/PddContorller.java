@@ -1,39 +1,26 @@
 package rml.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.text.ParseException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import rml.model.Express;
-import rml.model.GoodWeight;
 import rml.pojo.ReceiveXmlEntity;
 import rml.service.ExpressServiceI;
-import rml.tuling.JuheDemo;
 import rml.util.FormatXmlProcess;
 import rml.util.ReceiveXmlProcess;
 import rml.util.SignUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+
 /**
- * 微信服务端收发消息接口
- * 
+ * 拼多多开放平台接口
  * @author pamchen-1
- * 
  */
 @Controller
-@RequestMapping(value = {"Demo"})
-public class DemoContorller<main>
+@RequestMapping(value = {"Pdd"})
+public class PddContorller
 {
     
     @Autowired
@@ -136,42 +123,20 @@ public class DemoContorller<main>
     
     private String selectExpress(String content)
     {
+        System.out.println(content);
+        String province = content.split("，")[0];
+        String weight = content.split("，")[1];
         String str = "";
-        if (content.split("，").length < 3 && content.split("，")[1].length() <3)
-        {
-            String province = content.split("，")[0];
-            String weight = content.split("，")[1];
-            Express baishiExpress = expressService.selectPrice(weight, province, 0);
-            Express youzhengExpress = expressService.selectPrice(weight, province, 1);
-            // Express shengtongExpress = expressService.selectPrice(weight, province, 2);
-            Express yuantongExpress = expressService.selectPrice(weight, province, 3);
-            String yzPrice = youzhengExpress == null ? "-" : youzhengExpress.getPrice();
-            String bsPrice = baishiExpress == null ? "-" : baishiExpress.getPrice();
-            String ytPrice = yuantongExpress == null ? "-" : yuantongExpress.getPrice();
-            str += "省份：" + province + ", 重量：" + weight + "Kg\n";
-            str += "邮政：" + yzPrice + "\n" + "百世：" + bsPrice + "\n" + "圆通：" + ytPrice;
-        }
-        else
-        {
-            String province = content.split("，")[0];
-            String sku = content.split("，")[1];
-            int cnt = content.split("，").length == 3 ? Integer.parseInt(content.split("，")[2]) : 1;
-            GoodWeight g  = expressService.selectWeightBySku(sku);
-            String weightDB =   g == null?"0":  g.getWeight();
-            Double weightDouble = Math.ceil(Double.parseDouble(weightDB) * cnt);
-            String weight = weightDouble.intValue() + "";
-            Express baishiExpress = expressService.selectPrice(weight, province, 0);
-            Express youzhengExpress = expressService.selectPrice(weight, province, 1);
-            // Express shengtongExpress = expressService.selectPrice(weight, province, 2);
-            Express yuantongExpress = expressService.selectPrice(weight, province, 3);
-            String yzPrice = youzhengExpress == null ? "-" : youzhengExpress.getPrice();
-            String bsPrice = baishiExpress == null ? "-" : baishiExpress.getPrice();
-            String ytPrice = yuantongExpress == null ? "-" : yuantongExpress.getPrice();
-            str += "省份：" + province + ", 重量：" + weight + "Kg\n";
-            str += "邮政：" + yzPrice + "\n" + "百世：" + bsPrice + "\n" + "圆通：" + ytPrice;
-        
-            
-        }
+        Express baishiExpress = expressService.selectPrice(weight, province, 0);
+        Express youzhengExpress = expressService.selectPrice(weight, province, 1);
+        // Express shengtongExpress = expressService.selectPrice(weight, province, 2);
+        Express yuantongExpress = expressService.selectPrice(weight, province, 3);
+        String yzPrice =  youzhengExpress == null ? "-" : youzhengExpress.getPrice() ;
+        String bsPrice =  baishiExpress == null ? "-" : baishiExpress.getPrice();
+        String ytPrice = yuantongExpress == null ? "-" : yuantongExpress.getPrice();
+        str += "邮政：" +yzPrice+ "\n"
+         + "百世：" + bsPrice+ "\n"
+         + "圆通：" +ytPrice ;
         return str;
     }
     

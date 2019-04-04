@@ -498,8 +498,7 @@ font {
 					净重：<font style="color: red">${order.weight}</font>KG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					百世：<font style="color: red">${order.baishiPrice}</font>&nbsp;&nbsp; 
 					邮政：<font style="color: red">${order.youzhengPrice}</font> &nbsp;&nbsp;
-					申通：<font style="color: red">${order.shengtongPrice}</font>&nbsp;&nbsp;
-					安能： <font style="color: red">${order.annengPrice}</font>
+					圆通： <font style="color: red">${order.annengPrice}</font>
 					</td>
 				    <td style="text-align: center; " colspan="">
 					<font style="font-size: 30px;color: black"><b>${order.expressPrice}</b></font></td>

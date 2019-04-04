@@ -21,7 +21,8 @@ int deleteByPrimaryKey(Integer id);
     List<SpecialOrder> selectOrderListByUser(Date startTime, Date endTime, Integer staffId, String keyWord, String orderState,String afterState);
 
     SpecialOrder selectByOrderId(String orderId);
-
+    
+    int deleteByOrderId(String orderId);
 
 
 

@@ -101,9 +101,12 @@ td{
 					</select>
 		<button style="width: 200px; height: 30px;" onclick="exportGoods()">获取商品</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button  onclick="window.open('<%=path%>/scalpingController/getOrder.do')" style="width: 200px; height: 50px;">刷单记录</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button  onclick="window.open('<%=path%>/specialorderController/getSpecialorder.do')" style="width: 200px; height: 50px;">单品订单</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="window.open('<%=path%>/loginController/loadShops.do')" style="width: 200px; height: 50px;">淘单单接入</button>
+		<br/><br/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button onclick="window.open('<%=path%>/shopController/goodsLower.do')" style="width: 200px; height: 50px;">店铺下架</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

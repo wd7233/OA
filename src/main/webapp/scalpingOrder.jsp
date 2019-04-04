@@ -80,71 +80,68 @@ td{
              $("#startDate").datepicker('setDate',new Date()); 
              $("#endDate").datepicker('setDate',new Date());
         });
- function getLucre() {
+  
+  function uploadPic() {
+		var form = document.getElementById('upload'),
+			formData = new FormData(form);
 		$.ajax({
-            type: "POST",
-            url: "<%=path%>/lucreController/getLucre.do",
-			data : {
-				startDate : $("#startDate").val(),
-				endDate : $("#endDate").val()
+			url : "<%=path%>/scalpingController/importOrder.do",
+			type : "post",
+			data : formData,
+			processData : false,
+			contentType : false,
+			success : function(res) {
+				alert('导入成功' + res + '条数据');
 			},
-			dataType : 'json',
-			async : false,
-			success : function(data) {
-			  alert('收 入 : '+data.sellTotal+'\n'+
-					'佣 金 : '+data.commissionTotal+'\n'+
-			 		'支 出 : '+data.buyTotal+'\n'+
-			 		'利 润 : '+data.lucre);
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert("error ：" + textStatus);
+			error : function(err) {
+				alert("格式错误，请重新编辑~", err);
 			}
-		});
+		})
 	}
 </script>
 <body>
 	<center>
-		<form id="upload" enctype="multipart/form-data" method="post" action="<%=path%>/lucreController/getOrderStaff.do">
+		<form id="upload" enctype="multipart/form-data" method="post" action="<%=path%>/scalpingController/getOrder.do">
 		 开始时间 ： <input id="startDate" type="text" name="startDate"/>&nbsp;&nbsp;&nbsp;&nbsp;
-		 结束时间 ： <input id="endDate" type="text" name="endDate" />&nbsp;&nbsp;
-		 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 结束时间 ： <input id="endDate" type="text" name="endDate" />&nbsp;&nbsp;&nbsp;&nbsp;
+		 关 键 字 ： <input id="keyWord" type="text" name="keyWord" />&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 		 <input type="submit"
 				style="width: 100px; height: 30px;" value="查询" />
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input
-				type="file" name="file" id="pic" /> <input type="button"
-				style="width: 100px; height: 30px;" value="导入" onclick="uploadPic()" />
+				
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		<input type="file" name="file" id="pic" /> 
+		<input
+				type="button" style="width: 100px; height: 30px;" value="导入"
+				onclick="uploadPic()" />
 		</form>
 		<br/>
 		<table border="1" width="100% ">
 			<tr class = "ftr" height="60px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td style="text-align:center;">序号</td>
-				<td style="text-align:center;">名 称</td>
-				<td style="text-align:center;">店铺数量</td>
-				<td style="text-align:center;">订单数量</td>
-				<td style="text-align:center;">退款数量</td>
-				<td style="text-align:center;">退款率</td>
-				<td style="text-align:center;">待解决数量</td>
-				<td style="text-align:center;">待涨价数量</td>
-				<td style="text-align:center;">总计利润</td>
+				<td style="text-align:center;">导入文件</td>
+				<td style="text-align:center;">订单编号</td>
+				<td style="text-align:center;">收货人</td>
+				<td style="text-align:center;">联系方式</td>
+				<td style="text-align:center;">价格</td>
+				<td style="text-align:center;">刷单日期</td>
+				<td style="text-align:center;">状态</td>
 			</tr>
-			<c:forEach items="${lucreList}" var="lucre" varStatus="status">
+		<c:forEach items="${orderList}" var="order" varStatus="status">
 				<tr height="50px">
 				<td style="text-align:center;">${status.index+1 }</td>
-				<td style="width:100px;">${lucre.userName}</td>
-				<td>${fn:length(lucre.shopList)}</td>
-				<td>${lucre.orderCnt}</td>
-				<td>${lucre.backCnt}</td>
-				<td>${lucre.backRate}</td>
-				<td>${lucre.proCnt}</td>
-				<td>${lucre.editCnt}</td>
-				<td>${lucre.lucre}</td>
+					<td style="width:100px;">${order.goodNumber}</td>
+				<td>${order.orderId}</td>
+				<td>${order.consignee}</td>
+				<td>${order.phone}</td>
+				<td>${order.skuPirce}</td>
+				<td><fmt:formatDate value="${order.createTime}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
+				<td>${order.state}</td>
 				</tr>
 			</c:forEach>
 		</table>
-		<br/><br/>
-		<button onclick="getLucre()" style="width: 200px; height: 50px;">总计</button>
-		
 	</center>
 </body>
 </html>

@@ -106,10 +106,22 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>-->
-			<table schema="qicheng" tableName="special_order_supple" domainObjectName="SpecialOrderSupple"
+			<!--<table schema="qicheng" tableName="special_order_supple" domainObjectName="SpecialOrderSupple"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
+			selectByExampleQueryId="false"></table>-->
+			<!--<table schema="qicheng" tableName="scalping_plan" domainObjectName="ScalpingPlan"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
+				<!--<table schema="qicheng" tableName="scalping_order" domainObjectName="ScalpingOrder"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
+				<!--<table schema="qicheng" tableName="keyword_plan" domainObjectName="KeywordPlan"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>-->
 			<!--<table schema="qicheng" tableName="withdraw" domainObjectName="Withdraw"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
@@ -122,5 +134,18 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>-->
+			
+			<table schema="qicheng" tableName="zdata_views_month" domainObjectName="ViewsMonth"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+			<table schema="qicheng" tableName="zdata_views_quarter" domainObjectName="ViewsQuarter"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+			<table schema="qicheng" tableName="zdata_views_year" domainObjectName="ViewsYear"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
 	</context>
 </generatorConfiguration>

@@ -78,6 +78,12 @@ public class OrderController
         int cnt = 0;
         for (OrderDetail order : orderList)
         {
+            if (!StringUtils.isNumeric(order.getShopNumber()))
+            {
+                Shop s = shopService.selectByName(order.getShopNumber());
+                String shopNumber = s.getNumber();
+                order.setShopNumber(shopNumber);
+            }
             if (order.getSellPrice() - order.getBuyPrice() < 5)
             {
                 EditPrice ep = editPriceService.selectByOrderId(order.getOrderId());
@@ -85,7 +91,7 @@ public class OrderController
                 {
                     ep = new EditPrice();
                     ep.setCreateTime(new Date());
-                    ep.setPrice(order.getBuyPrice()+5);
+                    ep.setPrice(order.getBuyPrice() + 5);
                     ep.setOrderId(order.getOrderId());
                     ep.setState(0);
                     ep.setType(0);
@@ -113,7 +119,7 @@ public class OrderController
                         {
                             ep = new EditPrice();
                             ep.setCreateTime(new Date());
-                            ep.setPrice(order.getBuyPrice()+5);
+                            ep.setPrice(order.getBuyPrice() + 5);
                             ep.setOrderId(order.getOrderId());
                             ep.setState(0);
                             ep.setType(0);
@@ -143,8 +149,8 @@ public class OrderController
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord");
-        Integer staffId = Integer.parseInt(request.getParameter("staffIdSelect")==null?"-1":request.getParameter("staffIdSelect"));
-        Integer orderType = Integer.parseInt(request.getParameter("orderType")==null?"0":request.getParameter("orderType"));
+        Integer staffId = Integer.parseInt(request.getParameter("staffIdSelect") == null ? "-1" : request.getParameter("staffIdSelect"));
+        Integer orderType = Integer.parseInt(request.getParameter("orderType") == null ? "0" : request.getParameter("orderType"));
         if (!StringUtils.isEmpty(keyWord))
         {
             startDate = "2018-01-01";
@@ -152,11 +158,11 @@ public class OrderController
         }
         HttpSession session = request.getSession();
         Staff s = (Staff)session.getAttribute("user");
-        List<Staff>   staffList = staffService.selectByRole(s.getId(), s.getRole(),s.getCompanyId());
+        List<Staff> staffList = staffService.selectByRole(s.getId(), s.getRole(), s.getCompanyId());
         request.setAttribute("staffList", staffList);
         Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
         Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
-        List<OrderDetail> orderList = orderService.selectOrderList(start, end, keyWord.trim(),staffId,orderType);
+        List<OrderDetail> orderList = orderService.selectOrderList(start, end, keyWord.trim(), staffId, orderType);
         List<OrderType> orderTypeList = orderTypeService.selectAll();
         request.setAttribute("orderList", orderList);
         request.setAttribute("orderTypeList", orderTypeList);
@@ -178,7 +184,7 @@ public class OrderController
         }
         Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
         Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
-        List<OrderDetail> orderList = orderService.selectOrderList(start, end, keyWord.trim(),-1,0);
+        List<OrderDetail> orderList = orderService.selectOrderList(start, end, keyWord.trim(), -1, 0);
         List<OrderType> orderTypeList = orderTypeService.selectAll();
         request.setAttribute("orderList", orderList);
         request.setAttribute("orderTypeList", orderTypeList);
@@ -284,7 +290,7 @@ public class OrderController
     // 商品涨价
     @RequestMapping(value = "/editPrice")
     @ResponseBody
-    public String editPrice(String orderId, Double price,Integer type)
+    public String editPrice(String orderId, Double price, Integer type)
     {
         EditPrice ep = editPriceService.selectByOrderId(orderId.trim());
         if (ep == null)
@@ -409,11 +415,11 @@ public class OrderController
     @RequestMapping(value = "/getOrderListByUser")
     public String getOrderListByUser(HttpServletRequest request)
     {
-        //订单查询
+        // 订单查询
         List<OrderDetail> order = new ArrayList<OrderDetail>();
         HttpSession session = request.getSession();
         Staff staff = (Staff)session.getAttribute("user");
-        List<Staff> staffList = staffService.selectByRole(staff.getId(), staff.getRole(),staff.getCompanyId());
+        List<Staff> staffList = staffService.selectByRole(staff.getId(), staff.getRole(), staff.getCompanyId());
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         Integer orderType = request.getParameter("orderType") == null ? 0 : Integer.parseInt(request.getParameter("orderType"));
@@ -429,20 +435,20 @@ public class OrderController
         List<OrderDetail> orderList = orderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderType);
         request.setAttribute("orderList", orderList);
         request.setAttribute("staffList", staffList);
-        //订单统计  总订单数，待解决订单，退款单数，退款率，待涨价订单，昨日日订单数
-        Integer totalCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(),DateUtil.getMonthEndDay(), staffId, 0);
-        Integer proCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(),DateUtil.getMonthEndDay(), staffId, 3);
-        Integer backCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(),DateUtil.getMonthEndDay(), staffId, 4);
+        // 订单统计 总订单数，待解决订单，退款单数，退款率，待涨价订单，昨日日订单数
+        Integer totalCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(), DateUtil.getMonthEndDay(), staffId, 0);
+        Integer proCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(), DateUtil.getMonthEndDay(), staffId, 3);
+        Integer backCnt = orderService.selectCountByUser(DateUtil.getMonthFirstDay(), DateUtil.getMonthEndDay(), staffId, 4);
         Integer yesterDayCnt = orderService.selectCountByUser(DateUtil.getYesterdayStart(), DateUtil.getYesterdayEnd(), staffId, 0);
-        Integer editCnt = orderService.selectEditCount(DateUtil.getMonthFirstDay(),DateUtil.getMonthEndDay(), staffId);
+        Integer editCnt = orderService.selectEditCount(DateUtil.getMonthFirstDay(), DateUtil.getMonthEndDay(), staffId);
         request.setAttribute("totalCnt", totalCnt);
         request.setAttribute("proCnt", proCnt);
         request.setAttribute("backCnt", backCnt);
         request.setAttribute("totalCnt", totalCnt);
         request.setAttribute("editCnt", editCnt);
-        DecimalFormat df1 = new DecimalFormat("0.00%"); 
-        double backCnt_double=backCnt*1.0;  
-        request.setAttribute("backRate", df1.format(backCnt_double/totalCnt));
+        DecimalFormat df1 = new DecimalFormat("0.00%");
+        double backCnt_double = backCnt * 1.0;
+        request.setAttribute("backRate", df1.format(backCnt_double / totalCnt));
         request.setAttribute("yesterDayCnt", yesterDayCnt);
         return "order";
     }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rml.dao.ScalpingOrderMapper">
+  <resultMap id="BaseResultMap" type="rml.model.ScalpingOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_number" jdbcType="VARCHAR" property="goodNumber" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sku_pirce" jdbcType="DOUBLE" property="skuPirce" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from scalping_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.ScalpingOrder">
+    insert into scalping_order (id, good_number, order_id, 
+      consignee, phone, sku_pirce, 
+      create_time, type, state
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodNumber,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{consignee,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{skuPirce,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.ScalpingOrder">
+    update scalping_order
+    set good_number = #{goodNumber,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      sku_pirce = #{skuPirce,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, good_number, order_id, consignee, phone, sku_pirce, create_time, type, 
+    state
+    from scalping_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, good_number, order_id, consignee, phone, sku_pirce, create_time, type, 
+    state
+    from scalping_order
+  </select>
+  	<!-- /**============ ===================== ===================== ==**/ -->
+  	
+  <select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, good_number, order_id, consignee, phone, sku_pirce, create_time, type, 
+    state
+    from scalping_order
+    where order_id = #{orderId}
+  </select>
+    <select id="selectOrder" parameterType="map" resultMap="BaseResultMap">
+   SELECT * FROM scalping_order  o
+	where 1=1 
+	<if test="keyWord==null or keyWord == ''">
+	and o.create_time 
+	between #{startTime} and #{endTime} 
+	</if>
+	<if test="keyWord!=null and keyWord != ''">
+			and ( o.order_id like CONCAT('%',#{keyWord},'%')
+			or o.consignee like CONCAT('%',#{keyWord},'%')
+			or o.good_number like CONCAT('%',#{keyWord},'%')
+			or o.phone like CONCAT('%',#{keyWord},'%')
+			)
+	</if>
+  </select>
+</mapper>

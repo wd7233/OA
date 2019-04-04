@@ -29,14 +29,16 @@ public class DateUtil
      */
     public static Date strToDateLong(String strDate, String format)
     {
+        System.out.println(strDate);
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         ParsePosition pos = new ParsePosition(0);
         Date strtodate = formatter.parse(strDate, pos);
+        System.out.println(strtodate);
         return strtodate;
     }
     public static void main(String[] args)
     {
-       System.out.println( strToDateLong("2018/12/26 16:57","yyyy/MM/dd HH:mm"));
+       System.out.println( strToDateLong("2019-03-01 00:00:00","yy-MM-dd HH:mm:ss"));
     }
     /**
      * 获取当天的起始时间

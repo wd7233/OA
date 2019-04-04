@@ -70,7 +70,7 @@ public class SpecialOrderController
             endDate = "2021-12-31";
         }
         Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
-        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
+        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd ");
         List<SpecialOrder> orderList = specialOsrderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderState, afterState);
         request.setAttribute("orderList", orderList);
         request.setAttribute("staffList", staffList);
@@ -107,7 +107,8 @@ public class SpecialOrderController
             {
                 // 塞入快递价格查询结果
                 //X数量
-                Double doubleWeight = Double.parseDouble(so.getWeight()) * so.getCount();
+                //+0.3打包重量
+                Double doubleWeight = (Double.parseDouble(so.getWeight()) + 0.3)* so.getCount();
                 //SKU 一副的时候
                 if (!StringUtils.isEmpty(so.getColor())&&(so.getColor().indexOf("2") != -1 || so.getColor().indexOf("两") != -1))
                 {
@@ -126,9 +127,10 @@ public class SpecialOrderController
                 Express baishi = expressService.selectPrice(so.getWeight(), so.getProvince(), 0);
                 so.setBaishiPrice(baishi == null ? "-" : baishi.getPrice());
                 Express youzheng = expressService.selectPrice(so.getWeight(), so.getProvince(), 1);
-                so.setYouzhengPrice(youzheng == null ? "-" :(int)Math.ceil(Double.parseDouble(youzheng.getPrice()) * 0.8 )+"");
+                so.setYouzhengPrice(youzheng == null ? "-" :youzheng.getPrice());
                 Express shengtong = expressService.selectPrice(so.getWeight(), so.getProvince(), 2);
                 so.setShengtongPrice(shengtong == null ? "-" : shengtong.getPrice());
+                //安能改圆通
                 Express anneng = expressService.selectPrice(so.getWeight(), so.getProvince(), 3);
                 so.setAnnengPrice(anneng == null ? "-" : anneng.getPrice());
                 // 计算价格最低的快递\
@@ -139,16 +141,6 @@ public class SpecialOrderController
                 expressList.add("-".equals(so.getShengtongPrice()) ? 999 : Double.parseDouble(so.getShengtongPrice()));
                 expressList.add("-".equals(so.getAnnengPrice()) ? 999 : Double.parseDouble(so.getAnnengPrice()));
                 Collections.sort(expressList);
-//                System.out.println(so.getConsignee());
-//                System.out.println(so.getProvince());
-//                System.out.println(expressList.get(0));
-//                System.out.println(expressList.get(1));
-//                System.out.println(expressList.get(2));
-//                System.out.println(expressList.get(3));
-//                System.out.println(so.getYouzhengPrice());
-//                System.out.println(so.getShengtongPrice());
-//                System.out.println(so.getAnnengPrice());
-//                System.out.println(so.getBaishiPrice());
                 if (!"-".equals(so.getYouzhengPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getYouzhengPrice()))==0)
                 {
                     so.setExpressPrice("邮政快递");
@@ -159,7 +151,7 @@ public class SpecialOrderController
                 }
                 else if (!"-".equals(so.getAnnengPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getAnnengPrice()))==0)
                 {
-                    so.setExpressPrice("安能快递");
+                    so.setExpressPrice("圆通快递");
                 }
                 if (!"-".equals(so.getBaishiPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getBaishiPrice()))==0)
                 {
@@ -325,6 +317,5 @@ public class SpecialOrderController
         json.put("shengtong", shengtongExpress==null?"-":shengtongExpress.getPrice());
         json.put("anneng", annengExpress==null?"-":annengExpress.getPrice());
         return json;
-        
     }
 }
