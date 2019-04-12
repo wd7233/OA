@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,38 @@ public class ScalpingController
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord").trim();
         List<ScalpingOrder> orderList = scalpingService.selectOrder(startTime, endTime, "5533035595", keyWord);
         request.setAttribute("orderList", orderList);
+        Double totalPrice = new Double(0);
+        int orderCnt = 0;
+        int backCnt = 0;
+        for (ScalpingOrder so : orderList)
+        {
+            if ("无售后或售后取消".equals(so.getAfterState()))
+            {
+                orderCnt++;
+                
+                BigDecimal b1 = new BigDecimal(Double.toString(totalPrice));
+                Double price = so.getSkuPirce();
+                BigDecimal b2 = new BigDecimal(Double.toString(price));
+                totalPrice = b1.add(b2).doubleValue();
+                if (price > 29)
+                {
+                    totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(3)))).doubleValue();
+                }
+                else
+                {
+                    totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(2.5)))).doubleValue();
+                    
+                }
+            }
+            else
+            {
+                backCnt++;
+            }
+            
+        }
+        request.setAttribute("orderCnt", orderCnt);
+        request.setAttribute("backCnt", backCnt);
+        request.setAttribute("totalPrice", totalPrice);
         return "scalpingOrder";
     }
     
@@ -73,12 +106,6 @@ public class ScalpingController
             boolean isOne = true;
             while ((tempString = reader.readLine()) != null)
             {
-                // 显示行号
-                if (isOne)
-                {
-                    isOne = false;
-                    continue;
-                }
                 System.out.println(tempString);
                 String[] arr = tempString.split(",");
                 if (arr.length > 3)

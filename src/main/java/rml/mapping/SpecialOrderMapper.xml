@@ -100,21 +100,25 @@
 		where order_id = #{orderId}
 	</select>
 	<select id="selectOrderListByUser" parameterType="map" resultMap="BaseResultMap">
-		select o.id,o.color, o.order_id, o.good_number, sku, o.count, o.price, consignee,
+		select o.id,o.color, o.order_id, o.good_number, o.sku, o.count, o.price, o.consignee,
 		o.telephone, province,
-		city, area, street, o.remakes, o.message, o.create_time, promise_send_time,
+		city, area, street, o.remakes, o.message, o.create_time, o.promise_send_time,
 		o.state, o.courier_number,
 		o.courier_company, o.after_state, deliver_time, invoice , s.name as shopName , g.good_name as goodName,  
-		w.weight as weight , w.good_sku as size 
+		w.weight as weight , w.good_sku as size ,sd .good_number as sdName
 		from special_order o
 		left join good_number g on o.good_number = g.good_number
 		left join shop s on s.number = g.shop_number
 		left join staff f on s.staff_id = f.id
 		left join company_user c on f.id = c.user_id
 		left join good_weight w on  w.good_sku = getNum(o.sku)  
+		left join scalping_order sd ON sd.order_id = o.order_id 
 		where o.create_time
 		between #{startTime} and #{endTime}
 		and s.staff_id = #{staffId} 
+		<if test="shopNumber !=null and shopNumber != ''">
+			and g.shop_number = #{shopNumber} 
+		</if>
 		<if test="orderState !=null and orderState != ''">
 			and o.state = #{orderState}
 		</if>
@@ -144,4 +148,18 @@
     delete from special_order
     where order_id = #{orderId}
   </delete>
+  	<select id="selectSkuCount" parameterType="map" resultMap="BaseResultMap">
+  	SELECT sku,COUNT(*) as cnt 
+  	FROM special_order  
+  	WHERE 1 = 1 
+  	and  ( good_number ='4962475356' OR good_number = '4962464526') 
+  	AND sku != '其他型号张数请联系客服' GROUP BY sku  ORDER BY COUNT(*) DESC
+  	</select>
+    <select id="selectSkuNumCount" parameterType="map" resultMap="BaseResultMap">
+  	SELECT getNum(sku) as sku , COUNT(*) as cnt 
+  	FROM special_order  
+  	WHERE 1 = 1 
+  	and  ( good_number ='4962475356' OR good_number = '4962464526') 
+  	and CHAR_LENGTH(getNum(sku)) = 5 GROUP BY getNum(sku)  ORDER BY COUNT(*) DESC
+  	</select>
 </mapper>

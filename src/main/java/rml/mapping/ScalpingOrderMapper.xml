@@ -58,7 +58,8 @@
     where order_id = #{orderId}
   </select>
     <select id="selectOrder" parameterType="map" resultMap="BaseResultMap">
-   SELECT * FROM scalping_order  o
+   SELECT o.*,so.after_state as afterState FROM scalping_order  o 
+   LEFT JOIN special_order so ON o.order_id = so.order_id  
 	where 1=1 
 	<if test="keyWord==null or keyWord == ''">
 	and o.create_time 

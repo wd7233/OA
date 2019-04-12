@@ -26,12 +26,6 @@
 	width: 80px;
 	height: 20px;
 }
-table tr:nth-child(odd) {
-	background: #f8cacd;
-}
-table tr:nth-child(even) {
-	background: #9cdbe0;
-}
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -117,6 +111,12 @@ td{
 				onclick="uploadPic()" />
 		</form>
 		<br/>
+		<div id="orderCntDiv">
+			&nbsp;&nbsp;&nbsp; 正常订单数：<font style = "color : #FF34B3">${orderCnt}</font>
+			&nbsp;&nbsp;&nbsp; 异常订单数：<font style = "color : red">${backCnt}</font>
+			&nbsp;&nbsp;&nbsp; 总价小计：<font style = "color : #FFD700">${totalPrice}</font>
+		</div>
+		<br/>
 		<table border="1" width="100% ">
 			<tr class = "ftr" height="60px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td style="text-align:center;">序号</td>
@@ -129,7 +129,22 @@ td{
 				<td style="text-align:center;">状态</td>
 			</tr>
 		<c:forEach items="${orderList}" var="order" varStatus="status">
-				<tr height="50px">
+				<c:if test="${ order.afterState =='售后处理中' }">
+					<tr height="50px" bgcolor="#F8CACD"
+						onclick="detail(${status.index+1})">
+				</c:if>
+				<c:if test="${order.afterState=='无售后或售后取消' }">
+					<tr height="50px" bgcolor="#9CDBE0"
+						onclick="detail(${status.index+1})">
+				</c:if>
+				<c:if test="${order.afterState=='退款成功' }">
+					<tr height="50px" bgcolor="#F8E040"
+						onclick="detail(${status.index+1})">
+				</c:if>
+				<c:if test="${order.afterState == null}">
+					<tr height="50px" bgcolor="#EE0000" 
+						onclick="detail(${status.index+1})">
+				</c:if>
 				<td style="text-align:center;">${status.index+1 }</td>
 					<td style="width:100px;">${order.goodNumber}</td>
 				<td>${order.orderId}</td>
@@ -138,7 +153,7 @@ td{
 				<td>${order.skuPirce}</td>
 				<td><fmt:formatDate value="${order.createTime}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
-				<td>${order.state}</td>
+				<td>${order.afterState}</td>
 				</tr>
 			</c:forEach>
 		</table>

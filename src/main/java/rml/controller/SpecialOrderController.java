@@ -23,10 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSONObject;
 
 import rml.model.Express;
+import rml.model.Shop;
 import rml.model.SpecialOrder;
 import rml.model.SpecialOrderSupple;
 import rml.model.Staff;
 import rml.service.ExpressServiceI;
+import rml.service.ShopServiceI;
 import rml.service.SpecialOrderServiceI;
 import rml.service.SpecialOrderSuppleServiceI;
 import rml.service.StaffServiceI;
@@ -43,11 +45,24 @@ public class SpecialOrderController
     
     @Autowired
     private SpecialOrderServiceI specialOsrderService;
+    
     @Autowired
     private SpecialOrderSuppleServiceI specialOrderSuppleService;
     
     @Autowired
+    private ShopServiceI shopService;
+    
+    @Autowired
     private ExpressServiceI expressService;
+    
+    // sku数量统计
+    @RequestMapping(value = "/skuCount")
+    public String getSkuCount(HttpServletRequest request)
+    {
+        List<SpecialOrder> orderList = specialOsrderService.selectSkuCount(null);
+        request.setAttribute("orderList", orderList);
+        return "skuCount";
+    }
     
     // 订单查询-ALL
     @RequestMapping(value = "/getSpecialorder")
@@ -60,6 +75,7 @@ public class SpecialOrderController
         List<Staff> staffList = staffService.selectByRole(staff.getId(), staff.getRole(), staff.getCompanyId());
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
+        String shopNumber = request.getParameter("shopNumber");
         String afterState = request.getParameter("afterState");
         String orderState = request.getParameter("orderState") == null ? "" : request.getParameter("orderState").trim();
         Integer staffId = request.getParameter("staffId") == null ? staff.getId() : Integer.parseInt(request.getParameter("staffId"));
@@ -69,10 +85,12 @@ public class SpecialOrderController
             startDate = "2018-01-01";
             endDate = "2021-12-31";
         }
-        Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
-        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd ");
-        List<SpecialOrder> orderList = specialOsrderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderState, afterState);
+        Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yyyy-MM-dd");
+        Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yyyy-MM-dd");
+        List<SpecialOrder> orderList = specialOsrderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderState, afterState, shopNumber);
+        List<Shop> shopList = shopService.selectByKeyword(staff.getId(), null);
         request.setAttribute("orderList", orderList);
+        request.setAttribute("shopList", shopList);
         request.setAttribute("staffList", staffList);
         return "specialOrder";
     }
@@ -84,6 +102,7 @@ public class SpecialOrderController
         // 订单查询
         HttpSession session = request.getSession();
         Staff staff = (Staff)session.getAttribute("user");
+        String shopNumber = request.getParameter("shopNumber");
         List<Staff> staffList = staffService.selectByRole(staff.getId(), staff.getRole(), staff.getCompanyId());
         String orderState = "未发货";
         Integer staffId = request.getParameter("staffId") == null ? staff.getId() : Integer.parseInt(request.getParameter("staffId"));
@@ -92,7 +111,7 @@ public class SpecialOrderController
         String endDate = "2021-12-31";
         Date start = StringUtils.isEmpty(startDate) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startDate, "yy-MM-dd");
         Date end = StringUtils.isEmpty(endDate) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endDate, "yy-MM-dd");
-        List<SpecialOrder> orderList = specialOsrderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderState, "无售后或售后取消");
+        List<SpecialOrder> orderList = specialOsrderService.selectOrderListByUser(start, end, staffId, keyWord.trim(), orderState, "无售后或售后取消", shopNumber);
         for (SpecialOrder so : orderList)
         {
             if (so.getWeight() == null)
@@ -106,31 +125,31 @@ public class SpecialOrderController
             else
             {
                 // 塞入快递价格查询结果
-                //X数量
-                //+0.3打包重量
-                Double doubleWeight = (Double.parseDouble(so.getWeight()) + 0.3)* so.getCount();
-                //SKU 一副的时候
-                if (!StringUtils.isEmpty(so.getColor())&&(so.getColor().indexOf("2") != -1 || so.getColor().indexOf("两") != -1))
+                // X数量
+                // +0.3打包重量
+                Double doubleWeight = (Double.parseDouble(so.getWeight()) + 0.3) * so.getCount();
+                // SKU 一副的时候
+                if (!StringUtils.isEmpty(so.getColor()) && (so.getColor().indexOf("2") != -1 || so.getColor().indexOf("两") != -1))
                 {
                     doubleWeight = doubleWeight * 2;
                 }
                 //
-//                if("0.5".equals(doubleWeight+"") || (doubleWeight+"").indexOf(".") == -1 ) 
-//                {
-//                    so.setWeight(Math.ceil(doubleWeight)+"");
-//                }
-//                else 
-//                {
-//                    so.setWeight((doubleWeight+"").substring(0, (doubleWeight+"").length()-2));
-//                }
-                so.setWeight((int)Math.ceil(doubleWeight)+"");
+                // if("0.5".equals(doubleWeight+"") || (doubleWeight+"").indexOf(".") == -1 )
+                // {
+                // so.setWeight(Math.ceil(doubleWeight)+"");
+                // }
+                // else
+                // {
+                // so.setWeight((doubleWeight+"").substring(0, (doubleWeight+"").length()-2));
+                // }
+                so.setWeight((int)Math.ceil(doubleWeight) + "");
                 Express baishi = expressService.selectPrice(so.getWeight(), so.getProvince(), 0);
                 so.setBaishiPrice(baishi == null ? "-" : baishi.getPrice());
                 Express youzheng = expressService.selectPrice(so.getWeight(), so.getProvince(), 1);
-                so.setYouzhengPrice(youzheng == null ? "-" :youzheng.getPrice());
+                so.setYouzhengPrice(youzheng == null ? "-" : youzheng.getPrice());
                 Express shengtong = expressService.selectPrice(so.getWeight(), so.getProvince(), 2);
                 so.setShengtongPrice(shengtong == null ? "-" : shengtong.getPrice());
-                //安能改圆通
+                // 安能改圆通
                 Express anneng = expressService.selectPrice(so.getWeight(), so.getProvince(), 3);
                 so.setAnnengPrice(anneng == null ? "-" : anneng.getPrice());
                 // 计算价格最低的快递\
@@ -141,19 +160,19 @@ public class SpecialOrderController
                 expressList.add("-".equals(so.getShengtongPrice()) ? 999 : Double.parseDouble(so.getShengtongPrice()));
                 expressList.add("-".equals(so.getAnnengPrice()) ? 999 : Double.parseDouble(so.getAnnengPrice()));
                 Collections.sort(expressList);
-                if (!"-".equals(so.getYouzhengPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getYouzhengPrice()))==0)
+                if (!"-".equals(so.getYouzhengPrice()) && expressList.get(0).compareTo(Double.parseDouble(so.getYouzhengPrice())) == 0)
                 {
                     so.setExpressPrice("邮政快递");
                 }
-                else if (!"-".equals(so.getShengtongPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getShengtongPrice()))==0)
+                else if (!"-".equals(so.getShengtongPrice()) && expressList.get(0).compareTo(Double.parseDouble(so.getShengtongPrice())) == 0)
                 {
                     so.setExpressPrice("申通快递");
                 }
-                else if (!"-".equals(so.getAnnengPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getAnnengPrice()))==0)
+                else if (!"-".equals(so.getAnnengPrice()) && expressList.get(0).compareTo(Double.parseDouble(so.getAnnengPrice())) == 0)
                 {
                     so.setExpressPrice("圆通快递");
                 }
-                if (!"-".equals(so.getBaishiPrice())&&expressList.get(0).compareTo(Double.parseDouble(so.getBaishiPrice()))==0)
+                if (!"-".equals(so.getBaishiPrice()) && expressList.get(0).compareTo(Double.parseDouble(so.getBaishiPrice())) == 0)
                 {
                     so.setExpressPrice("百世快递");
                 }
@@ -267,20 +286,22 @@ public class SpecialOrderController
             return "SUCCESS";
         }
     }
-    //补发录入
+    
+    // 补发录入
     @RequestMapping(value = "/suppleOrder")
     @ResponseBody
     public String suppleOrder(String orderId, String priceAdd, String messageAdd)
     {
         SpecialOrderSupple sos = new SpecialOrderSupple();
-            sos.setOrderId(orderId);
-            sos.setSupplePrice(Double.parseDouble(priceAdd));
-            sos.setMessage(messageAdd);
-            sos.setCreateTime(new Date());
-            sos.setState(0);
-            specialOrderSuppleService.insert(sos);
-            return "SUCCESS";
+        sos.setOrderId(orderId);
+        sos.setSupplePrice(Double.parseDouble(priceAdd));
+        sos.setMessage(messageAdd);
+        sos.setCreateTime(new Date());
+        sos.setState(0);
+        specialOrderSuppleService.insert(sos);
+        return "SUCCESS";
     }
+    
     // 发货，只更新发货信息
     @RequestMapping(value = "/sendOrder")
     @ResponseBody
@@ -302,6 +323,7 @@ public class SpecialOrderController
         }
         
     }
+    
     // 快递价格查询
     @RequestMapping(value = "/selectExpress")
     @ResponseBody
@@ -312,10 +334,10 @@ public class SpecialOrderController
         Express youzhengExpress = expressService.selectPrice(weight, province, 1);
         Express shengtongExpress = expressService.selectPrice(weight, province, 2);
         Express annengExpress = expressService.selectPrice(weight, province, 3);
-        json.put("baishi", baishiExpress==null?"-":baishiExpress.getPrice());
-        json.put("youzheng", youzhengExpress==null?"-":(int)Math.ceil(Double.parseDouble(youzhengExpress.getPrice()) * 0.8 )+"");
-        json.put("shengtong", shengtongExpress==null?"-":shengtongExpress.getPrice());
-        json.put("anneng", annengExpress==null?"-":annengExpress.getPrice());
+        json.put("baishi", baishiExpress == null ? "-" : baishiExpress.getPrice());
+        json.put("youzheng", youzhengExpress == null ? "-" : (int)Math.ceil(Double.parseDouble(youzhengExpress.getPrice()) * 0.8) + "");
+        json.put("shengtong", shengtongExpress == null ? "-" : shengtongExpress.getPrice());
+        json.put("anneng", annengExpress == null ? "-" : annengExpress.getPrice());
         return json;
     }
 }

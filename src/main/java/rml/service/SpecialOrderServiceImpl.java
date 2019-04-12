@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import rml.dao.SpecialOrderMapper;
 import rml.model.OrderDetail;
+import rml.model.ScalpingOrder;
 import rml.model.SpecialOrder;
 
 @Service("specialOrderService")
@@ -50,7 +51,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
     }
 
     @Override
-    public List<SpecialOrder> selectOrderListByUser(Date startTime, Date endTime, Integer staffId, String keyWord, String orderState,String afterState)
+    public List<SpecialOrder> selectOrderListByUser(Date startTime, Date endTime, Integer staffId, String keyWord, String orderState,String afterState,String shopNumber)
     {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("startTime", startTime);
@@ -59,6 +60,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
         map.put("orderState", orderState);
         map.put("keyWord", keyWord);
         map.put("afterState", afterState);
+        map.put("shopNumber", shopNumber);
         return specialOrderMapper.selectOrderListByUser(map);
     }
 
@@ -72,6 +74,18 @@ public class SpecialOrderServiceImpl implements SpecialOrderServiceI{
     public int deleteByOrderId(String orderId)
     {
         return specialOrderMapper.deleteByOrderId(orderId);
+    }
+
+    @Override
+    public List<SpecialOrder> selectSkuCount(Map<String, Object> map)
+    {
+        return specialOrderMapper.selectSkuCount(map);
+    }
+
+    @Override
+    public List<SpecialOrder> selectSkuNumCount(Map<String, Object> map)
+    {
+        return specialOrderMapper.selectSkuNumCount(map);
     }
 
 

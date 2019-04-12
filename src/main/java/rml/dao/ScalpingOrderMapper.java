@@ -17,4 +17,5 @@ public interface ScalpingOrderMapper {
     int updateByPrimaryKey(ScalpingOrder record);
     List<ScalpingOrder> selectOrder(Map<String, Object> map);
     public ScalpingOrder selectByOrderId(String orderId);
+    
 }

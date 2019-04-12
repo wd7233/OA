@@ -471,7 +471,14 @@ font {
 				<option value="未发货">未发货</option>
 				<option value="待签收">待签收</option>
 				<option value="已签收">已签收</option>
-			</select> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <input
+			</select> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+			店铺名称： <select
+				class="select" id="shopNumber" name="shopNumber">
+				<option value="">全部</option>
+				<c:forEach items="${shopList}" var="shop">
+						<option value = "${shop.number}">${shop.name}</option>
+						</c:forEach>
+			</select> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;  <input
 				type="submit" style="width: 100px; height: 30px;" value="查询" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<br /> <br /> <input type="file" name="file" id="pic" /> <input
@@ -479,6 +486,8 @@ font {
 				onclick="uploadPic()" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<button  onclick="window.open('<%=path%>/specialorderController/getSendSpecialorder.do')" style="width: 200px; height: 50px;">发货订单</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button  onclick="window.open('<%=path%>/specialorderController/skuCount.do')" style="width: 200px; height: 50px;">SKU统计</button>
 		</form>
 		<br />
 		<br />
@@ -491,26 +500,32 @@ font {
 				<td style="text-align: center; width: 50px;">商品颜色</td>
 				<td style="text-align: center; width: 50px;">商品規格</td>
 				<td style="text-align: center; width: 30px;">创建时间</td>
-				<td style="text-align: center; width: 50px;">备 注</td>
 				<td style="text-align: center; width: 5px;">数量</td>
 				<td style="text-align: center; width: 15px;">收货人</td>
-				<td style="text-align: center; width: 20px;">手机号码</td>
-				<td style="text-align: center; width: 15px;">省份</td>
+				<td style="text-align: center; width: 30px;">是否刷单</td>
+				<td style="text-align: center; width: 30px;">售后状态</td>
 				<td style="text-align: center; width: 40px;">操 作</td>
 			</tr>
 			<c:forEach items="${orderList}" var="order" varStatus="status">
-				<c:if test="${ order.state =='待签收' }">
+			
+			<c:if test="${order.sdName == null}">
+				<c:if test="${ order.afterState =='售后处理中' }">
 					<tr height="50px" bgcolor="#F8CACD"
 						onclick="detail(${status.index+1})">
 				</c:if>
-				<c:if test="${order.state=='已签收' }">
+				<c:if test="${order.afterState=='无售后或售后取消' }">
 					<tr height="50px" bgcolor="#9CDBE0"
 						onclick="detail(${status.index+1})">
 				</c:if>
-				<c:if test="${order.state=='未发货' }">
+				<c:if test="${order.afterState=='退款成功' }">
 					<tr height="50px" bgcolor="#F8E040"
 						onclick="detail(${status.index+1})">
 				</c:if>
+			</c:if>
+			<c:if test="${order.sdName != null}">
+					<tr height="50px" bgcolor="#EBEBEB" 
+						onclick="detail(${status.index+1})">
+			</c:if>
 				<td style="text-align: center;">${status.index+1 }</td>
 				<td>${order.shopName}</td>
 				<td style="width: 100px;" id="orderId${status.index+1}">${order.orderId}</td>
@@ -520,11 +535,10 @@ font {
 				<td>${order.sku}</td>
 				<td><fmt:formatDate value="${order.createTime}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
-				<td>${order.remakes}</td>
 				<td>${order.count}</td>
 				<td>${order.consignee}</td>
-				<td>${order.telephone}</td>
-				<td>${order.province}</td>
+				<td >${order.sdName}</td>
+				<td >${order.afterState}</td>
 				<td>
 					<button class="button" id="editBut"
 						style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;"

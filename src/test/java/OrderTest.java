@@ -7,8 +7,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import rml.model.OrderDetail;
 import rml.service.OrderServiceI;
 import rml.service.SpecialOrderServiceI;
+import rml.util.DateUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class) // = extends SpringJUnit4ClassRunner
 @ContextConfiguration(locations = {"classpath:spring.xml", "classpath:spring-mybatis.xml"})
@@ -34,7 +37,13 @@ public class OrderTest
     {
         fileImport("./123.csv");
     }
-    
+    @Test
+    public void test11()
+    {
+        Date end =  DateUtil.strToDateLong("2019-04-01", "yyyy-MM-dd");
+        System.out.println(end);
+
+    }
     private void fileImport(String fileName)
     {
         File file = new File(fileName);

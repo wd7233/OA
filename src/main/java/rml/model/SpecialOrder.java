@@ -2,338 +2,418 @@ package rml.model;
 
 import java.util.Date;
 
-public class SpecialOrder {
+public class SpecialOrder
+{
     private Integer id;
-
+    
     private String orderId;
-
+    
     private String goodNumber;
-
+    
     private String color;
-
+    
     private String sku;
-
+    
     private Integer count;
-
+    
     private Double price;
-
+    
     private String consignee;
-
+    
     private String telephone;
-
+    
     private String province;
-
+    
     private String city;
-
+    
     private String area;
-
+    
     private String street;
-
+    
     private String remakes;
-
+    
     private String message;
-
+    
     private Date createTime;
-
+    
     private Date promiseSendTime;
-
+    
     private String state;
-
+    
     private String courierNumber;
-
+    
     private String courierCompany;
-
+    
     private String afterState;
-
+    
     private Date deliverTime;
-
+    
     private String invoice;
+    
     private String goodName;
+    
     private String shopName;
+    
     private String size;
+    
     private String weight;
+    
     // 0
     private String baishiPrice;
+    
     // 1
     private String youzhengPrice;
+    
     // 2
     private String shengtongPrice;
+    
     // 3
     private String annengPrice;
+    
     // 最低
     private String expressPrice;
+    
+    private String sdName;
+    //统计sku数量
+    private Integer cnt;
+    
+    public Integer getCnt()
+    {
+        return cnt;
+    }
+    
+    public void setCnt(Integer cnt)
+    {
+        this.cnt = cnt;
+    }
+    
+    public String getSdName()
+    {
+        return sdName;
+    }
+    
+    public void setSdName(String sdName)
+    {
+        this.sdName = sdName;
+    }
     
     public String getSize()
     {
         return size;
     }
-
+    
     public void setSize(String size)
     {
         this.size = size;
     }
-
+    
     public String getWeight()
     {
         return weight;
     }
-
+    
     public void setWeight(String weight)
     {
         this.weight = weight;
     }
-
+    
     public String getBaishiPrice()
     {
         return baishiPrice;
     }
-
+    
     public void setBaishiPrice(String baishiPrice)
     {
         this.baishiPrice = baishiPrice;
     }
-
+    
     public String getYouzhengPrice()
     {
         return youzhengPrice;
     }
-
+    
     public void setYouzhengPrice(String youzhengPrice)
     {
         this.youzhengPrice = youzhengPrice;
     }
-
+    
     public String getShengtongPrice()
     {
         return shengtongPrice;
     }
-
+    
     public void setShengtongPrice(String shengtongPrice)
     {
         this.shengtongPrice = shengtongPrice;
     }
-
+    
     public String getAnnengPrice()
     {
         return annengPrice;
     }
-
+    
     public void setAnnengPrice(String annengPrice)
     {
         this.annengPrice = annengPrice;
     }
-
+    
     public String getExpressPrice()
     {
         return expressPrice;
     }
-
+    
     public void setExpressPrice(String expressPrice)
     {
         this.expressPrice = expressPrice;
     }
-
+    
     public String getShopName()
     {
         return shopName;
     }
-
+    
     public void setShopName(String shopName)
     {
         this.shopName = shopName;
     }
-
+    
     public String getGoodName()
     {
         return goodName;
     }
-
+    
     public void setGoodName(String goodName)
     {
         this.goodName = goodName;
     }
-
-    public Integer getId() {
+    
+    public Integer getId()
+    {
         return id;
     }
-
-    public void setId(Integer id) {
+    
+    public void setId(Integer id)
+    {
         this.id = id;
     }
-
-    public String getOrderId() {
+    
+    public String getOrderId()
+    {
         return orderId;
     }
-
-    public void setOrderId(String orderId) {
+    
+    public void setOrderId(String orderId)
+    {
         this.orderId = orderId == null ? null : orderId.trim();
     }
-
-    public String getGoodNumber() {
+    
+    public String getGoodNumber()
+    {
         return goodNumber;
     }
-
-    public void setGoodNumber(String goodNumber) {
+    
+    public void setGoodNumber(String goodNumber)
+    {
         this.goodNumber = goodNumber == null ? null : goodNumber.trim();
     }
-
-    public String getColor() {
+    
+    public String getColor()
+    {
         return color;
     }
-
-    public void setColor(String color) {
+    
+    public void setColor(String color)
+    {
         this.color = color == null ? null : color.trim();
     }
-
-    public String getSku() {
+    
+    public String getSku()
+    {
         return sku;
     }
-
-    public void setSku(String sku) {
+    
+    public void setSku(String sku)
+    {
         this.sku = sku == null ? null : sku.trim();
     }
-
-    public Integer getCount() {
+    
+    public Integer getCount()
+    {
         return count;
     }
-
-    public void setCount(Integer count) {
+    
+    public void setCount(Integer count)
+    {
         this.count = count;
     }
-
-    public Double getPrice() {
+    
+    public Double getPrice()
+    {
         return price;
     }
-
-    public void setPrice(Double price) {
+    
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
-
-    public String getConsignee() {
+    
+    public String getConsignee()
+    {
         return consignee;
     }
-
-    public void setConsignee(String consignee) {
+    
+    public void setConsignee(String consignee)
+    {
         this.consignee = consignee == null ? null : consignee.trim();
     }
-
-    public String getTelephone() {
+    
+    public String getTelephone()
+    {
         return telephone;
     }
-
-    public void setTelephone(String telephone) {
+    
+    public void setTelephone(String telephone)
+    {
         this.telephone = telephone == null ? null : telephone.trim();
     }
-
-    public String getProvince() {
+    
+    public String getProvince()
+    {
         return province;
     }
-
-    public void setProvince(String province) {
+    
+    public void setProvince(String province)
+    {
         this.province = province == null ? null : province.trim();
     }
-
-    public String getCity() {
+    
+    public String getCity()
+    {
         return city;
     }
-
-    public void setCity(String city) {
+    
+    public void setCity(String city)
+    {
         this.city = city == null ? null : city.trim();
     }
-
-    public String getArea() {
+    
+    public String getArea()
+    {
         return area;
     }
-
-    public void setArea(String area) {
+    
+    public void setArea(String area)
+    {
         this.area = area == null ? null : area.trim();
     }
-
-    public String getStreet() {
+    
+    public String getStreet()
+    {
         return street;
     }
-
-    public void setStreet(String street) {
+    
+    public void setStreet(String street)
+    {
         this.street = street == null ? null : street.trim();
     }
-
-    public String getRemakes() {
+    
+    public String getRemakes()
+    {
         return remakes;
     }
-
-    public void setRemakes(String remakes) {
+    
+    public void setRemakes(String remakes)
+    {
         this.remakes = remakes == null ? null : remakes.trim();
     }
-
-    public String getMessage() {
+    
+    public String getMessage()
+    {
         return message;
     }
-
-    public void setMessage(String message) {
+    
+    public void setMessage(String message)
+    {
         this.message = message == null ? null : message.trim();
     }
-
-    public Date getCreateTime() {
+    
+    public Date getCreateTime()
+    {
         return createTime;
     }
-
-    public void setCreateTime(Date createTime) {
+    
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
-
-    public Date getPromiseSendTime() {
+    
+    public Date getPromiseSendTime()
+    {
         return promiseSendTime;
     }
-
-    public void setPromiseSendTime(Date promiseSendTime) {
+    
+    public void setPromiseSendTime(Date promiseSendTime)
+    {
         this.promiseSendTime = promiseSendTime;
     }
-
-    public String getState() {
+    
+    public String getState()
+    {
         return state;
     }
-
-    public void setState(String state) {
+    
+    public void setState(String state)
+    {
         this.state = state == null ? null : state.trim();
     }
-
-    public String getCourierNumber() {
+    
+    public String getCourierNumber()
+    {
         return courierNumber;
     }
-
-    public void setCourierNumber(String courierNumber) {
+    
+    public void setCourierNumber(String courierNumber)
+    {
         this.courierNumber = courierNumber == null ? null : courierNumber.trim();
     }
-
-    public String getCourierCompany() {
+    
+    public String getCourierCompany()
+    {
         return courierCompany;
     }
-
-    public void setCourierCompany(String courierCompany) {
+    
+    public void setCourierCompany(String courierCompany)
+    {
         this.courierCompany = courierCompany == null ? null : courierCompany.trim();
     }
-
-    public String getAfterState() {
+    
+    public String getAfterState()
+    {
         return afterState;
     }
-
-    public void setAfterState(String afterState) {
+    
+    public void setAfterState(String afterState)
+    {
         this.afterState = afterState == null ? null : afterState.trim();
     }
-
-    public Date getDeliverTime() {
+    
+    public Date getDeliverTime()
+    {
         return deliverTime;
     }
-
-    public void setDeliverTime(Date deliverTime) {
+    
+    public void setDeliverTime(Date deliverTime)
+    {
         this.deliverTime = deliverTime;
     }
-
-    public String getInvoice() {
+    
+    public String getInvoice()
+    {
         return invoice;
     }
-
-    public void setInvoice(String invoice) {
+    
+    public void setInvoice(String invoice)
+    {
         this.invoice = invoice == null ? null : invoice.trim();
     }
 }
