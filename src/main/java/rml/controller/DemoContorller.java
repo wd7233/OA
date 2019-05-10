@@ -1,14 +1,11 @@
 package rml.controller;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.text.ParseException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import rml.model.Express;
 import rml.model.GoodWeight;
+import rml.model.SpPingjia;
 import rml.pojo.ReceiveXmlEntity;
+import rml.service.CmzServiceI;
 import rml.service.ExpressServiceI;
+import rml.service.ScalpingServiceI;
 import rml.tuling.JuheDemo;
 import rml.util.FormatXmlProcess;
 import rml.util.ReceiveXmlProcess;
@@ -38,7 +38,10 @@ public class DemoContorller<main>
     
     @Autowired
     private ExpressServiceI expressService;
-    
+    @Autowired
+    private CmzServiceI cmzService;
+    @Autowired
+    private ScalpingServiceI scalpingService;
     @RequestMapping("/init")
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     {
@@ -83,32 +86,76 @@ public class DemoContorller<main>
                 /** 解析xml数据 */
                 ReceiveXmlEntity xmlEntity = new ReceiveXmlProcess().getMsgEntity(sb.toString());
                 System.out.println(sb.toString());
-                if ("event".endsWith(xmlEntity.getMsgType()) && "subscribe".endsWith(xmlEntity.getEvent()))
-                {
-                    return;
-                    
-                }
+//                if ("event".endsWith(xmlEntity.getMsgType()) && "subscribe".endsWith(xmlEntity.getEvent()))
+//                {
+//                    return;
+//                    
+//                }
+//                if ("text".endsWith(xmlEntity.getMsgType()))
+//                {
+//                    // result = JuheDemo.getRequest1(xmlEntity.getContent(), xmlEntity.getToUserName());
+//                    result = this.selectExpress(xmlEntity.getContent());
+//                    result = new FormatXmlProcess().formatXmlAnswer(xmlEntity.getFromUserName(), xmlEntity.getToUserName(), result);
+//                    // 情侣链接
+//                    // talkService.talkContent(xmlEntity);
+//                }
+//                if ("text".endsWith(xmlEntity.getMsgType()))
+//                  {
+//                      // result = JuheDemo.getRequest1(xmlEntity.getContent(), xmlEntity.getToUserName());
+//                  //    result = this.selectExpress(xmlEntity.getContent());
+//                      CmzDanmu cdm = new CmzDanmu();
+//                      cdm.setCreateTime(new Date());
+//                      cdm.setContent(xmlEntity.getContent());
+//                      cdm.setOpenId(xmlEntity.getFromUserName());
+//                      cdm.setIsPass(1);
+//                      cmzService.insert(cdm);
+//                      result = "感谢您的祝福哦~~我一定会茁壮成长滴(*^▽^*)";
+//                      result = new FormatXmlProcess().formatXmlAnswer(xmlEntity.getFromUserName(), xmlEntity.getToUserName(), result);
+//                      // 情侣链接
+//                      // talkService.talkContent(xmlEntity);
+//                  }
+//                else 
+//                {
+//                     result = "亲爱的叔叔阿姨好~今天是我的一岁诞辰哦，快来给我送上你们的祝福吧(*╹▽╹*)";
+//                     result = new FormatXmlProcess().formatXmlAnswer(xmlEntity.getFromUserName(), xmlEntity.getToUserName(), result);
+//
+//                }
                 if ("text".endsWith(xmlEntity.getMsgType()))
                 {
-                    // result = JuheDemo.getRequest1(xmlEntity.getContent(), xmlEntity.getToUserName());
-                    result = this.selectExpress(xmlEntity.getContent());
-                    result = new FormatXmlProcess().formatXmlAnswer(xmlEntity.getFromUserName(), xmlEntity.getToUserName(), result);
-                    // 情侣链接
-                    // talkService.talkContent(xmlEntity);
+                  if(xmlEntity.getContent().split("，").length > 1 ) 
+                  {
+                      result = this.selectExpress(xmlEntity.getContent());
+                  }
+                  else 
+                  {
+                      SpPingjia sp = scalpingService.getSpPingjia(xmlEntity.getContent());
+                      if(sp == null) 
+                      {
+                          result = JuheDemo.getRequest1(xmlEntity.getContent(), xmlEntity.getToUserName()); 
+                      }
+                      else 
+                      { 
+                          sp.setCount(sp.getCount()+1);
+                          scalpingService.updateByPrimaryKey(sp);
+                          result = sp.getContent().trim(); 
+                      }
+                  }
+                result = new FormatXmlProcess().formatXmlAnswer(xmlEntity.getFromUserName(), xmlEntity.getToUserName(), result);
+
                 }
                 // if("image".endsWith(xmlEntity.getMsgType()))
                 // {
                 // result = returnService.savePicture(xmlEntity);
                 // }
-                if ("location".endsWith(xmlEntity.getMsgType()))
-                {
-                    // result = returnService.LocationReturn(xmlEntity);
-                    String x = xmlEntity.getLocation_X();
-                    String y = xmlEntity.getLocation_Y();
-                    System.out.println(x);
-                    System.out.println("==========================");
-                    System.out.println(y);
-                }
+//                if ("location".endsWith(xmlEntity.getMsgType()))
+//                {
+//                    // result = returnService.LocationReturn(xmlEntity);
+//                    String x = xmlEntity.getLocation_X();
+//                    String y = xmlEntity.getLocation_Y();
+//                    System.out.println(x);
+//                    System.out.println("==========================");
+//                    System.out.println(y);
+//                }
                 // if("voice".endsWith(xmlEntity.getMsgType()))
                 // {
                 // result = returnService.VoiceReturn(xmlEntity);

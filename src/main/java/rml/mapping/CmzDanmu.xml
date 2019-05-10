@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.CmzDanmuMapper">
+	<resultMap id="BaseResultMap" type="rml.model.CmzDanmu">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="isPass" property="isPass" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime"
+			jdbcType="DATE" />
+	</resultMap>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, open_id, content, isPass
+		from cmz_danmu where isPass = 1
+	</select>
+	<select id="selectTenMin" resultMap="BaseResultMap">
+		SELECT id, open_id, content, isPass FROM `cmz_danmu` WHERE isPass = 0 and
+		create_time BETWEEN DATE_ADD(NOW(), INTERVAL - 1 DAY) AND
+		NOW()ORDER BY create_time desc 
+	</select>
+	<select id="selectRand" resultMap="BaseResultMap">
+		SELECT * FROM cmz_danmu ORDER BY RAND() LIMIT 1
+	</select>
+	<update id="updateByPrimaryKey"
+		parameterType="rml.model.CmzDanmu">
+		update cmz_danmu set isPass = #{isPass,jdbcType=VARCHAR} where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	  <insert id="insert" parameterType="rml.model.CmzDanmu" >
+    insert into cmz_danmu (id, open_id, content, 
+      isPass, create_time)
+    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{isPass,jdbcType=VARCHAR},  #{createTime,jdbcType=DATE})
+  </insert>
+</mapper>

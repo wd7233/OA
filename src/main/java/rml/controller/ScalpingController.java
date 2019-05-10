@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import rml.model.CardAmountInfo;
 import rml.model.ScalpingOrder;
+import rml.model.SpPingjia;
 import rml.model.SpecialOrder;
 import rml.model.WithdrawName;
 import rml.service.ScalpingServiceI;
@@ -91,6 +92,65 @@ public class ScalpingController
         return cnt;
     }
     
+    @Transactional
+    @RequestMapping(value = "/importPingjia")
+    @ResponseBody
+    public int importPingjia(@RequestParam(required = false, value = "file") MultipartFile file, HttpServletRequest request, HttpServletResponse response)
+        throws IOException
+    {
+        
+        int cnt = addPingjia(file.getInputStream());
+        return cnt;
+    }
+    
+    private int addPingjia(InputStream is)
+    {
+        BufferedReader reader = null;
+        int line = 0;
+        try
+        {
+            System.out.println("以行为单位读取文件内容，一次读一整行：");
+            reader = new BufferedReader(new InputStreamReader(is, "GBK"));
+            String tempString = null;
+            // 一次读入一行，直到读入null为文件结束
+            boolean isOne = true;
+            while ((tempString = reader.readLine()) != null)
+            {
+                System.out.println(tempString);
+                String[] arr = tempString.split(",");
+                if (arr.length == 2)
+                {
+                    String content = arr[0].trim();
+                    String good = arr[1].trim();
+                    SpPingjia sp = new SpPingjia();
+                    sp.setContent(content);
+                    sp.setGood(good);
+                    scalpingService.insetrPingjia(sp);
+                    line++;
+                }
+            }
+            reader.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException e1)
+                {
+                }
+            }
+        }
+        return line;
+    }
+    
     private int readFile(InputStream is, String fileName)
     {
         BufferedReader reader = null;
@@ -108,12 +168,31 @@ public class ScalpingController
             {
                 System.out.println(tempString);
                 String[] arr = tempString.split(",");
-                if (arr.length > 3)
+                if (arr.length == 4)
                 {
                     String orderId = arr[0];
                     String consignee = arr[1];
                     String phone = arr[2];
                     double skuPirce = Double.parseDouble(arr[3]);
+                    ScalpingOrder so = new ScalpingOrder();
+                    so.setOrderId(orderId);
+                    so.setConsignee(consignee);
+                    so.setPhone(phone);
+                    so.setSkuPirce(skuPirce);
+                    so.setCreateTime(new Date());
+                    so.setGoodNumber(fileName);
+                    if (scalpingService.selectByOrderId(orderId) == null)
+                    {
+                        scalpingService.insert(so);
+                        line++;
+                    }
+                }
+                else if (arr.length == 5)
+                {
+                    String orderId = arr[0];
+                    String consignee = arr[1];
+                    String phone = arr[2];
+                    double skuPirce = Double.parseDouble(arr[4]);
                     ScalpingOrder so = new ScalpingOrder();
                     so.setOrderId(orderId);
                     so.setConsignee(consignee);

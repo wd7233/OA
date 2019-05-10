@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import rml.model.ScalpingOrder;
+import rml.model.SpPingjia;
 
 public interface ScalpingOrderMapper {
     int deleteByPrimaryKey(Integer id);

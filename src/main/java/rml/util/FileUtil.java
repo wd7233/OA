@@ -263,6 +263,7 @@ public class FileUtil
                 // System.out.println("line " + line + ": " + tempString);
                 System.out.println(tempString);
                 String[] strArr = tempString.split(",");
+                SpecialOrder order = new SpecialOrder();
                 line++;
                 if (line == 1)
                 {
@@ -272,59 +273,106 @@ public class FileUtil
                 {
                     break;
                 }
-                SpecialOrder order = new SpecialOrder();
-                // 订单编号 1
-                order.setOrderId(strArr[1]);
-                // 订单状态 2
-                order.setState(strArr[2].trim());
-                // 实收金额 10
-                order.setPrice(Double.parseDouble(convertStringDouble(strArr[10]).trim()));
-                // 数量 11
-                order.setCount(Integer.parseInt(convertStringDouble(strArr[11]).trim()));
-                // 收货人 14
-                order.setConsignee(strArr[14]);
-                // 手机 15
-                order.setTelephone(convertStringDouble(strArr[15].trim()));
-                // 省 17
-                order.setProvince(strArr[17]);
-                // 市 18
-                order.setCity(strArr[18]);
-                // 区 19
-                order.setArea(strArr[19]);
-                // 街道 20
-                order.setStreet(convertString(strArr[20]));
-                // 订单确认时间 22
-                order.setCreateTime(DateUtil.strToDateLong(convertStringDouble(strArr[22]).trim(), "yyyy/MM/dd HH:mm"));
-                // 承诺发货时间 23
-                order.setPromiseSendTime(DateUtil.strToDateLong(convertStringDouble(strArr[23]).trim(), "yyyy/MM/dd HH:mm"));
-                // 发货时间24
-                order.setDeliverTime(DateUtil.strToDateLong(convertStringDouble(strArr[24]).trim(), "yyyy/MM/dd HH:mm"));
-                // 商品id 26
-                order.setGoodNumber(convertStringDouble(strArr[26]).trim());
-                // 商品规格 27
-                if (!StringUtils.isEmpty(convertStringDouble(strArr[27]).trim()))
+               
+                if (strArr.length < 50)
                 {
-                    if(strArr[27].split("@@").length>1) 
+                    
+                    // 订单编号 1
+                    order.setOrderId(strArr[1]);
+                    // 订单状态 2
+                    order.setState(strArr[2].trim());
+                    // 实收金额 10
+                    order.setPrice(Double.parseDouble(convertStringDouble(strArr[10]).trim()));
+                    // 数量 11
+                    order.setCount(Integer.parseInt(convertStringDouble(strArr[11]).trim()));
+                    // 收货人 14
+                    order.setConsignee(strArr[14]);
+                    // 手机 15
+                    order.setTelephone(convertStringDouble(strArr[15].trim()));
+                    // 省 17
+                    order.setProvince(strArr[17]);
+                    // 市 18
+                    order.setCity(strArr[18]);
+                    // 区 19
+                    order.setArea(strArr[19]);
+                    // 街道 20
+                    order.setStreet(convertString(strArr[20]));
+                    // 订单确认时间 22
+                    order.setCreateTime(DateUtil.strToDateLong(convertStringDouble(strArr[22]).trim(), "yyyy/MM/dd HH:mm"));
+                    // 承诺发货时间 23
+                    order.setPromiseSendTime(DateUtil.strToDateLong(convertStringDouble(strArr[23]).trim(), "yyyy/MM/dd HH:mm"));
+                    // 发货时间24
+                    order.setDeliverTime(DateUtil.strToDateLong(convertStringDouble(strArr[24]).trim(), "yyyy/MM/dd HH:mm"));
+                    // 商品id 26
+                    order.setGoodNumber(convertStringDouble(strArr[26]).trim());
+                    // 商品规格 27
+                    if (!StringUtils.isEmpty(convertStringDouble(strArr[27]).trim()))
                     {
-                    order.setColor(strArr[27].split("@@")[0]);
-                    order.setSku(strArr[27].split("@@")[1]);
+                        if (strArr[27].split("@@").length > 1)
+                        {
+                            order.setColor(strArr[27].split("@@")[0]);
+                            order.setSku(strArr[27].split("@@")[1]);
+                        }
+                        else
+                        {
+                            order.setSku(strArr[27].split("@@")[0]);
+                        }
                     }
-                    else 
-                    {
-                        order.setSku(strArr[27].split("@@")[0]);
-                    }
+                    // 快递单号 31
+                    order.setCourierNumber(convertStringDouble(strArr[31]));
+                    // 快递公司 32
+                    order.setCourierCompany(convertStringDouble(strArr[32]));
+                    // 商家备注 37
+                    order.setRemakes(convertStringDouble(strArr[37]));
+                    // 售后状态 38
+                    order.setAfterState(convertStringDouble(strArr[38].trim()));
+                    // 买家留言 39
+                    order.setMessage(convertStringDouble(strArr[39]));
+                    orderList.add(order);
                 }
-                // 快递单号 31
-                order.setCourierNumber(convertStringDouble(strArr[31]));
-                // 快递公司 32
-                order.setCourierCompany(convertStringDouble(strArr[32]));
-                // 商家备注 37
-                order.setRemakes(convertStringDouble(strArr[37]));
-                // 售后状态 38
-                order.setAfterState(convertStringDouble(strArr[38].trim()));
-                // 买家留言 39
-                order.setMessage(convertStringDouble(strArr[39]));
-                orderList.add(order);
+                //淘宝
+                else 
+                {
+                    // 订单编号 1
+                    order.setOrderId(strArr[0]);
+                    // 订单状态 2
+                    order.setState(strArr[12].trim());
+                    // 实收金额 10
+                    order.setPrice(Double.parseDouble(convertStringDouble(strArr[8]).trim()));
+                    // 数量 11
+                    order.setCount(Integer.parseInt(convertStringDouble(strArr[26]).trim()));
+                    // 收货人 14
+                    order.setConsignee(strArr[14]);
+                    // 手机 15
+                    order.setTelephone(convertStringDouble(strArr[18].trim()));
+//                    // 省 17
+//                    order.setProvince(strArr[17]);
+//                    // 市 18
+//                    order.setCity(strArr[18]);
+//                    // 区 19
+//                    order.setArea(strArr[19]);
+                    // 街道 20
+                    order.setStreet(convertString(strArr[15]));
+                    // 订单确认时间 22
+                    order.setCreateTime(DateUtil.strToDateLong(convertStringDouble(strArr[20]).trim(), "yyyy/MM/dd HH:mm"));
+                    // 确认收货时间 23
+                    order.setPromiseSendTime(DateUtil.strToDateLong(convertStringDouble(strArr[53]).trim(), "yyyy/MM/dd HH:mm"));
+//                    // 发货时间24
+//                    order.setDeliverTime(DateUtil.strToDateLong(convertStringDouble(strArr[24]).trim(), "yyyy/MM/dd HH:mm"));
+                    // 商品id 26
+                    order.setGoodNumber("tb");
+                    // 快递单号 31 
+                    order.setCourierNumber(convertStringDouble(strArr[23]));
+                    // 快递公司 32
+                    order.setCourierCompany(convertStringDouble(strArr[24]));
+                    // 商家备注 37
+                    order.setRemakes(convertStringDouble(strArr[25]));
+                    // 退款原因 38
+                    order.setAfterState(convertStringDouble(strArr[29].trim()));
+                    // 买家留言 39
+                    order.setMessage(convertStringDouble(strArr[13]));
+                    orderList.add(order);
+                }
             }
             reader.close();
         }

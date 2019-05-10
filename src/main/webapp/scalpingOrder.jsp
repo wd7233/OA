@@ -1,14 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%
-    String path = request.getContextPath();
-			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-					+ path + "/";
-%>
-
 <!DOCTYPE html >
 <script type="text/javascript" src="<%=basePath%>/js/jquery.js"></script>
 <script type="text/javascript"
@@ -92,6 +83,24 @@ td{
 			}
 		})
 	}
+  function uploadPingjia()
+  {
+	  var form = document.getElementById('upload'),
+		formData = new FormData(form);
+	$.ajax({
+		url : "<%=path%>/scalpingController/importPingjia.do",
+		type : "post",
+		data : formData,
+		processData : false,
+		contentType : false,
+		success : function(res) {
+			alert('导入成功' + res + '条数据');
+		},
+		error : function(err) {
+			alert("格式错误，请重新编辑~", err);
+		}
+	})
+  }
 </script>
 <body>
 	<center>
@@ -107,8 +116,12 @@ td{
 		
 		<input type="file" name="file" id="pic" /> 
 		<input
-				type="button" style="width: 100px; height: 30px;" value="导入"
+				type="button" style="width: 100px; height: 30px;" value="导入订单"
 				onclick="uploadPic()" />
+				
+		<input
+				type="button" style="width: 100px; height: 30px;" value="导入评价"
+				onclick="uploadPingjia()" />
 		</form>
 		<br/>
 		<div id="orderCntDiv">
@@ -133,7 +146,7 @@ td{
 					<tr height="50px" bgcolor="#F8CACD"
 						onclick="detail(${status.index+1})">
 				</c:if>
-				<c:if test="${order.afterState=='无售后或售后取消' }">
+				<c:if test="${order.afterState=='无售后或售后取消' || order.afterState=='订单未关闭'}">
 					<tr height="50px" bgcolor="#9CDBE0"
 						onclick="detail(${status.index+1})">
 				</c:if>

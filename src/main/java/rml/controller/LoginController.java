@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import rml.model.GoodType;
 import rml.model.Goods;
+import rml.model.OaMenu;
 import rml.model.OrderDetail;
 import rml.model.OrderType;
 import rml.model.Shop;
 import rml.model.Staff;
 import rml.service.GoodServiceI;
 import rml.service.GoodTypeServiceI;
+import rml.service.MenuServiceI;
 import rml.service.OrderServiceI;
 import rml.service.OrderTypeServiceI;
 import rml.service.ShopServiceI;
@@ -51,6 +53,14 @@ public class LoginController
     @Autowired
     private GoodTypeServiceI goodTypeService;
     
+    @Autowired
+    private MenuServiceI menuService;
+    
+    // @RequestMapping(value = "/login")
+    // public String login(HttpServletRequest request, Staff staff)
+    // {
+    // return "main";
+    // }
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, Staff staff)
     {
@@ -65,27 +75,31 @@ public class LoginController
             return "";
         }
         session.setAttribute("user", s);
+        List<OaMenu> ms = menuService.selectAllMenu(s.getId());
+        session.setAttribute("menuList", ms);
         List<Shop> list = null;
         List<Staff> staffList = null;
         List<GoodType> goodTypeList = goodTypeService.selectAll();
         request.setAttribute("goodTypeList", goodTypeList);
         request.setAttribute("shoplist", list);
-        staffList = staffService.selectByRole(s.getId(), s.getRole(),s.getCompanyId());
+        staffList = staffService.selectByRole(s.getId(), s.getRole(), s.getCompanyId());
         request.setAttribute("staffList", staffList);
-        if("huangjf".equals(s.getAccount())) 
+        if ("huangjf".equals(s.getAccount()))
         {
             s.setId(13);
             session.setAttribute("user", s);
-            return "specialOrderForSend";  
+            return "specialOrderForSend";
         }
         // 管理员
         if (s.getRole() == 0)
         {
-            return "shopTotalList";
+           // return "shopTotalList";
+            return "index";
         }
         else if (s.getRole() == 1 || s.getRole() == 3)
         {
-            return "shopList";
+           // return "shopList";
+            return "index";
         }
         // 买手
         else
@@ -126,7 +140,7 @@ public class LoginController
         String keyWord = request.getParameter("keyWord");
         Integer staffId = Integer.parseInt(request.getParameter("staffName"));
         System.out.println(staffId);
-        List<Staff> staffList = staffService.selectByRole(s.getId(), s.getRole(),s.getCompanyId());
+        List<Staff> staffList = staffService.selectByRole(s.getId(), s.getRole(), s.getCompanyId());
         if (s.getRole() != 0 && staffId == -1)
         {
             for (Staff sf : staffList)
@@ -168,7 +182,7 @@ public class LoginController
     
     @RequestMapping(value = "/updateNums")
     @ResponseBody
-    public String updateNums(String shopNumber, Integer num,Integer staffId)
+    public String updateNums(String shopNumber, Integer num, Integer staffId)
     {
         System.out.println(shopNumber);
         System.out.println(num);

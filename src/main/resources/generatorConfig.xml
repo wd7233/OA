@@ -135,7 +135,7 @@
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>-->
 			
-			<table schema="qicheng" tableName="zdata_views_month" domainObjectName="ViewsMonth"
+		<!--	<table schema="qicheng" tableName="zdata_views_month" domainObjectName="ViewsMonth"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>
@@ -146,6 +146,23 @@
 			<table schema="qicheng" tableName="zdata_views_year" domainObjectName="ViewsYear"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table> -->
+			<table schema="qicheng" tableName="oa_menu" domainObjectName="OaMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>
+			<table schema="qicheng" tableName="oa_role" domainObjectName="OaRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+			<table schema="qicheng" tableName="oa_role_menu" domainObjectName="OaRoleMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+			<table schema="qicheng" tableName="oa_user_role" domainObjectName="OaUserRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+			
 	</context>
 </generatorConfiguration>

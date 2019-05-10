@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="rml.dao.OaMenuMapper" >
+  <resultMap id="BaseResultMap" type="rml.model.OaMenu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parentID" property="parentid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="rml.model.OaMenu" >
+    insert into oa_menu (id, parentID, name, 
+      url)
+    values (#{id,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="rml.model.OaMenu" >
+    update oa_menu
+    set parentID = #{parentid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, parentID, name, url
+    from oa_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, parentID, name, url
+    from oa_menu
+  </select>
+   <select id="selectParentMenu"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+   SELECT * FROM oa_menu  m
+	LEFT JOIN oa_role_menu rm ON m.id = rm.menu_id
+	LEFT JOIN oa_role r ON r.id = rm.role_id
+	LEFT JOIN oa_user_role ur ON ur.role_id = r.id
+	LEFT JOIN staff  s  ON s.id = ur.user_id 
+	 where s.id =  #{userId}
+  </select>
+     <select id="selectMenu"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+  SELECT * FROM oa_menu mm  WHERE mm.parentID = #{parentId}
+  </select>
+</mapper>

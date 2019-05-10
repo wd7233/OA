@@ -16,6 +16,8 @@
 	charset="utf-8"></script>
 <html>
 <style>
+.div-left{width: 14%;height:100vh;float:left;border: 1px solid red;} 
+.div-right{height:100vh;border: 1px solid red;} 
 .button {
 	width: 80px;
 	height: 20px;
@@ -35,6 +37,7 @@ table tr:nth-child(even) {
 	background: #9cdbe0;
 }
 table {
+	margin: 0 auto;
 	border-collapse: collapse;
 	border-spacing: 0;
 	white-space: nowrap;
@@ -91,6 +94,10 @@ td{
 	}
 </script>
 <body>
+	<div  class = "div-left">
+ 	<%@ include file="./main.jsp" %>  
+	</div>
+	<div class = "div-right">
 	<center>
 	<form method="post" action="<%=path%>/loginController/getShop.do">
 	<br/>
@@ -167,5 +174,6 @@ td{
 		</table>
 	</center>
 	<!--  <a href="<%=path%>/addUser.jsp" style="left:300px;position:relative;height:30px">新增用户</a><br/> -->
+	</div>
 </body>
 </html>

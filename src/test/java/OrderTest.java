@@ -10,15 +10,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import rml.model.OrderDetail;
+import rml.model.CmzDanmu;
+import rml.model.SpPingjia;
+import rml.service.CmzServiceI;
 import rml.service.OrderServiceI;
+import rml.service.ScalpingServiceI;
 import rml.service.SpecialOrderServiceI;
 import rml.util.DateUtil;
 
@@ -31,11 +33,32 @@ public class OrderTest
     
     @Autowired
     private SpecialOrderServiceI specialOrderService;
-    
+    @Autowired
+    private CmzServiceI cmzService;
+    @Autowired
+    private ScalpingServiceI scalpingServiceI;
     @Test
     public void test1()
     {
         fileImport("./123.csv");
+    }
+    @Test
+    public void addDanmu()
+    {
+        CmzDanmu cdm = new CmzDanmu();
+        cdm.setCreateTime(new Date());
+        cdm.setContent("祝褚梦泽生日快乐啦~~~~！@~");
+        cdm.setOpenId(null);
+        cdm.setIsPass(1);
+        cmzService.insert(cdm);
+
+    }
+    @Test
+    public void getPingjia()
+    {
+        SpPingjia sp =  scalpingServiceI.getSpPingjia("麻将机麻将");
+        System.out.println(sp.getContent());
+
     }
     @Test
     public void test11()
