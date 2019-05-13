@@ -178,58 +178,49 @@ public class TestMybatis
         System.out.println("userUrl：" + userUrl);
 
         CommonButton btn11 = new CommonButton();
-        btn11.setName("提交价格");
+        btn11.setName("理牌技巧");
         btn11.setType("view");
         btn11.setUrl("http://www.crong.vip/xx_QAQ/Price/savePrice");
 
         CommonButton btn12 = new CommonButton();
-        btn12.setName("查询价格");
+        btn12.setName("舍牌视角");
         btn12.setType("view");
         btn12.setUrl("http://www.crong.vip/xx_QAQ/Price/getPrice");
 
         CommonButton btn13 = new CommonButton();
-        btn13.setName("圈子搜搜");
+        btn13.setName("听牌技巧");
         btn13.setType("view");
         btn13.setUrl(userUrl);
 
         CommonButton btn21 = new CommonButton();
-        btn21.setName("宠物识别");
+        btn21.setName("诸葛麻将");
         btn21.setType("pic_sysphoto");
         btn21.setKey("21");
 
         CommonButton btn22 = new CommonButton();
 
-        btn22.setName("朋友圈");
+        btn22.setName("博士说牌");
         btn22.setType("view");
         btn22.setUrl("http://www.crong.vip/xx_QAQ/map/showLocation");
 
         CommonButton btn23 = new CommonButton();
-        btn23.setName("文字识别");
+        btn23.setName("赛事回放");
         btn23.setType("pic_sysphoto");
         btn23.setKey("23");
 
-        CommonButton btn24 = new CommonButton();
-        btn24.setName("人脸识别");
-        btn24.setType("pic_sysphoto");
-        btn24.setKey("24");
-
-        CommonButton btn25 = new CommonButton();
-        btn25.setName("扫一扫");
-        btn25.setType("scancode_push");
-        btn25.setKey("25");
 
         CommonButton btn31 = new CommonButton();
-        btn31.setName("地理位置3");
+        btn31.setName("棋牌室-麻将机麻将");
         btn31.setUrl("http://www.crong.vip/xx_QAQ/gps3.jsp");
         btn31.setType("view");
 
         CommonButton btn32 = new CommonButton();
-        btn32.setName("星座指南");
+        btn32.setName("家用-手搓麻将");
         btn32.setType("view");
         btn32.setUrl("http://mp.weixin.qq.com/s/eFJoOvC1f7z6pPhm7NSLfw");
 
         CommonButton btn33 = new CommonButton();
-        btn33.setName("幽默笑话");
+        btn33.setName("定制-卡通麻将");
         btn33.setType("view");
         btn33.setUrl("http://mp.weixin.qq.com/s/ck5F-ILcR8m-pLxx-Q5nLQ");
 
@@ -238,16 +229,16 @@ public class TestMybatis
          */
 
         ComplexButton mainBtn1 = new ComplexButton();
-        mainBtn1.setName("生活助手");
+        mainBtn1.setName("麻将技巧");
         // 一级下有4个子菜单
         mainBtn1.setSub_button(new CommonButton[] {btn11, btn12, btn13});
 
         ComplexButton mainBtn2 = new ComplexButton();
-        mainBtn2.setName("智能服务");
-        mainBtn2.setSub_button(new CommonButton[] {btn21, btn22, btn23, btn24, btn25});
+        mainBtn2.setName("麻将视频");
+        mainBtn2.setSub_button(new CommonButton[] {btn21, btn22, btn23});
 
         ComplexButton mainBtn3 = new ComplexButton();
-        mainBtn3.setName("更多体验");
+        mainBtn3.setName("麻将商城");
         mainBtn3.setSub_button(new CommonButton[] {btn31, btn32, btn33});
 
         /**

@@ -39,8 +39,8 @@ public class HttpURLConnectionUtil
         TokenWx token  = null;
             Map<String, String> map = new HashMap<String, String>();
             map.put("grant_type", "client_credential");
-            map.put("appid", StringUtils.AppIdFwh);
-            map.put("secret", StringUtils.AppSecretFwh);
+            map.put("appid", StringUtils.AppID);
+            map.put("secret", StringUtils.AppSecret);
             JSONObject tokenJson = new JSONObject(HttpClientUtil.send(StringUtils.URL.TokenUrl, map, "utf-8"));
             LOGGER.info("TokenJson：" + "【" + tokenJson.toString() + "】");
             token = new TokenWx();

@@ -13,6 +13,8 @@
 <meta charset="UTF-8">
 <style>
 .div-right{height:100vh;border: 1px solid red;} 
+.div-left{width: 14%;height:100vh;float:left;border: 1px solid red;} 
+
 </style>
 <title>Side Menu</title>
 
