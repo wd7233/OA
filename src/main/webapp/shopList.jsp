@@ -94,9 +94,6 @@ td{
 	}
 </script>
 <body>
-	<div  class = "div-left">
- 	<%@ include file="./main.jsp" %>  
-	</div>
 	<div class = "div-right">
 	<center>
 	<form method="post" action="<%=path%>/loginController/getShop.do">

@@ -5,16 +5,27 @@
 <%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
     String path = request.getContextPath();
-			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 					+ path + "/";
-%><!DOCTYPE html>
+%>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/js/jquery-1.11.0.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery-ui.min.js"
+	charset="utf-8"></script>
+<script src="<%=basePath%>/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js" charset="gb2312"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery-ui-timepicker-zh-CN.js"></script>
+<link href="<%=basePath%>/css/jquery-ui-timepicker-addon.css" rel="stylesheet"  />
+<link rel="icon" href="<%=basePath%>/image/log.png" type="image/x-icon" />
+<link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+
+<!DOCTYPE html>
 <html lang="en" >
 <head>
 <meta charset="UTF-8">
 <style>
 .div-right{height:100vh;border: 1px solid red;} 
-.div-left{width: 14%;height:100vh;float:left;border: 1px solid red;} 
-
 </style>
 <title>Side Menu</title>
 
@@ -29,7 +40,13 @@
 
 
 </head>
+<script>
 
+function hideMenu(index)
+{
+	$("#menuUl"+index).toggle("slow",function(){ $("#menuT").show();});
+}
+</script>
 <body>
 
 <div class="page">
@@ -42,8 +59,8 @@
 		<div class="bar">
 			<div class="options">
 			<c:forEach items="${menuList}" var="menuP" varStatus="status">
-				<ul>
-					<li class="active">${menuP.name}</li>
+				<ul  onclick = "hideMenu(${status.index+1 })" id ="menuUl${status.index+1}">
+					<li class="active" id = "menuT" >${menuP.name}</li>
 					<c:forEach items="${menuP.menus}" var="menu" varStatus="status">
 					<li  class="options__division" >${menu.name}</li>
 					</c:forEach>
@@ -58,10 +75,11 @@
 			</div>
 		</div>
 	</div>
+	<div class ="div_right" id = "showDiv" >
+	<%@ include file="./scalpingOrder.jsp" %>  
+	</div>
 </div>
-<div class ="div_right" >
-<%@ include file="./scalpingOrder.jsp" %>  
-</div>
+
 
 
 </body>

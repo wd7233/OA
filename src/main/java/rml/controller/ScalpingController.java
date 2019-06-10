@@ -44,7 +44,8 @@ public class ScalpingController
         String startTime = request.getParameter("startDate");
         String endTime = request.getParameter("endDate");
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord").trim();
-        List<ScalpingOrder> orderList = scalpingService.selectOrder(startTime, endTime, "5533035595", keyWord);
+        Integer orderType = Integer.parseInt(request.getParameter("orderType") == null ? "-1" : request.getParameter("orderType"));
+        List<ScalpingOrder> orderList = scalpingService.selectOrder(startTime, endTime, "5533035595", keyWord, orderType);
         request.setAttribute("orderList", orderList);
         Double totalPrice = new Double(0);
         int orderCnt = 0;
@@ -68,6 +69,64 @@ public class ScalpingController
                     totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(2.5)))).doubleValue();
                     
                 }
+            }
+            else if ("订单未关闭".equals(so.getAfterState()))
+            {
+                orderCnt++;
+                BigDecimal b1 = new BigDecimal(Double.toString(totalPrice));
+                Double price = so.getSkuPirce();
+                BigDecimal b2 = new BigDecimal(Double.toString(price));
+                totalPrice = b1.add(b2).doubleValue();
+                totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(8)))).doubleValue();
+            }
+            else
+            {
+                backCnt++;
+            }
+            
+        }
+        request.setAttribute("orderCnt", orderCnt);
+        request.setAttribute("backCnt", backCnt);
+        request.setAttribute("totalPrice", totalPrice);
+        return "scalpingOrder";
+    }
+    @RequestMapping(value = "/getOrderS")
+    public String getScalpingOrderS(HttpServletRequest request,String startDate,String endDate,String keyWord)
+    {
+        Integer orderType = Integer.parseInt(request.getParameter("orderType") == null ? "-1" : request.getParameter("orderType"));
+        List<ScalpingOrder> orderList = scalpingService.selectOrder("2019-06-01 00:00:00", "2019-06-11 00:00:00",null, keyWord, orderType);
+        request.setAttribute("orderList", orderList);
+        Double totalPrice = new Double(0);
+        int orderCnt = 0;
+        int backCnt = 0;
+        for (ScalpingOrder so : orderList)
+        {
+            if ("无售后或售后取消".equals(so.getAfterState()))
+            {
+                orderCnt++;
+                
+                BigDecimal b1 = new BigDecimal(Double.toString(totalPrice));
+                Double price = so.getSkuPirce();
+                BigDecimal b2 = new BigDecimal(Double.toString(price));
+                totalPrice = b1.add(b2).doubleValue();
+                if (price > 29)
+                {
+                    totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(3)))).doubleValue();
+                }
+                else
+                {
+                    totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(2.5)))).doubleValue();
+                    
+                }
+            }
+            else if ("订单未关闭".equals(so.getAfterState()))
+            {
+                orderCnt++;
+                BigDecimal b1 = new BigDecimal(Double.toString(totalPrice));
+                Double price = so.getSkuPirce();
+                BigDecimal b2 = new BigDecimal(Double.toString(price));
+                totalPrice = b1.add(b2).doubleValue();
+                totalPrice = new BigDecimal(Double.toString(totalPrice)).add(new BigDecimal(Double.toString(new Double(8)))).doubleValue();
             }
             else
             {
@@ -153,6 +212,7 @@ public class ScalpingController
     
     private int readFile(InputStream is, String fileName)
     {
+        List<String> noOrderId = new ArrayList<String>();
         BufferedReader reader = null;
         int line = 0;
         List<String> sts = new ArrayList<String>();
@@ -186,6 +246,10 @@ public class ScalpingController
                         scalpingService.insert(so);
                         line++;
                     }
+                    else
+                    {
+                        noOrderId.add(orderId);
+                    }
                 }
                 else if (arr.length == 5)
                 {
@@ -204,6 +268,10 @@ public class ScalpingController
                     {
                         scalpingService.insert(so);
                         line++;
+                    }
+                    else
+                    {
+                        noOrderId.add(orderId);
                     }
                 }
                 
@@ -225,6 +293,14 @@ public class ScalpingController
                 catch (IOException e1)
                 {
                 }
+            }
+        }
+        if (noOrderId.size() > 0)
+        {
+            System.out.println("====" + noOrderId.size() + "====");
+            for (String orderId : noOrderId)
+            {
+                System.out.println(orderId);
             }
         }
         return line;

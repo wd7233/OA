@@ -1,7 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    String path = request.getContextPath();
+			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+					+ path + "/";
+%>
 <!DOCTYPE html >
+<script type="text/javascript" src="<%=basePath%>/js/jquery.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/js/jquery-1.11.0.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery-ui.min.js"
+	charset="utf-8"></script>
+<script src="<%=basePath%>/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js" charset="gb2312"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery-ui-timepicker-zh-CN.js"></script>
+<link href="<%=basePath%>/css/jquery-ui-timepicker-addon.css" rel="stylesheet"  />
+<link rel="icon" href="<%=basePath%>/image/log.png" type="image/x-icon" />
+<link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
 <style>
 .button {
 	width: 80px;
@@ -39,12 +54,8 @@ td{
 	left: 50%;
 }
 </style>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>订单详情</title>
-</head>
+<html>
 <script>
-	var baseURL = "${pageContext.request.contextPath}/";
   jQuery(function () {
             // 时间设置
             jQuery('#startDate').datepicker({
@@ -61,7 +72,7 @@ td{
 		var form = document.getElementById('upload'),
 			formData = new FormData(form);
 		$.ajax({
-			url : baseURL+"scalpingController/importOrder.do",
+			url : "<%=path%>/scalpingController/importOrder.do",
 			type : "post",
 			data : formData,
 			processData : false,
@@ -79,7 +90,7 @@ td{
 	  var form = document.getElementById('upload'),
 		formData = new FormData(form);
 	$.ajax({
-		url : baseURL+"scalpingController/importPingjia.do",
+		url : "<%=path%>/scalpingController/importPingjia.do",
 		type : "post",
 		data : formData,
 		processData : false,
@@ -95,18 +106,13 @@ td{
   function selectS()
   {
 	$.ajax({
-		url : baseURL+"scalpingController/getOrderS.do",
+		url : "<%=path%>/scalpingController/getOrder.do",
 		type : "post",
+		data : formData,
 		processData : false,
 		contentType : false,
-		date:
-		{
-			startTime:$("#startDate").val(),
-			endTime : $("#endDate").val(),
-			keyWord : $("#keyWord").val(),
-		},
 		success : function(res) {
-			$("#showDiv").html(res);
+			$("#showDiv").html(data);
 
 		},
 		error : function(err) {
@@ -115,9 +121,12 @@ td{
 	})
   }
 </script>
+<head>
+<title>刷单记录</title>
+</head>
 <body>
-	<center>
-		<form id="upload" enctype="multipart/form-data" method="post">
+<center>
+		<form id="upload" enctype="multipart/form-data" method="post" action="<%=path%>/scalpingController/getOrder.do">
 		 开始时间 ： <input id="startDate" type="text" name="startDate"/>&nbsp;&nbsp;&nbsp;&nbsp;
 		 结束时间 ： <input id="endDate" type="text" name="endDate" />&nbsp;&nbsp;&nbsp;&nbsp;
 		 关 键 字 ： <input id="keyWord" type="text" name="keyWord" />&nbsp;&nbsp;
@@ -131,7 +140,7 @@ td{
 			
 		 <input type="submit"
 				style="width: 100px; height: 30px;" value="查询" />
-				<input type="button"
+		<input type="button"
 				style="width: 100px; height: 30px;" value="查询S" onclick="selectS()"/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		

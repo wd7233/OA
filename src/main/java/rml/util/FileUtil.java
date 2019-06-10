@@ -323,11 +323,11 @@ public class FileUtil
                     // 快递公司 32
                     order.setCourierCompany(convertStringDouble(strArr[32]));
                     // 商家备注 37
-                    order.setRemakes(convertStringDouble(strArr[37]));
+                    order.setRemakes(convertStringDouble(strArr[38]));
                     // 售后状态 38
-                    order.setAfterState(convertStringDouble(strArr[38].trim()));
+                    order.setAfterState(convertStringDouble(strArr[39].trim()));
                     // 买家留言 39
-                    order.setMessage(convertStringDouble(strArr[39]));
+                    order.setMessage(convertStringDouble(strArr[40]));
                     orderList.add(order);
                 }
                 //淘宝

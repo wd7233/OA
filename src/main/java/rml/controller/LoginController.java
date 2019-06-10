@@ -93,12 +93,12 @@ public class LoginController
         // 管理员
         if (s.getRole() == 0)
         {
-           // return "shopTotalList";
+//            return "shopTotalList";
             return "index";
         }
         else if (s.getRole() == 1 || s.getRole() == 3)
         {
-           // return "shopList";
+//            return "shopList";
             return "index";
         }
         // 买手

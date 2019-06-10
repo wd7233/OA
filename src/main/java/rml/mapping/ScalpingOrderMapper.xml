@@ -64,6 +64,15 @@
 	<if test="keyWord==null or keyWord == ''">
 	and o.create_time 
 	between #{startTime} and #{endTime} 
+		<if test="orderType == 0">
+			and (so.after_state = '无售后或售后取消' or so.after_state ='订单未关闭') 
+		</if>
+		<if test="orderType == 1">
+			and ( so.after_state = '退款成功' 
+				or so.after_state = '售后处理中' 
+				or  so.after_state is null  
+				or so.after_state = '' )
+		</if>
 	</if>
 	<if test="keyWord!=null and keyWord != ''">
 			and ( o.order_id like CONCAT('%',#{keyWord},'%')

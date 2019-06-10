@@ -67,7 +67,7 @@ public class ScalpingServiceImpl implements ScalpingServiceI
     }
     
     @Override
-    public List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber, String keyWord)
+    public List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber, String keyWord,Integer orderType)
     {
         startTime = startTime + " 00:00:00";
         endTime = endTime + " 23:59:59";
@@ -81,6 +81,8 @@ public class ScalpingServiceImpl implements ScalpingServiceI
         map.put("endTime", StringUtils.isEmpty(endTime) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endTime, "yy-MM-dd HH:mm:ss"));
         map.put("goodNumber", goodNumber);
         map.put("keyWord", keyWord);
+        map.put("orderType", orderType);
+        System.out.println(orderType);
         return scalpingOrderMapper.selectOrder(map);
     }
     

@@ -17,7 +17,7 @@ public interface ScalpingServiceI
 
     int updateByPrimaryKey(ScalpingOrder record);
     public ScalpingOrder selectByOrderId(String orderId);
-    List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber,String keyWord);
+    List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber,String keyWord,Integer orderType);
     //根据商品类型，随机获取一条评价
     SpPingjia getSpPingjia(String good);
     int insetrPingjia(SpPingjia sp);
