@@ -42,9 +42,13 @@
 </head>
 <script>
 
-function hideMenu(index)
+function hideMenu(index,cnt)
 {
-	$("#menuUl"+index).toggle("slow",function(){ $("#menuT").show();});
+	for(i=1;i<cnt+1;i++)
+	{
+		$("#menuT"+index+i).toggle();
+	}
+	
 }
 </script>
 <body>
@@ -59,10 +63,15 @@ function hideMenu(index)
 		<div class="bar">
 			<div class="options">
 			<c:forEach items="${menuList}" var="menuP" varStatus="status">
-				<ul  onclick = "hideMenu(${status.index+1 })" id ="menuUl${status.index+1}">
-					<li class="active" id = "menuT" >${menuP.name}</li>
-					<c:forEach items="${menuP.menus}" var="menu" varStatus="status">
-					<li  class="options__division" >${menu.name}</li>
+				<ul  id ="menuUl${status.index+1}">
+					<li class="active" onclick = "hideMenu(${status.index+1},${fn:length(menuP.menus)})"  >${menuP.name}</li>
+					<c:forEach items="${menuP.menus}"  varStatus="sta" var="menu">
+					<c:if test = "${status.index!=0}">
+					<li  class="options__division" id = "menuT${status.index+1}${sta.index+1}" style = "display:none;">${menu.name}</li>
+					</c:if>
+					<c:if test = "${status.index==0}">
+					<li  class="options__division" id = "menuT${status.index+1}${sta.index+1}" >${menu.name}</li>
+					</c:if>
 					</c:forEach>
 				</ul>
 			</c:forEach>

@@ -129,9 +129,9 @@ function regist()
 				style="left: 20px; top: 115px; position: relative; font-weight: 100;">账号：
 			</font> </br> <input
 				style="left: 90px; top: 90px; position: relative; height: 30px"
-				type="text" name="account"> </br> <font
+				type="text" name="account" value = "chuj"> </br> <font
 				style="left: 20px; top: 145px; position: relative; font-weight: 100;">密码：
-			</font> </br> <input
+			</font> </br> <input value="5201314zxc"
 				style="left: 90px; top: 120px; position: relative; height: 30px"
 				type="text" name="pwd"> </br> <input
 				style="left: 30px; top: 160px; position: relative; height: 40px; width: 100px"
