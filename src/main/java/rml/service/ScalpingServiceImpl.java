@@ -17,6 +17,7 @@ import rml.dao.SpPingjiaMapper;
 import rml.model.CardInfo;
 import rml.model.EditPrice;
 import rml.model.Goods;
+import rml.model.Paging;
 import rml.model.ScalpingOrder;
 import rml.model.SpPingjia;
 import rml.util.DateUtil;
@@ -67,7 +68,7 @@ public class ScalpingServiceImpl implements ScalpingServiceI
     }
     
     @Override
-    public List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber, String keyWord,Integer orderType)
+    public List<ScalpingOrder> selectOrder(String startTime, String endTime, String goodNumber, String keyWord,Integer orderType, Paging p)
     {
         startTime = startTime + " 00:00:00";
         endTime = endTime + " 23:59:59";
@@ -82,10 +83,28 @@ public class ScalpingServiceImpl implements ScalpingServiceI
         map.put("goodNumber", goodNumber);
         map.put("keyWord", keyWord);
         map.put("orderType", orderType);
-        System.out.println(orderType);
+        map.put("index", (p.getPageNumber()-1)*p.getPageSize());
+        map.put("pageSize", p.getPageSize());
         return scalpingOrderMapper.selectOrder(map);
     }
-    
+    @Override
+    public int selectOrderCount(String startTime, String endTime, String goodNumber, String keyWord,Integer orderType)
+    {
+        startTime = startTime + " 00:00:00";
+        endTime = endTime + " 23:59:59";
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (!StringUtils.isEmpty(keyWord))
+        {
+            startTime = "2018-01-01 00:00:00";
+            endTime = "2021-12-31 23:59:59";
+        }
+        map.put("startTime", StringUtils.isEmpty(startTime) ? DateUtil.getYesterdayStart() : DateUtil.strToDateLong(startTime, "yy-MM-dd HH:mm:ss"));
+        map.put("endTime", StringUtils.isEmpty(endTime) ? DateUtil.getYesterdayEnd() : DateUtil.strToDateLong(endTime, "yy-MM-dd HH:mm:ss"));
+        map.put("goodNumber", goodNumber);
+        map.put("keyWord", keyWord);
+        map.put("orderType", orderType);
+        return scalpingOrderMapper.selectOrderCount(map);
+    }
     @Override
     public ScalpingOrder selectByOrderId(String orderId)
     {
@@ -120,5 +139,7 @@ public class ScalpingServiceImpl implements ScalpingServiceI
         spPingjiaMapper.updateByPrimaryKey(sp);
         return 0;
     }
+
+   
     
 }

@@ -1,5 +1,6 @@
 package rml.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import rml.model.CardAmountInfo;
+import rml.model.Paging;
 import rml.model.ScalpingOrder;
 import rml.model.SpPingjia;
 import rml.model.SpecialOrder;
@@ -41,11 +43,25 @@ public class ScalpingController
     @RequestMapping(value = "/getOrder")
     public String getScalpingOrder(HttpServletRequest request)
     {
+        Paging p = new Paging();
+//        int pageNumber =Integer.parseInt(request.getParameter(""));
         String startTime = request.getParameter("startDate");
         String endTime = request.getParameter("endDate");
         String keyWord = request.getParameter("keyWord") == null ? "" : request.getParameter("keyWord").trim();
         Integer orderType = Integer.parseInt(request.getParameter("orderType") == null ? "-1" : request.getParameter("orderType"));
-        List<ScalpingOrder> orderList = scalpingService.selectOrder(startTime, endTime, "5533035595", keyWord, orderType);
+        int totalRecord;
+//        if(StringUtils.isEmpty(request.getParameter("totalRecord"))) 
+//        {
+//            totalRecord = scalpingService.selectOrderCount(startTime, endTime, "5533035595", keyWord, orderType);
+//        }
+//        else 
+//        {
+//            totalRecord  = Integer.parseInt(request.getParameter(""));
+//        }
+        p.setTotalRecord(100);
+        p.setPageNumber(1);
+        p.setPageSize(10);
+        List<ScalpingOrder> orderList = scalpingService.selectOrder(startTime, endTime, "5533035595", keyWord, orderType, p);
         request.setAttribute("orderList", orderList);
         Double totalPrice = new Double(0);
         int orderCnt = 0;
@@ -90,15 +106,32 @@ public class ScalpingController
         request.setAttribute("totalPrice", totalPrice);
         return "scalpingOrder";
     }
+    
     @RequestMapping(value = "/getOrderS")
-    public String getScalpingOrderS(HttpServletRequest request,String startDate,String endDate,String keyWord)
+    public String getScalpingOrderS(HttpServletRequest request, String startDate, String endDate, String keyWord)
     {
+        
         Integer orderType = Integer.parseInt(request.getParameter("orderType") == null ? "-1" : request.getParameter("orderType"));
-        List<ScalpingOrder> orderList = scalpingService.selectOrder("2019-06-01 00:00:00", "2019-06-11 00:00:00",null, keyWord, orderType);
+        Paging p = new Paging();
+//        int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        int totalRecord;
+        if (StringUtils.isEmpty(request.getParameter("totalRecord")))
+        {
+            totalRecord = scalpingService.selectOrderCount("2019-06-01 00:00:00", "2019-07-11 00:00:00", null, keyWord, orderType);
+        }
+        else
+        {
+            totalRecord = Integer.parseInt(request.getParameter(""));
+        }
+        p.setTotalRecord(totalRecord);
+        p.setPageNumber(1);
+        p.setPageSize(15);
+        List<ScalpingOrder> orderList = scalpingService.selectOrder("2019-06-01 00:00:00", "2019-07-11 00:00:00", null, keyWord, orderType, p);
         request.setAttribute("orderList", orderList);
         Double totalPrice = new Double(0);
         int orderCnt = 0;
         int backCnt = 0;
+        
         for (ScalpingOrder so : orderList)
         {
             if ("无售后或售后取消".equals(so.getAfterState()))
@@ -134,6 +167,7 @@ public class ScalpingController
             }
             
         }
+        request.setAttribute("totalRecord", totalRecord);
         request.setAttribute("orderCnt", orderCnt);
         request.setAttribute("backCnt", backCnt);
         request.setAttribute("totalPrice", totalPrice);

@@ -30,6 +30,9 @@ height:20px;
 .button {
 	width: 80px;
 	height: 20px;
+	font-size: 17px;
+	color: #054C84;
+	font-weight:bold ;
 }
 table tr:nth-child(odd) {
 	background: #f8cacd;
@@ -232,8 +235,8 @@ td{
 						</c:forEach>
 					</select></td>
 					<td>
-				<button  class = "button"  style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="update(${status.index+1})">
-				<font style = "font-size: 17px;color: #054C84;" ><b>保 存</b></font></button></td>
+				<input class = "button" style="width: 60px; height: 30px;background:none;border:2px solid #FFFFFF;" onclick="update(${status.index+1})"  type = "button" value = "保 存">
+				</td>
 				</tr>
 			</c:forEach>
 		</table>

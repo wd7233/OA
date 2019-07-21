@@ -16,6 +16,8 @@
 <script src="<%=basePath%>/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/jquery.ui.datepicker-zh-CN.js" charset="gb2312"></script>
 <script type="text/javascript" src="<%=basePath%>/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/fenye.js"></script>
+
 <link href="<%=basePath%>/css/jquery-ui-timepicker-addon.css" rel="stylesheet"  />
 <link rel="icon" href="<%=basePath%>/image/log.png" type="image/x-icon" />
 <link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
@@ -25,7 +27,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
-.div-right{height:100vh;border: 1px solid red;} 
+.div_right{height:100vh;width:800vh; border: 3px solid black;background-color: green;} 
 </style>
 <title>Side Menu</title>
 
@@ -50,6 +52,13 @@ function hideMenu(index,cnt)
 	}
 	
 }
+function entry(url)
+{
+	 jQuery.get("<%=basePath%>"+url, function(result){
+		    jQuery("#showDiv").html(result);
+		 });
+
+}
 </script>
 <body>
 
@@ -67,10 +76,10 @@ function hideMenu(index,cnt)
 					<li class="active" onclick = "hideMenu(${status.index+1},${fn:length(menuP.menus)})"  >${menuP.name}</li>
 					<c:forEach items="${menuP.menus}"  varStatus="sta" var="menu">
 					<c:if test = "${status.index!=0}">
-					<li  class="options__division" id = "menuT${status.index+1}${sta.index+1}" style = "display:none;">${menu.name}</li>
+					<li  onclick="entry('${menu.url}')" class="options__division" id = "menuT${status.index+1}${sta.index+1}" style = "display:none;">${menu.name}</li>
 					</c:if>
 					<c:if test = "${status.index==0}">
-					<li  class="options__division" id = "menuT${status.index+1}${sta.index+1}" >${menu.name}</li>
+					<li   onclick="entry('${menu.url}')" class="options__division" id = "menuT${status.index+1}${sta.index+1}" >${menu.name}</li>
 					</c:if>
 					</c:forEach>
 				</ul>
@@ -84,8 +93,8 @@ function hideMenu(index,cnt)
 			</div>
 		</div>
 	</div>
-	<div class ="div_right" id = "showDiv" >
-	<%@ include file="./scalpingOrder.jsp" %>  
+	<div class ="div_right" id = "showDiv"  >
+	<%@ include  file="./scalpingOrder.jsp" %>   
 	</div>
 </div>
 

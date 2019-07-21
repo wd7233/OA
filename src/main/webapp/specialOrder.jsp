@@ -344,7 +344,7 @@ font {
 	  $("#suppleDiv").hide();
   }
 </script>
-<body>
+<body style  = "background-color:green;">
 <div id="suppleDiv">
 		<br />
 		<laber style="text-align:center;">订 单 补发</laber>

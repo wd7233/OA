@@ -38,6 +38,52 @@ td{
 	top: 50%;
 	left: 50%;
 }
+.fy_page ul{
+				padding:0;
+				min-width: 450px;
+}
+.fy_page ul::after{
+				content: '';
+				display: block;
+				clear: both;
+}
+.fy_page ul li{
+				float: left;
+				width:auto;
+				min-width:32px;
+				height: 30px;
+				line-height:30px;
+				list-style: none;
+}
+.fy_page a{
+				color:#aaa;
+				font-family: "微软雅黑";
+				padding:0 10px;
+				text-decoration: none;
+				display: block;
+				text-align: center;
+				border: 1px solid #ccc;
+				border-left: none;
+	}
+			.fy_page ul li:first-child a{
+				border-left: 1px solid #ccc;
+			}
+			
+			.fy_page ul li a:hover{
+				background-color: dodgerblue;
+			}
+			.fy_page ul li a:hover{
+				color: white;
+			}
+			.fy_page .disabled a:hover{
+				background-color: white;
+				cursor:not-allowed;
+				color: #aaa;
+			}
+			.fy_page .active a{
+				background-color: dodgerblue;
+				color: white;
+			}
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -114,8 +160,38 @@ td{
 		}
 	})
   }
+  P.initMathod({
+      params: {elemId: '#fy_page',total:$("#totalRecord").val()},
+      requestFunction: function () {
+         // P.config.total = parseInt(Math.random() * 10 + 85);//此处模拟总记录变化
+
+          //TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total
+          
+          //列表渲染自行处理
+          $.ajax({
+		url : baseURL+"scalpingController/getOrderS.do",
+		type : "post",
+		processData : false,
+		contentType : false,
+		date:
+		{
+			startTime:$("#startDate").val(),
+			endTime : $("#endDate").val(),
+			keyWord : $("#keyWord").val(),
+		},
+		success : function(res) {
+			$("#showDiv").html(res);
+
+		},
+		error : function(err) {
+			alert("err", err);
+		}
+	})
+          console.log(JSON.stringify(P.config));
+      }
+  });
 </script>
-<body>
+<body >
 	<center>
 		<form id="upload" enctype="multipart/form-data" method="post">
 		 开始时间 ： <input id="startDate" type="text" name="startDate"/>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -152,7 +228,7 @@ td{
 		</div>
 		<br/>
 		<table border="1" width="100% ">
-			<tr class = "ftr" height="60px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
+			<tr class = "ftr" height="20px"  style="font-weight:bold;text-align: center;background:#054c84;color : #FFFFFF;">
 				<td style="text-align:center;">序号</td>
 				<td style="text-align:center;">导入文件</td>
 				<td style="text-align:center;">订单编号</td>
@@ -191,6 +267,9 @@ td{
 				</tr>
 			</c:forEach>
 		</table>
+		<div class="fy_page" id="fy_page">
+		<input type="hidden" id = "totalRecord" value = "${totalRecord}"/>
+		</div>
 	</center>
 </body>
 </html>
